@@ -9,7 +9,7 @@ const Container = styled.div`
 `;
 
 const BlackSection = styled.div`
-    background-color: #000000;
+    background-color: #0f0f0f;
     height: 10vh;
 `;
 
