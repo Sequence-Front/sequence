@@ -33,7 +33,6 @@ const Title = styled.h2`
   font-family: 'Alike', serif;
   font-size: 4rem;
   color: white;
-  margin-bottom: 4rem;
 `;
 
 const TeamSection = styled.div`
@@ -46,7 +45,6 @@ const TeamTitle = styled.h3`
   font-family: 'Alike', serif;
   font-size: 2rem;
   color: white;
-  margin-bottom: 2rem;
   width: 100%;
   text-align: center;
 `;

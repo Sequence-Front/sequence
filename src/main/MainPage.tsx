@@ -8,12 +8,27 @@ const Container = styled.div`
     background-color: #151515;
 `;
 
+const BlackSection = styled.div`
+    background-color: #000000;
+    height: 10vh;
+`;
+
+const Blank = styled.div`
+    height: 500px;
+    background-color: #151515;
+`;
+
 function MainPage() {
   return (
     <Container>
+        <Blank/>
         <Partner/>
+        <Blank/>
         <Experience/>
+        <Blank/>
+        <Blank/>
         <WhoMade/>
+        <BlackSection/>
     </Container>
   );
 }

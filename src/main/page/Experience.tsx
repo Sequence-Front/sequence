@@ -65,6 +65,11 @@ const Button = styled.button`
   font-size: clamp(1.25rem, 2vw, 2rem);
 `;
 
+const Blank = styled.div`
+    height: 450px;
+    background-color: #151515;
+`;
+
 function Experience() {
     const experiences = Array.from({ length: 10 }, (_, index) => ({
         title: `DANJAM ${index + 1}`,
@@ -117,6 +122,7 @@ function Experience() {
                 ))}
             </Slider>
         </SliderWrapper>
+        <Blank/>
         <ImageWrapper>
         <Image 
           src={LogoS}
