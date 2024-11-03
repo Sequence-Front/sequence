@@ -14,6 +14,10 @@ const Container = styled.div`
   margin-left : 18%;
   margin-right: 7%;
   flex-direction: column;
+  @media (max-width: 1290px) {
+    width: 100%;
+    margin: 0 auto;
+  }
 `
 
 const BenefitContainer = styled.div`
@@ -27,6 +31,7 @@ const BenefitContainer = styled.div`
   @media (max-width: 1290px) {
     flex-direction: column; 
     align-items: center;
+    margin-top: 0;
   }
 `
 
