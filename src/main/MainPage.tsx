@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import Header from './page/Header';
+import Sequence from './page/Sequence';
+import About from './page/About';
 import Partner from './page/Partner';
 import Experience from './page/Experience';
 import WhoMade from './page/WhoMade';
@@ -21,6 +24,11 @@ const Blank = styled.div`
 function MainPage() {
   return (
     <Container>
+        <Header/>
+        <Blank style={{height : '100px'}}/>
+        <Sequence/>
+        <Blank/>
+        <About/>
         <Blank/>
         <Partner/>
         <Blank/>
