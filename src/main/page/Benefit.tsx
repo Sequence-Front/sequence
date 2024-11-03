@@ -1,9 +1,162 @@
 import React from "react";
 import styled from "styled-components";
+import MainPageTitle from "../component/MainPageTitle";
+import BenefitImg1 from '../../asset/image/Benefit1.png'
+import BenefitImg2 from '../../asset/image/Benefit2.png'
+import BenefitImg3 from '../../asset/image/Benefit3.png'
+import Logo from "../../asset/image/MainLogo.png"
+
+const Container = styled.div`
+  display: flex;
+  position: relative;
+  width: 75%;
+  margin : 0 auto;
+  margin-left : 18%;
+  margin-right: 7%;
+  flex-direction: column;
+`
+
+const BenefitContainer = styled.div`
+  display: flex;
+  position: relative;
+  width: 100%;
+  margin-top: 21rem;
+  flex-direction: row;
+  justify-content: space-between;
+
+  @media (max-width: 1290px) {
+    flex-direction: column; 
+    align-items: center;
+  }
+`
+
+const BenefitImg = styled.img`
+  display: flex;
+  width: 20%;
+  min-width: 250px;
+  max-width: 600px;
+  max-height: 1400px;
+  object-fit: contain;
+
+  @media (max-width: 1290px) {
+    align-items: flex-end;
+  }
+`
+
+const BenefitPartContainer = styled.div`
+  display: flex;
+  width: 50%;
+  flex-direction: column;
+  margin-right: 5%;
+
+  @media (max-width: 1290px) {
+    width: 100%;
+    margin-right: 0;
+    margin-top: 2rem; 
+  }
+ 
+`
+
+const BenefitPartLogo = styled.img`
+  display : flex;
+  width: 10%;
+  margin-top: 10rem;
+  align-self: flex-start;
+
+  @media (max-width: 1290px) {
+    display: none; 
+  }
+`
+
+const BottomContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 3rem;
+  align-items: flex-start; 
+  justify-content: flex-end;
+  flex-grow: 1; 
+
+  @media (max-width: 1290px) {
+    margin-top: 1rem;
+    align-items: center;
+    justify-content: center;
+  }
+`
+
+const BenefitPartTitle = styled.div`
+  display: flex;
+  color: #EEEEEE;
+  font-size : clamp(2.5rem, 2vw, 5rem);
+  font-weight: bold;
+  color: #EEEEEE;
+  align-items: flex-start;
+  justify-content: flex-end;
+
+  @media (max-width: 1290px) {
+    justify-content: flex-start; 
+  }
+`
+
+const BenefitPartContent = styled.div`
+  color: #EEEEEE;
+  font-size : clamp(1.5rem, 2vw, 3rem);
+  margin: 5rem 0;
+  width: 85%;
+  color: #EEEEEE;
+  align-items: flex-start;
+  word-wrap: break-word;
+  justify-content: flex-end;
+  
+  @media (max-width: 1290px) {
+    text-align: start; 
+    justify-content: flex-start;
+  }
+`
 
 function Benefit(){
     return (
-        <></>
+        <Container>
+            <MainPageTitle>Benefit</MainPageTitle>
+            <BenefitContainer>
+                <BenefitImg src = {BenefitImg1}/>
+                <BenefitPartContainer>
+                    <BenefitPartLogo src = {Logo}/>
+                    <BottomContainer>
+                      <BenefitPartTitle> 개발자와 디자이너의 만남</BenefitPartTitle>
+                      <BenefitPartContent>
+                      각기 다른 분야의 대학생들이 모여 
+                      협업할 수 있는 프로젝트를 시작합니다.
+                      </BenefitPartContent>
+                    </BottomContainer>
+                </BenefitPartContainer>
+            </BenefitContainer>
+            <BenefitContainer>
+                <BenefitImg src = {BenefitImg2}/>
+                <BenefitPartContainer>
+                    <BenefitPartLogo src = {Logo}/>
+                    <BottomContainer>
+                      <BenefitPartTitle> 실제 서비스를 세상에</BenefitPartTitle>
+                      <BenefitPartContent>
+                      여러분이 만든 웹/앱 서비스가 실제로 세상에 출시되어
+                      사용자들의 피드백을 받을 수 있는 경험을 제공합니다.
+                      </BenefitPartContent>
+                    </BottomContainer>
+                </BenefitPartContainer>
+            </BenefitContainer>
+            <BenefitContainer>
+                <BenefitImg src = {BenefitImg3}/>
+                <BenefitPartContainer>
+                      <BenefitPartLogo src = {Logo}/>
+                      <BottomContainer>
+                      <BenefitPartTitle> 실무에서 필요한 협업 경험</BenefitPartTitle>
+                      <BenefitPartContent style={{width: '100%'}}>
+                      대학생들이 다양한 직무와 협업하며
+                      실무에서 요구되는 경험을 쌓을 수 있습니다.
+                      </BenefitPartContent>
+                    </BottomContainer>
+                </BenefitPartContainer>
+            </BenefitContainer>
+        </Container>
     );
 }
 

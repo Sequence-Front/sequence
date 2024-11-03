@@ -6,12 +6,12 @@ import AboutImg2 from '../../asset/image/About2.png'
 import AboutImgCenter from '../../asset/image/LogoEmpty.png'
 
 const Container = styled.div`
+  display: flex;
   position: relative;
   width: 75%;
-  height: 70%;
   margin : 0 auto;
-  margin-left : 15%;
-  margin-right: 10%;
+  margin-left : 18%;
+  margin-right: 7%;
   flex-direction: column;
 `
 
@@ -32,7 +32,7 @@ const About1Content = styled.div`
   display : flex;
   width : 46%;
   color : #EEEEEE;
-  font-size : clamp(1rem, 1.5vw, 2rem);
+  font-size : clamp(1.5rem, 1.5vw, 3rem);
   align-items: flex-end;
 `
 
@@ -53,15 +53,15 @@ const About2Container = styled.div`
 
 const About2Img = styled.img`
   display : flex;
-  width: 54%;
+  width: 56%;
 `
 
 const About2Content = styled.div`
   display : flex;
   margin-left: 1%;
-  width : 45%;
+  width : 43%;
   color : #EEEEEE;
-  font-size : clamp(1rem, 1.5vw, 2rem);
+  font-size : clamp(1.5rem, 1.5vw, 3rem);
   align-items: flex-start;
 `
 

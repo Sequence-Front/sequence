@@ -5,7 +5,7 @@ const MainPageTitle = styled.div`
   position: relative;
   color: #ffffff;
   font-family: 'Alike';
-  font-size: clamp(3rem , 5vw,6rem);
+  font-size: clamp(3.5rem , 5vw, 7rem);
   font-weight: 400;
   text-align: left;
 `

@@ -13,10 +13,10 @@ const Container = styled.div`
 
 const Logo = styled.img`
   display: flex;
-  margin : 20px 10px;
+  margin : 2rem 1rem;
   position : relative;
-  width: clamp(1.5rem, 5vw, 3rem);
-  height: clamp(2rem, 6.4vw, 4rem);
+  width: clamp(2rem, 5vw, 4rem);
+  height: clamp(2.6rem, 6.4vw, 5.2rem);
   color : white;
 `
 
