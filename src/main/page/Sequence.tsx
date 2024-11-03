@@ -1,31 +1,46 @@
 import React from "react";
 import styled from "styled-components";
 import runningimg from '../../asset/image/running.png'
+import LogoS from '../../asset/image/LogoS.png'
 import { BsArrowRight } from "react-icons/bs";
 
 const SequenceContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+`
+
+const TitleContainer = styled.div`
+  display:flex;
+  margin: 0 auto;
+  flex-direction: row;
+  align-items: flex-end;
+  z-index: 1;
+`
+
+const Logo = styled.img`
+  display: flex;
+  position: relative;
+  width: clamp(1rem, 10vw, 12.5vw);
+  margin-bottom: clamp(3rem, 5vw, 10rem);
+  margin-right: clamp(0.3rem, 0.5vw, 1rem);
 `
 
 const Title = styled.div`
   font-size: clamp(10rem, 23.5vw, 100vw);
-  color: red;
+  color: #E32929;
   font-family: 'Impact', sans-serif;
-  font-weight: 100px;
   margin: 0;
-  top: 5vw;
-  z-index: 1;
+  align-self: flex-end;
 `
 
 const Img = styled.img`
-    position: relative;
-    margin-top: -15vw;
-    display: flex;
-    width: 100%;
-    z-index: 0;
+  position: relative;
+  margin-top: -15vw;
+  display: flex;
+  width: 100%;
+  z-index: 0;
 `
 
 const Container = styled.div`
@@ -73,7 +88,10 @@ function Sequence(){
     return (
         <Container>
             <SequenceContainer>
-                <Title>Sequence</Title>
+                <TitleContainer>
+                  <Logo src={LogoS}/>
+                  <Title>equence</Title>
+                </TitleContainer>
                 <Img src={runningimg}/>
             </SequenceContainer>
             <Content>새로운 이야기를 만들다. 시퀀스</Content>
