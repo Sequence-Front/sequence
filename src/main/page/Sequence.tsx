@@ -9,6 +9,7 @@ const SequenceContainer = styled.div`
   flex-direction: column;
   width: 100%;
   height: auto;
+  
 `
 
 const TitleContainer = styled.div`
