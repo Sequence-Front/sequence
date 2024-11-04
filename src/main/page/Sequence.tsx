@@ -24,12 +24,12 @@ const Logo = styled.img`
   display: flex;
   position: relative;
   width: clamp(1rem, 10vw, 12.5vw);
-  margin-bottom: clamp(3rem, 5vw, 10rem);
+  margin-bottom: clamp(1rem, 5vw, 10rem);
   margin-right: clamp(0.3rem, 0.5vw, 1rem);
 `
 
 const Title = styled.div`
-  font-size: clamp(10rem, 23.5vw, 100vw);
+  font-size: clamp(8rem, 23.5vw, 100vw);
   color: #E32929;
   font-family: 'Impact', sans-serif;
   margin: 0;
@@ -60,7 +60,7 @@ const Content = styled.div`
   font-family: 'Noto Sans', sans-serif;
   font-weight: 700;
   margin-top: 25rem;
-  
+
 `
 
 const Button = styled.button`
@@ -71,8 +71,8 @@ const Button = styled.button`
   margin-top : 10rem;
   max-width: 120rem;
   color: red;
-  padding: clamp(1rem, 1.5rem , 2rem) clamp(5rem, 4vw, 10rem);
-  font-size: clamp(1.75rem, 1.7vw, 3.5rem);
+  padding: clamp(0.5rem, 1vw , 2rem) clamp(1rem, 2vw, 10rem);
+  font-size: clamp(1rem, 1.7vw, 3.5rem);
   font-weight: 600;
   cursor: pointer;
   transition: background 0.3s, color 0.3s;
