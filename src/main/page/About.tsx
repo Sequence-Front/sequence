@@ -45,7 +45,28 @@ const About1Img = styled.img`
 `
 
 const About1ContentContainer = styled.div`
+  display:flex;
+  width : 46%;
+  align-items: flex-end;
+
   @media (max-width: 900px){
+    align-items: flex-start;
+    margin: 0 auto;
+    width:100%;
+    display:flex;
+    order:2 ;
+    flex-direction: column;
+  }
+  
+`;
+
+const About2ContentContainer = styled.div`
+  display:flex;
+  width : 46%;
+  align-items: flex-start;
+  
+  @media (max-width: 900px){
+    align-items: flex-start;
     margin: 0 auto;
     width:100%;
     display:flex;
@@ -56,6 +77,7 @@ const About1ContentContainer = styled.div`
 `
 
 const About1ContentLogo = styled.img`
+  display : none;
   @media (max-width: 800px){
     display : flex;
     width: 10%;
@@ -66,14 +88,12 @@ const About1ContentLogo = styled.img`
 
 const About1Content = styled.div`
   display : flex;
-  width : 46%;//46
+  width: 100%;
   color : #EEEEEE;
   font-size : clamp(1.5rem, 1.5vw, 3rem);
-  align-items: flex-end;
-
+  align-self: flex-end;
   @media (max-width: 800px) {
     order: 2;
-    width: 100%;
     font-size: 1.3rem;
     margin: 0 auto;
     margin-top: 2rem;
@@ -115,7 +135,7 @@ const About2Img = styled.img`
 const About2Content = styled.div`
   display : flex;
   margin-left: 1%;
-  width : 43%;
+  width: 100%;
   color : #EEEEEE;
   font-size : clamp(1.5rem, 1.5vw, 3rem);
   align-items: flex-start;
@@ -147,16 +167,16 @@ function About() {
       <AboutCenterImg src = {AboutImgCenter}/>
       <About2Container>
         <About2Img src = {AboutImg2} />
-        <About1ContentContainer>
+        <About2ContentContainer>
         <About1ContentLogo src={logo}/>
-          <About2Content>
+        <About2Content>
         영화의 주제와 인물들을 소개하는 시퀀스처럼,
         <br />
         우리의 만남과 협업이 하나의 영화와 같이 
         <br />
         새로운 이야기를 만들어내는 것을 목표로 하고 있습니다.
         </About2Content>
-        </About1ContentContainer>
+        </About2ContentContainer>
       </About2Container>
     </Container>
   );
