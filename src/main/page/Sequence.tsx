@@ -23,13 +23,13 @@ const TitleContainer = styled.div`
 const Logo = styled.img`
   display: flex;
   position: relative;
-  width: clamp(1rem, 10vw, 12.5vw);
+  width: clamp(0.8rem, 10vw, 12.5vw);
   margin-bottom: clamp(1rem, 5vw, 10rem);
   margin-right: clamp(0.3rem, 0.5vw, 1rem);
 `
 
 const Title = styled.div`
-  font-size: clamp(8rem, 23.5vw, 100vw);
+  font-size: clamp(7rem, 23.5vw, 100vw);
   color: #E32929;
   font-family: 'Impact', sans-serif;
   margin: 0;
