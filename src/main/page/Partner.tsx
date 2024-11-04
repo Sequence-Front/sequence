@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PartnerImage from "../../asset/image/PartnerImage.png"
+import MainPageTitle from '../component/MainPageTitle';
 
 const Container = styled.div`
   display: flex;
@@ -11,21 +12,9 @@ const Container = styled.div`
   background-color: #151515;
 `;
 
-const Title = styled.div`
-  font-family: 'Alike', serif;
-  font-size: 4rem;
-  font-weight: bold;
-  color: white;
-  margin-bottom: 2.5rem;
-
-  @media (min-width: 768px) {
-    font-size: 4.5rem;
-    margin-bottom: 5rem;
-  }
-`;
-
 const ImageWrapper = styled.div`
   width: 100%;
+  margin-top: 4rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -75,7 +64,7 @@ const Description = styled.p`
 function Partner() {
   return (
     <Container>
-      <Title>Partner</Title>
+      <MainPageTitle>Partner</MainPageTitle>
       <ImageWrapper>
         <Image 
           src={PartnerImage}

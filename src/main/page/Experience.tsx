@@ -5,6 +5,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import LogoS from "../../asset/image/LogoS.png"
+import MainPageTitle from "../component/MainPageTitle";
 
 const Container = styled.div`
     width: 100%;
@@ -13,21 +14,8 @@ const Container = styled.div`
     margin: 0 auto;
 `;
 
-const Title = styled.div`
-  font-family: 'Alike', serif;
-  font-size: 4rem;
-  font-weight: bold;
-  color: white;
-  margin-bottom: 2.5rem;
-
-  @media (min-width: 768px) {
-    font-size: 4.5rem;
-    margin-bottom: 5rem;
-  }
-`;
-
 const SliderWrapper = styled.div`
-    margin: 0 auto;
+    margin: 4rem auto;
     overflow: hidden;
 `;
 
@@ -78,12 +66,16 @@ function Experience() {
 
     const settings = {
         infinite: true,
-        speed: 500,
+        speed: 3000,
         slidesToShow: 4,
-        slidesToScroll: 2,
+        slidesToScroll: 1,
         arrows: true,
         dots: false,
         centerMode: false,
+        autoplay: true,
+        autoplaySpeed: 0,
+        pauseOnHover: false,
+        cssEase: "linear",
         responsive: [
           {
             breakpoint: 1800,
@@ -97,19 +89,19 @@ function Experience() {
                 slidesToShow: 2,
             }
           },
-            {
-                breakpoint: 1000,
-                settings: {
-                    slidesToShow: 1,
-                }
-            }
+          {
+              breakpoint: 1000,
+              settings: {
+                  slidesToShow: 1,
+              }
+          }
         ]
     };
 
     return (
       <>
         <Container>
-            <Title>Experience</Title>
+            <MainPageTitle>Experience</MainPageTitle>
         </Container>
         <SliderWrapper>
             <Slider {...settings}>
