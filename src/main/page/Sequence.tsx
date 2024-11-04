@@ -60,6 +60,7 @@ const Content = styled.div`
   font-family: 'Noto Sans', sans-serif;
   font-weight: 700;
   margin-top: 25rem;
+  
 `
 
 const Button = styled.button`
