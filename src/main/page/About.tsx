@@ -49,7 +49,7 @@ const About1ContentContainer = styled.div`
   width : 46%;
   align-items: flex-end;
 
-  @media (max-width: 900px){
+  @media (max-width: 800px){
     align-items: flex-start;
     margin: 0 auto;
     width:100%;
@@ -65,7 +65,7 @@ const About2ContentContainer = styled.div`
   width : 46%;
   align-items: flex-start;
   
-  @media (max-width: 900px){
+  @media (max-width: 800px){
     align-items: flex-start;
     margin: 0 auto;
     width:100%;
@@ -90,8 +90,12 @@ const About1Content = styled.div`
   display : flex;
   width: 100%;
   color : #EEEEEE;
-  font-size : clamp(1.5rem, 1.5vw, 3rem);
+  font-size : clamp(1rem, 1.8vw, 3rem);
   align-self: flex-end;
+  word-break: keep-all;
+  white-space: nowrap;
+  line-height: 1.5;
+
   @media (max-width: 800px) {
     order: 2;
     font-size: 1.3rem;
@@ -137,8 +141,12 @@ const About2Content = styled.div`
   margin-left: 1%;
   width: 100%;
   color : #EEEEEE;
-  font-size : clamp(1.5rem, 1.5vw, 3rem);
+  font-size : clamp(1rem, 1.8vw, 3rem);
   align-items: flex-start;
+  
+  word-break: keep-all;
+  line-height: 1.5;
+
   @media (max-width: 800px) {
     width: 100%;
     font-size: 1.3rem;
@@ -171,9 +179,7 @@ function About() {
         <About1ContentLogo src={logo}/>
         <About2Content>
         영화의 주제와 인물들을 소개하는 시퀀스처럼,
-        <br />
         우리의 만남과 협업이 하나의 영화와 같이 
-        <br />
         새로운 이야기를 만들어내는 것을 목표로 하고 있습니다.
         </About2Content>
         </About2ContentContainer>
