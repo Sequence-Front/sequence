@@ -9,12 +9,10 @@ import Logo from "../../asset/image/MainLogo.png"
 const Container = styled.div`
   display: flex;
   position: relative;
-  width: 75%;
+  width: 64%;
   margin : 0 auto;
-  margin-left : 18%;
-  margin-right: 7%;
   flex-direction: column;
-  @media (max-width: 1290px) {
+  @media (max-width: 800px) {
     width: 100%;
     margin: 0 auto;
   }
@@ -28,10 +26,11 @@ const BenefitContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
 
-  @media (max-width: 1290px) {
+  @media (max-width: 800px) {
     flex-direction: column; 
     align-items: center;
-    margin-top: 0;
+    margin-top: 3rem;
+    gap: 2rem;
   }
 `
 
@@ -43,7 +42,7 @@ const BenefitImg = styled.img`
   max-height: 1400px;
   object-fit: contain;
 
-  @media (max-width: 1290px) {
+  @media (max-width: 800px) {
     align-items: flex-end;
   }
 `
@@ -52,14 +51,15 @@ const BenefitPartContainer = styled.div`
   display: flex;
   width: 50%;
   flex-direction: column;
-  margin-right: 5%;
+  margin: 05%;
+  min-width: 300px;
 
-  @media (max-width: 1290px) {
-    width: 100%;
+  @media (max-width: 800px) {
+    width: 90%;
     margin-right: 0;
-    margin-top: 2rem; 
+    margin-top: 2rem;
+    padding: 0 1rem;
   }
- 
 `
 
 const BenefitPartLogo = styled.img`
@@ -68,8 +68,8 @@ const BenefitPartLogo = styled.img`
   margin-top: 10rem;
   align-self: flex-start;
 
-  @media (max-width: 1290px) {
-    display: none; 
+  @media (max-width: 800px) {
+    margin-top: 3rem;
   }
 `
 
@@ -81,7 +81,7 @@ const BottomContainer = styled.div`
   justify-content: flex-end;
   flex-grow: 1; 
 
-  @media (max-width: 1290px) {
+  @media (max-width: 800px) {
     margin-top: 1rem;
     align-items: center;
     justify-content: center;
@@ -91,30 +91,35 @@ const BottomContainer = styled.div`
 const BenefitPartTitle = styled.div`
   display: flex;
   color: #EEEEEE;
-  font-size : clamp(2.5rem, 2vw, 5rem);
+  font-size: clamp(2rem, 3vw, 2.5rem);
   font-weight: bold;
-  color: #EEEEEE;
   align-items: flex-start;
-  justify-content: flex-end;
+  justify-content: flex-start;
+  width: 100%;
+  word-break: keep-all;
+  white-space: nowrap;
+  line-height: 1.5;
 
-  @media (max-width: 1290px) {
-    justify-content: flex-start; 
+  @media (max-width: 800px) {
+    justify-content: flex-start;
+    font-size: 2rem;
   }
 `
 
 const BenefitPartContent = styled.div`
   color: #EEEEEE;
-  font-size : clamp(1.5rem, 2vw, 3rem);
+  font-size: clamp(1.2rem, 2vw, 3rem);
   margin: 5rem 0;
   width: 85%;
-  color: #EEEEEE;
   align-items: flex-start;
-  word-wrap: break-word;
-  justify-content: flex-end;
-  
-  @media (max-width: 1290px) {
-    text-align: start; 
+  word-break: keep-all;
+  white-space: pre-wrap;
+  line-height: 1.5;
+
+  @media (max-width: 800px) {
+    text-align: start;
     justify-content: flex-start;
+    width: 100%;
   }
 `
 
