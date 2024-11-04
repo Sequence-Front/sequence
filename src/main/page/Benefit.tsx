@@ -29,7 +29,8 @@ const BenefitContainer = styled.div`
   @media (max-width: 800px) {
     flex-direction: column; 
     align-items: center;
-    margin-top: 0;
+    margin-top: 3rem;
+    gap: 2rem;
   }
 `
 
@@ -50,14 +51,15 @@ const BenefitPartContainer = styled.div`
   display: flex;
   width: 50%;
   flex-direction: column;
-  margin-right: 5%;
+  margin: 05%;
+  min-width: 300px;
 
   @media (max-width: 800px) {
-    width: 100%;
+    width: 90%;
     margin-right: 0;
-    margin-top: 2rem; 
+    margin-top: 2rem;
+    padding: 0 1rem;
   }
- 
 `
 
 const BenefitPartLogo = styled.img`
@@ -67,7 +69,7 @@ const BenefitPartLogo = styled.img`
   align-self: flex-start;
 
   @media (max-width: 800px) {
-    display: none; 
+    margin-top: 3rem;
   }
 `
 
@@ -89,30 +91,35 @@ const BottomContainer = styled.div`
 const BenefitPartTitle = styled.div`
   display: flex;
   color: #EEEEEE;
-  font-size : clamp(2.5rem, 2vw, 5rem);
+  font-size: clamp(2rem, 3vw, 2.5rem);
   font-weight: bold;
-  color: #EEEEEE;
   align-items: flex-start;
-  justify-content: flex-end;
+  justify-content: flex-start;
+  width: 100%;
+  word-break: keep-all;
+  white-space: nowrap;
+  line-height: 1.5;
 
   @media (max-width: 800px) {
-    justify-content: flex-start; 
+    justify-content: flex-start;
+    font-size: 2rem;
   }
 `
 
 const BenefitPartContent = styled.div`
   color: #EEEEEE;
-  font-size : clamp(1.5rem, 2vw, 3rem);
+  font-size: clamp(1.2rem, 2vw, 3rem);
   margin: 5rem 0;
   width: 85%;
-  color: #EEEEEE;
   align-items: flex-start;
-  word-wrap: break-word;
-  justify-content: flex-end;
-  
+  word-break: keep-all;
+  white-space: pre-wrap;
+  line-height: 1.5;
+
   @media (max-width: 800px) {
-    text-align: start; 
+    text-align: start;
     justify-content: flex-start;
+    width: 100%;
   }
 `
 
