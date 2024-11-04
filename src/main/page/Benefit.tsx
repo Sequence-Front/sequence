@@ -58,7 +58,6 @@ const BenefitPartContainer = styled.div`
     width: 90%;
     margin-right: 0;
     margin-top: 2rem;
-    padding: 0 1rem;
   }
 `
 
