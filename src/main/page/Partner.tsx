@@ -9,6 +9,10 @@ const Container = styled.div`
   width: 64%;
   margin: 0 auto;
   background-color: #151515;
+
+  @media (max-width: 800px) {
+    width: 90%;
+  }
 `;
 
 const ImageWrapper = styled.div`
@@ -24,6 +28,9 @@ const Image = styled.img`
   max-width: 100%;
   object-fit: cover;
   margin-bottom: 4rem;
+  @media (max-width: 800px) {
+    margin-bottom: 0.5rem;
+  }
 `;
 
 const ContentSection = styled.div`
