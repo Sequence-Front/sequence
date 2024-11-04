@@ -9,12 +9,10 @@ import Logo from "../../asset/image/MainLogo.png"
 const Container = styled.div`
   display: flex;
   position: relative;
-  width: 75%;
+  width: 64%;
   margin : 0 auto;
-  margin-left : 18%;
-  margin-right: 7%;
   flex-direction: column;
-  @media (max-width: 1290px) {
+  @media (max-width: 800px) {
     width: 100%;
     margin: 0 auto;
   }
@@ -28,7 +26,7 @@ const BenefitContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
 
-  @media (max-width: 1290px) {
+  @media (max-width: 800px) {
     flex-direction: column; 
     align-items: center;
     margin-top: 0;
@@ -43,7 +41,7 @@ const BenefitImg = styled.img`
   max-height: 1400px;
   object-fit: contain;
 
-  @media (max-width: 1290px) {
+  @media (max-width: 800px) {
     align-items: flex-end;
   }
 `
@@ -54,7 +52,7 @@ const BenefitPartContainer = styled.div`
   flex-direction: column;
   margin-right: 5%;
 
-  @media (max-width: 1290px) {
+  @media (max-width: 800px) {
     width: 100%;
     margin-right: 0;
     margin-top: 2rem; 
@@ -68,7 +66,7 @@ const BenefitPartLogo = styled.img`
   margin-top: 10rem;
   align-self: flex-start;
 
-  @media (max-width: 1290px) {
+  @media (max-width: 800px) {
     display: none; 
   }
 `
@@ -81,7 +79,7 @@ const BottomContainer = styled.div`
   justify-content: flex-end;
   flex-grow: 1; 
 
-  @media (max-width: 1290px) {
+  @media (max-width: 800px) {
     margin-top: 1rem;
     align-items: center;
     justify-content: center;
@@ -97,7 +95,7 @@ const BenefitPartTitle = styled.div`
   align-items: flex-start;
   justify-content: flex-end;
 
-  @media (max-width: 1290px) {
+  @media (max-width: 800px) {
     justify-content: flex-start; 
   }
 `
@@ -112,7 +110,7 @@ const BenefitPartContent = styled.div`
   word-wrap: break-word;
   justify-content: flex-end;
   
-  @media (max-width: 1290px) {
+  @media (max-width: 800px) {
     text-align: start; 
     justify-content: flex-start;
   }

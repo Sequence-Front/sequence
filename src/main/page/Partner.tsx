@@ -6,8 +6,7 @@ import MainPageTitle from '../component/MainPageTitle';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 1216px;
+  width: 64%;
   margin: 0 auto;
   background-color: #151515;
 `;
