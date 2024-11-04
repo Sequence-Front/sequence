@@ -8,9 +8,8 @@ import LogoS from "../../asset/image/LogoS.png"
 import MainPageTitle from "../component/MainPageTitle";
 
 const Container = styled.div`
-    width: 100%;
+    width: 64%;
     background-color: #151515;
-    max-width: 1216px;
     margin: 0 auto;
 `;
 
