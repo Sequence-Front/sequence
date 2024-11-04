@@ -13,7 +13,7 @@ const Container = styled.div`
   margin : 0 auto;
   flex-direction: column;
   @media (max-width: 800px) {
-    width: 100%;
+    width: 90%;
     margin: 0 auto;
   }
 `
@@ -68,7 +68,7 @@ const BenefitPartLogo = styled.img`
   align-self: flex-start;
 
   @media (max-width: 800px) {
-    margin-top: 3rem;
+    margin-top: 0.5rem;
   }
 `
 
@@ -118,6 +118,7 @@ const BenefitPartContent = styled.div`
   @media (max-width: 800px) {
     text-align: start;
     justify-content: flex-start;
+    margin-top : 1rem;
     width: 100%;
   }
 `
