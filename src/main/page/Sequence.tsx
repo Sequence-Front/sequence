@@ -29,7 +29,7 @@ const Logo = styled.img`
 `
 
 const Title = styled.div`
-  font-size: clamp(7rem, 23.5vw, 100vw);
+  font-size: clamp(4rem, 23.5vw, 100vw);
   color: #E32929;
   font-family: 'Impact', sans-serif;
   margin: 0;
@@ -55,7 +55,7 @@ const Container = styled.div`
 `
 
 const Content = styled.div`
-  font-size: clamp(2rem, 2vw ,4rem);
+  font-size: clamp(1.5rem, 4vw ,4rem);
   color: white;
   font-family: 'Noto Sans', sans-serif;
   font-weight: 700;
@@ -72,7 +72,7 @@ const Button = styled.button`
   max-width: 120rem;
   color: red;
   padding: clamp(0.5rem, 1vw , 2rem) clamp(1rem, 2vw, 10rem);
-  font-size: clamp(1rem, 1.7vw, 3.5rem);
+  font-size: clamp(0.8rem, 1.7vw, 3.5rem);
   font-weight: 600;
   cursor: pointer;
   transition: background 0.3s, color 0.3s;
@@ -98,7 +98,7 @@ function Sequence(){
             </SequenceContainer>
             <Content>새로운 이야기를 만들다. 시퀀스</Content>
             <Button>프로젝트 올리고 새로운 이야기를 만들어보세요!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <BsArrowRight style = {{fontSize : 'clamp(4rem, 4vw, 8rem)'}} />
+              <BsArrowRight style = {{fontSize : 'clamp(2rem, 4vw, 8rem)'}} />
             </Button>
         </Container>
     );
