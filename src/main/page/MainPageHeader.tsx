@@ -15,8 +15,8 @@ const Logo = styled.img`
   display: flex;
   margin : 2rem 1rem;
   position : relative;
-  width: clamp(2rem, 5vw, 4rem);
-  height: clamp(2.6rem, 6.4vw, 5.2rem);
+  width: clamp(2rem, 5vw, 6rem);
+  height: clamp(2.6rem, 6.4vw, 7rem);
   color : white;
 `
 
@@ -25,13 +25,13 @@ const ProjectContainer = styled.div`
   flex-direction: row;
   margin-top : clamp(5px, 1vw, 10px);
 `
+
 const Now = styled.div`
   display : flex;
   align-items: flex-start;
   justify-content: flex-end;
-  width: 4rem;
   color: #e22828;
-  font-size: clamp(0.75rem, 1vw , 1.5rem);
+  font-size: clamp(0.75rem, 1.5vw , 2rem);
   margin-right : 10px;
   font-family: 'SUIT' ;
 `
@@ -40,8 +40,8 @@ const Project = styled.div`
   top: 20px;
   right: 20px;
   color: white;
-  margin : 10px clamp(1.5rem, 2.5vw, 3rem) 0 0;
-  font-size: clamp(2.6rem, 3vw, 5.1rem);
+  margin : clamp(0.5rem, 1vw, 1rem) clamp(1.5rem, 2.5vw, 3rem) 0 0;
+  font-size: clamp(2.6rem, 3vw, 6rem);
   font-weight: 600;
   font-family: 'Alike', serif;
 `
