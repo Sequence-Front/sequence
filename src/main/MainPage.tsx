@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Header from './page/Header';
+import Header from './page/MainPageHeader';
 import Sequence from './page/Sequence';
 import About from './page/About';
 import Partner from './page/Partner';
