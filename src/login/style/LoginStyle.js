@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
 export const LoginContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,7 +10,8 @@ export const LoginContainer = styled.div`
   min-height: 100vh;
   background-color: #151515;
   color: #fff;
-  padding: 20px;
+  z-index: 1;
+  padding-top: 100px;
 `;
 
 export const Logo = styled.img`
@@ -26,8 +28,7 @@ export const Title = styled.h1`
 `;
 
 export const FormWrapper = styled.div`
-  width: 100%;
-  max-width: 480px;
+  width: 50%;
   margin: 0 auto;
   padding: 0 20px;
   box-sizing: border-box;
@@ -42,7 +43,6 @@ export const LoginForm = styled.form`
 export const InputField = styled.input`
   width: 100%;
   padding: 15px;
-  margin-bottom: 10px;
   border: none;
   background-color: #212121;
   color: #fff;
@@ -51,6 +51,8 @@ export const InputField = styled.input`
   text-align: center;
   min-height: 70px;
   box-sizing: border-box;
+  max-width: 560px;
+  margin: 10px auto;
   
   &::placeholder {
     color: #757575;
@@ -62,6 +64,8 @@ export const LinkWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  max-width: 560px;
+  margin: 0px auto;
   margin-bottom: clamp(30px, 5vw, 40px);
   box-sizing: border-box;
 `;
@@ -69,7 +73,7 @@ export const LinkWrapper = styled.div`
 export const Link = styled(NavLink)`
   color: #BDBDBD;
   text-decoration: none;
-  font-size: clamp(20px, 2vw, 14px);
+  font-size: clamp(14px, 2vw, 14px);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -89,10 +93,11 @@ export const LoginButton = styled.button`
   font-weight: bold;
   border: none;
   cursor: pointer;
-  margin-bottom: 10px;
   font-size: clamp(18px, 2vw, 25px);
   min-height: 70px;
   box-sizing: border-box;
+  max-width: 600px;
+  margin: 10px auto;
 `;
 
 export const SignUpButton = styled.button`
@@ -110,4 +115,12 @@ export const SignUpButton = styled.button`
   gap: 10px;
   min-height: 70px;
   box-sizing: border-box;
+  max-width: 600px;
+  margin: 10px auto;
+`;
+
+export const BlackBox = styled.div`
+  width: 100%;
+  height: 40vh;
+  background-color: #151515;
 `;
