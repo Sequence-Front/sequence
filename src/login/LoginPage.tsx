@@ -1,5 +1,6 @@
 import React from 'react';
 import LogoImage from '../asset/image/LoginLogo.png';
+import Header from '../asset/component/Header';
 
 import { FaArrowRight } from "react-icons/fa6";
 import { IoIosArrowForward } from "react-icons/io";
@@ -49,6 +50,8 @@ const LoginPage: React.FC = () => {
   };
 
   return (
+    <>
+    <Header/>
     <LoginContainer>
       <Logo src={LogoImage} alt="Login Logo" />
       <Title>Login</Title>
@@ -89,6 +92,7 @@ const LoginPage: React.FC = () => {
         </LoginForm>
       </FormWrapper>
     </LoginContainer>
+    </>
   );
 };
 

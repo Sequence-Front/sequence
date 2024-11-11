@@ -26,7 +26,7 @@ function MainPage() {
   return (
     <Container>
         <Header/>
-        <Blank style={{height : '100px'}}/>
+        <Blank style={{height : '200px'}}/>
         <Sequence/>
         <Blank/>
         <About/>
