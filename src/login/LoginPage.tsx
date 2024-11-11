@@ -18,7 +18,11 @@ import {
   Link, 
   IconWrapper, 
   LoginButton, 
-  SignUpButton } from './style/LoginStyle';
+  SignUpButton,
+  BlackBox
+ } from './style/LoginStyle';
+
+  import Header from '../asset/component/Header';
 
 const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -51,7 +55,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <>
-    <Header/>
+    <Header />
     <LoginContainer>
       <Logo src={LogoImage} alt="Login Logo" />
       <Title>Login</Title>
@@ -72,13 +76,13 @@ const LoginPage: React.FC = () => {
             onChange={handleChange}
           />
           <LinkWrapper>
-            <Link to='/'>
+            <Link to='/findId'>
               아이디찾기
               <IconWrapper>
               <IoIosArrowForward />
               </IconWrapper>
             </Link>
-            <Link to='/'>
+            <Link to='/findPassword'>
               비밀번호 찾기
               <IconWrapper>
               <IoIosArrowForward />
@@ -92,6 +96,7 @@ const LoginPage: React.FC = () => {
         </LoginForm>
       </FormWrapper>
     </LoginContainer>
+    <BlackBox />
     </>
   );
 };
