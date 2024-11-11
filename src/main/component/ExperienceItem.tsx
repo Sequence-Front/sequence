@@ -48,7 +48,7 @@ interface ExperienceItemProps {
 const ExperienceItem: React.FC<ExperienceItemProps> = ({ title, description }) => {
   return (
     <ItemContainer>
-      <Image />
+      <Image /> 
       <Title>{title}</Title>
       <Description>{description}</Description>
     </ItemContainer>

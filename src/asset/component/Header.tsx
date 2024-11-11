@@ -14,6 +14,7 @@ const Container = styled.div`
   flex-direction: row;
   background-color: #151515;
   position: relative;
+  z-index: 1;
 `
 const TitleContainer = styled.div`
   display: flex;
@@ -68,22 +69,22 @@ const Project = styled.div`
 
 const SidebarContainer = styled.div<{ show: boolean }>`
   position: absolute;
-  top: 100%;
   left: 0;
   width: 100%;
   background-color: white;
   transform: ${({ show }) => (show ? 'translateY(0)' : 'translateY(-100%)')};
   transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
   visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
-  z-index: -1;
+
 `
 
 function Header() {
   const [showSidebar, setShowSidebar] = useState(false);
+
   return (
-    <Container
-    onMouseEnter={() => setShowSidebar(true)}
+    <div onMouseEnter={() => setShowSidebar(true)}
     onMouseLeave={() => setShowSidebar(false)}>
+    <Container>
       <TitleContainer>
         <Logo src={LogoS} />
         <Title>equence</Title>
@@ -92,10 +93,11 @@ function Header() {
         <Now>NOW</Now>
         <Project>Project</Project>
       </ProjectContainer>
-      <SidebarContainer show={showSidebar}>
-        <Sidebar />
-      </SidebarContainer>
     </Container>
+    <SidebarContainer show={showSidebar}>
+        <Sidebar />
+    </SidebarContainer>
+    </div>
   );
 };
 
