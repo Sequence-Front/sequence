@@ -1,6 +1,5 @@
 import React from 'react';
 import LogoImage from '../asset/image/LoginLogo.png';
-import Header from '../asset/component/Header';
 
 import { FaArrowRight } from "react-icons/fa6";
 import { IoIosArrowForward } from "react-icons/io";
@@ -22,7 +21,7 @@ import {
   BlackBox
  } from './style/LoginStyle';
 
-  import Header from '../asset/component/Header';
+import Header from '../asset/component/Header';
 
 const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState({
