@@ -12,7 +12,7 @@ import Register from './register/Register';
 
 const AppRouter = () => {
   return (
-    <Router basename='/'>
+    <Router basename={process.env.PUBLIC_URL}>
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<LoginPage />} />    
