@@ -54,7 +54,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <>
-    <Header />
+    <Header headerName="Project" />
     <LoginContainer>
       <Logo src={LogoImage} alt="Login Logo" />
       <Title>Login</Title>

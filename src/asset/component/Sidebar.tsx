@@ -54,7 +54,7 @@ const Components = styled.button`
 const RightComponents = styled.button`
   display: flex;
   color: white;
-  font-size: clamp(2rem, 3vw, 6rem);
+  font-size: clamp(1rem, 3vw, 6rem);
   border: none;
   background-color: #151515;
   padding: 1rem;
