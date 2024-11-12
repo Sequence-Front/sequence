@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import LogoS from '../../asset/image/LogoS.png'
+import MainLogo from '../../asset/image/MainLogo.png'
 import Sidebar from './Sidebar';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   width: 100%;
@@ -21,6 +23,7 @@ const TitleContainer = styled.div`
   margin-left : clamp(2rem, 2vw, 7rem);
   flex-direction: row;
   align-items: flex-end;
+  cursor: pointer;
 `
 
 const Logo = styled.img`
@@ -38,6 +41,15 @@ const Title = styled.div`
   margin: 0;
   margin-left: 1px;
   align-self: flex-end;
+`
+
+const MainLogoStyle = styled.img`
+  display: flex;
+  margin : 0.5rem 2rem;
+  position : relative;
+  width: clamp(2rem, 5vw, 6rem);
+  height: clamp(2.6rem, 6.4vw, 7rem);
+  color : white;
 `
 
 const ProjectContainer = styled.div`
@@ -78,20 +90,26 @@ const SidebarContainer = styled.div<{ show: boolean }>`
 
 `
 
-function Header() {
+function Header({ headerName, isMain = false }: { headerName: string; isMain?: boolean } ) {
   const [showSidebar, setShowSidebar] = useState(false);
+
+  const  navigate = useNavigate();
 
   return (
     <div onMouseEnter={() => setShowSidebar(true)}
     onMouseLeave={() => setShowSidebar(false)}>
     <Container>
-      <TitleContainer>
-        <Logo src={LogoS} />
-        <Title>equence</Title>
-      </TitleContainer>
+    {isMain ? (
+          <MainLogoStyle src={MainLogo} alt="Main Logo" />
+        ) : (
+          <TitleContainer onClick = {()=>navigate('/')}>
+            <Logo src={LogoS} />
+            <Title>equence</Title>
+          </TitleContainer>
+        )}
       <ProjectContainer>
         <Now>NOW</Now>
-        <Project>Project</Project>
+        <Project>{headerName}</Project>
       </ProjectContainer>
     </Container>
     <SidebarContainer show={showSidebar}>

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import runningimg from '../../asset/image/running.png'
 import LogoS from '../../asset/image/LogoS.png'
 import { BsArrowRight } from "react-icons/bs";
+import { useNavigate } from 'react-router-dom';
 
 const SequenceContainer = styled.div`
   display: flex;
@@ -87,6 +88,8 @@ const Button = styled.button`
 
 
 function Sequence(){
+  const navigate = useNavigate(); 
+
     return (
         <Container>
             <SequenceContainer>
@@ -97,7 +100,7 @@ function Sequence(){
                 <Img src={runningimg}/>
             </SequenceContainer>
             <Content>새로운 이야기를 만들다. 시퀀스</Content>
-            <Button>프로젝트 올리고 새로운 이야기를 만들어보세요!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <Button onClick={() => navigate('/archive/registration')}>프로젝트 올리고 새로운 이야기를 만들어보세요!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <BsArrowRight style = {{fontSize : 'clamp(2rem, 4vw, 8rem)'}} />
             </Button>
         </Container>

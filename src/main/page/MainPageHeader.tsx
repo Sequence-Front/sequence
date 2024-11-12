@@ -18,6 +18,7 @@ const Logo = styled.img`
   width: clamp(2rem, 5vw, 6rem);
   height: clamp(2.6rem, 6.4vw, 7rem);
   color : white;
+  cursor: pointer;
 `
 
 const ProjectContainer = styled.div`
@@ -47,9 +48,11 @@ const Project = styled.div`
 `
 
 function Header() {
+
+
   return (
     <Container>
-      <Logo src = {LogoS}/>
+      <Logo src = {LogoS} onClick = {() => window.location.reload()} />
       <ProjectContainer>
         <Now>
           NOW

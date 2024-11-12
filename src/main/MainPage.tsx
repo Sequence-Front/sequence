@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import Header from './page/MainPageHeader';
 import Sequence from './page/Sequence';
 import About from './page/About';
 import Partner from './page/Partner';
 import Experience from './page/Experience';
 import WhoMade from './page/WhoMade';
 import Benefit from './page/Benefit';
+import Header from '../main/page/MainPageHeader';
+
 
 const Container = styled.div`
     background-color: #151515;
@@ -23,9 +24,11 @@ const Blank = styled.div`
 `;
 
 function MainPage() {
+
+
   return (
     <Container>
-        <Header/>
+        <Header />
         <Blank style={{height : '200px'}}/>
         <Sequence/>
         <Blank/>
