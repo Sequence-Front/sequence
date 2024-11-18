@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const HistoryContainer = styled.div`
-  width: 75%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: clamp(80px, 6vw, 100px);
@@ -167,7 +167,7 @@ type HistoryItemType = {
   };
 
 const PersonalHistory = () => {
-  const [historyData, setHistoryData] = useState<HistoryDataType>(dummyData);
+  const [historyData, ] = useState<HistoryDataType>(dummyData);
 
   return (
     <HistoryContainer>

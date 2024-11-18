@@ -5,6 +5,9 @@ import Header from '../asset/component/Header';
 import Profile from './component/ProfileHeader';
 import PersonalHistory from './component/PersonalHistory';
 import Portfolio from './component/Portfolio';
+import MemberEvaluation from './page/MemberEvaluation';
+import MyActivity from './page/MyActivity';
+
 export const Container = styled.div`
   width: 100%;
   display: flex;
@@ -25,9 +28,13 @@ const MyPage = () => {
         <>
             <Header headerName="MyPage" />
             <Container>
-                <Profile />
-                <PersonalHistory />
-                <Portfolio />
+              <div style = {{width:'75%'}}>
+              <Profile />
+              <Portfolio />
+              <MemberEvaluation />
+              <PersonalHistory />
+              <MyActivity />
+              </div>
             </Container>
         </>
     );
