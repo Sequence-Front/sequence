@@ -1,10 +1,10 @@
-// 2024-11-17 승균 작성
+// 2024-11-18 18:09 승균 작성
 import React from 'react';
 import styled from 'styled-components';
 import Header from '../asset/component/Header';
 import Profile from './component/ProfileHeader';
-import PersonalHistory from './component/PersonalHistory';
-import Portfolio from './component/Portfolio';
+import PersonalHistory from './page/PersonalHistory';
+import Portfolio from './page/Portfolio';
 import MemberEvaluation from './page/MemberEvaluation';
 import MyActivity from './page/MyActivity';
 

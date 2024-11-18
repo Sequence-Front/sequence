@@ -1,3 +1,4 @@
+// 2024-11-18 18:09 승균 작성
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { CiBookmark } from "react-icons/ci";
@@ -10,7 +11,7 @@ const ProfileContainer = styled.div`
   min-height: clamp(250px, 30vw, 400px);
   margin-bottom: 60px;
   
-  @media (max-width: 768px) {
+  @media (max-width: 1000px) {
     flex-direction: column;
     align-items: center;
     height: auto;
