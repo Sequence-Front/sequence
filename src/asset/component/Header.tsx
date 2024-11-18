@@ -50,6 +50,7 @@ const MainLogoStyle = styled.img`
   width: clamp(2rem, 5vw, 6rem);
   height: clamp(2.6rem, 6.4vw, 7rem);
   color : white;
+  cursor: pointer;
 `
 
 const ProjectContainer = styled.div`
@@ -100,7 +101,7 @@ function Header({ headerName, isMain = false }: { headerName: string; isMain?: b
     onMouseLeave={() => setShowSidebar(false)}>
     <Container>
     {isMain ? (
-          <MainLogoStyle src={MainLogo} alt="Main Logo" />
+          <MainLogoStyle onClick = {() => window.location.reload()} src={MainLogo} alt="Main Logo" />
         ) : (
           <TitleContainer onClick = {()=>navigate('/')}>
             <Logo src={LogoS} />
@@ -113,7 +114,7 @@ function Header({ headerName, isMain = false }: { headerName: string; isMain?: b
       </ProjectContainer>
     </Container>
     <SidebarContainer show={showSidebar}>
-        <Sidebar />
+        <Sidebar isMain = {isMain} />
     </SidebarContainer>
     </div>
   );

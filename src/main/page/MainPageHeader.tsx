@@ -49,7 +49,6 @@ const Project = styled.div`
 
 function Header() {
 
-
   return (
     <Container>
       <Logo src = {LogoS} onClick = {() => window.location.reload()} />

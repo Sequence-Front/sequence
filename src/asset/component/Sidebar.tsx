@@ -64,7 +64,7 @@ const RightComponents = styled.button`
   cursor: pointer;
 `
 
-const Sidebar = () => {
+const Sidebar = ({isMain = false}: {isMain?: boolean}) => {
     const [isLoggedIn, ] = useState(false);
     const navigate = useNavigate(); 
 
@@ -77,7 +77,9 @@ const Sidebar = () => {
             style={{marginLeft: 'clamp(2rem, 2vw, 7rem)'}}
             onClick={()=> navigate('/')}
             >
-            Back To Home</Components>
+
+              {isMain ? '' : 'Back To Home'}
+              </Components>
             </LeftContianer>
             <RightSide>
                 <RightContainer1>
