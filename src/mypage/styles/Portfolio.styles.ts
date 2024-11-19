@@ -5,7 +5,6 @@ export const PortfolioContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: clamp(20px, 2vw, 24px);
-  margin-top: clamp(40px, 4vw, 60px);
   
   @media (max-width: 1200px) {
     grid-template-columns: repeat(2, 1fr);

@@ -6,7 +6,6 @@ export const HistoryContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: clamp(80px, 6vw, 100px);
-  margin-top: clamp(40px, 4vw, 60px);
   overflow-x: hidden;
   
   @media (max-width: 768px) {
