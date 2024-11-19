@@ -1,4 +1,5 @@
 //11-19 준용 작성
+// 내 활동 컴포넌트
 import React from 'react';
 import styled from 'styled-components';
 
