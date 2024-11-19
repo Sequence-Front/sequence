@@ -2,11 +2,10 @@
 import styled from 'styled-components';
 
 export const HistoryContainer = styled.div`
-  width: 75%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: clamp(80px, 6vw, 100px);
-  margin-top: clamp(40px, 4vw, 60px);
   overflow-x: hidden;
   
   @media (max-width: 768px) {
