@@ -44,27 +44,28 @@ const TopInfo = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 20px;
+  margin-bottom: 0.5rem;
 `;
 
 const Name = styled.div`
-  font-size: clamp(24px, 3vw, 36px);
+  font-size: clamp(1rem, 2.2vw, 3rem);
   font-weight: bold;
   margin: 0;
 `;
 
 const Birth = styled.p`
   color: #ffffff;
-  margin: clamp(5px, 1vw, 10px) 0;
+  margin: clamp(5px, 0.5vw, 0.5rem) 0;
   font-size: clamp(20px, 1.5vw, 22px);
   font-weight: bold;
 `;
 
 const Introduction = styled.p`
   color: #ffffff;
-  margin: clamp(5px, 1vw, 10px) 0;
+  margin: clamp(5px, 0.5vw, 0.5rem) 0;
   font-size: clamp(14px, 1.5vw, 18px);
   font-weight: bold;
+  white-space: nowrap;
 `;
 
 const IconContainer = styled.div`
@@ -93,41 +94,55 @@ const SkillsContainer = styled.div`
 const SkillTag = styled.div`
   background-color: transparent;
   border: 1px solid #D9D9D9;
-  width: clamp(85px, 15vw, 30px);
-  height: clamp(35px, 4vw, 30px);
+  width: clamp(30px, 3vw, 85px);
+  height: clamp(30px, 2vw, 2rem);
   border-radius: 25px;
-  font-size: clamp(16px, 1.2vw, 18px);
+  font-size: clamp(10px, 1.2vw, 18px);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 clamp(10px, 1vw, 15px);
+  padding: 0 clamp(0.5rem, 2vw, 2rem);
+
+  @media (max-width: 1000px) {
+    width: 5rem;
+    height: clamp(2rem, 3vw, 2.5rem);
+    font-size: clamp(1rem, 1.2vw, 18px);
+  }
+
 `;
 
 const BadgesContainer = styled.div`
   display: flex;
-  gap: clamp(15px, 1.5vw, 20px);
-  flex-wrap: wrap;
-`;
+  flex:1;
+`
 
 const Badge = styled.div`
-  width: clamp(40px, 4vw, 50px);
-  height: clamp(40px, 4vw, 50px);
+  display: flex;
+  width: clamp(1rem, 2.5vw, 2.5rem);
+  height: clamp(1rem, 2.5vw, 2.5rem);
+  margin: 0.5rem clamp(0.2rem, 0.5vw, 0.5rem);
   background-color: #D9D9D9;
   border-radius: 50%;
-  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: clamp(20px, 2vw, 24px);
+  font-size: clamp(0.8rem, 1.5vw, 1.5rem);
+
+  @media (max-width: 1000px) {
+    width: clamp(2rem, 3vw, 2.5rem);
+    height: clamp(2rem, 3vw, 2.5rem);
+    font-size: clamp(1.3rem, 1.5vw, 1.5rem);
+  }
+
 `;
 
 const Hope = styled.p`
   background-color: transparent;
   border: 1px solid #D9D9D9;
   border-radius: 25px;
-  font-size: clamp(14px, 1.2vw, 16px);
+  font-size: clamp(0.5rem, 1vw, 2rem);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -135,19 +150,26 @@ const Hope = styled.p`
   align-items: center;
   justify-content: center;
   padding: clamp(3px, 0.5vw, 5px) clamp(10px, 0.5vw, 20px);
+
+  @media (max-width: 1000px) {
+    display: flex;
+    height: clamp(2rem, 3vw, 2.5rem);
+    font-size: clamp(1rem, 1.2vw, 18px);
+  }
 `;
 
 const Section = styled.div`
-  background-color: #212121;
-  padding: clamp(15px, 2vw, 25px);
   display: flex;
+  flex:1;
+  background-color: #212121;
   flex-direction: column;
-  gap: clamp(15px, 2vw, 20px);
-  margin-top: auto;
+  padding: clamp(0.5rem, 1.5vw, 1.5rem);
+  justify-content: space-between;
   
   @media (max-width: 768px) {
     margin-top: 20px;
   }
+  
 `;
 
 const SectionContent = styled.div`
@@ -156,6 +178,10 @@ const SectionContent = styled.div`
   align-items: flex-start;
   font-weight: bold;
   font-size: clamp(18px, 1.2vw, 20px);
+
+  @media (max-width: 1000px) {
+    margin-top: 10px;
+  }
 `;
 
 const SectionTitle = styled.div`
@@ -163,6 +189,10 @@ const SectionTitle = styled.div`
   font-size: clamp(14px, 1.2vw, 16px);
   min-width: clamp(80px, 10vw, 100px);
   font-weight: bold;
+
+  @media (max-width: 1000px) {
+    font-size: 1rem;
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -174,6 +204,11 @@ const HopeContainer = styled.div`
   align-items: center;
   flex-wrap: wrap;
   gap: clamp(8px, 1vw, 12px);
+  font-size: clamp(1rem, 1.4vw, 1.4rem);
+  @media (max-width: 1000px) {
+    font-size: 1.25rem;
+  }
+  
 `;
 
 const dummyData = {
