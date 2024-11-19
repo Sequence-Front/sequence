@@ -1,3 +1,5 @@
+// 11-19 1909 정준용
+
 import React from 'react';
 import styled from 'styled-components';
 
@@ -27,44 +29,45 @@ const BarWrapper = styled.div`
   background-color: #212121;
   justify-content: space-between;
   overflow: hidden;
-  margin-bottom: 0.8rem;
+  margin-bottom: clamp(0.5rem, 1.5vw, 0.8rem);
 `
 
 const BarFill = styled.div<{ width: number }>`
   display: flex;
-  width: ${(props) => props.width}%;
+  width: ${(props) => props.width}%; 
   background-color: #616161;
   align-items: center;
-  padding: 0.3rem;
+  padding: clamp(0.2rem, 0.8vw, 0.3rem);
   color: #ffffff;
-  font-size: 1rem;
+  font-size: clamp(0.8rem, 1.5vw, 1rem); 
   font-weight: bold;
   white-space: nowrap;
 `
 
 const ProfileImage = styled.img`
   display: flex;
-  width: 2rem;
-  height: 2rem;
+  width: clamp(1.5rem, 3vw, 2rem);
+  height: clamp(1.5rem, 3vw, 2rem);
   border-radius: 50%;
-  margin-left: 1rem;
-  margin-right: 2rem;
+  margin-left: clamp(0.5rem, 1.5vw, 1rem); 
+  margin-right: clamp(1rem, 3vw, 2rem); 
 `
 
 const BarValue = styled.div`
   display: flex;
   color: #ff9393;
-  font-size: 1.4rem;
+  font-size: clamp(1rem, 2vw, 1.4rem);
   font-weight: bold;
-  margin-right: 1rem;
+  margin-right: clamp(0.5rem, 2vw, 1rem);
 `
 
 export const GrayBar = styled.div`
   width: 100%;
-  height: 1.5rem;
+  height: clamp(1rem, 2vw, 1.5rem);
   background: linear-gradient(to bottom, #212121, #21212100);
-  margin: 0.5rem auto;
+  margin: clamp(0.3rem, 1vw, 0.5rem) auto;
 `
+
 
 
 export const MemberSummaryComponent = ({item, maxValue}: EvaluationBarProps) => {
