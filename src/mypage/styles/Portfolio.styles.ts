@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const PortfolioContainer = styled.div`
-  width: 90%;
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: clamp(20px, 2vw, 24px);

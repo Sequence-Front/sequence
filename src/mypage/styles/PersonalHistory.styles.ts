@@ -2,7 +2,7 @@
 import styled from 'styled-components';
 
 export const HistoryContainer = styled.div`
-  width: 75%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: clamp(80px, 6vw, 100px);
