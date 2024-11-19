@@ -11,23 +11,18 @@ const dummyData: PostProps[] = [
   { id: 5, status: '모집 완료', title: '성장과 도전! 공모전에서 함께 할 팀원을 구합니다.', date: '24.08.08.', comments: 24 },
 ];
 
-const Container = styled.div`
-  width: 100%;
-  color: #fff;
-  font-family: 'Noto Sans';
-`
-
 const Section = styled.div`
-  margin-bottom: 40px;
+  margin-bottom: clamp(2rem, 5vw, 3rem); /* 반응형 margin-bottom */
 `
 
 const Header = styled.div`
   display: flex;
-  margin-bottom: 2rem;
-  font-size: 1.2rem;
+  margin-bottom: clamp(1.5rem, 4vw, 2rem); 
+  font-size: clamp(1rem, 2.5vw, 2rem); 
   font-weight: bold;
   align-items: center;
-  gap: 1.5rem;
+  gap: clamp(1rem, 3vw, 1.5rem); 
+  
   &:after {
     content: '';
     flex: 1;
@@ -36,29 +31,35 @@ const Header = styled.div`
   }
 `
 
+const Container = styled.div`
+  width: 100%;
+  color: #fff;
+  font-family: 'Noto Sans';
+`
+
 const PostListContainer = styled.div`
   display: flex;
   flex-direction: column;
-  
 `
 
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 1.5rem;
+  margin-top: clamp(1rem, 3vw, 1.5rem);
 `
 
 const Button = styled.button`
   display: flex;
   align-items: center;
-  gap: 2rem;
-  padding: 0.6rem 1.2rem;
+  margin-top: clamp(0.5rem, 1vw, 1rem);
+  gap: clamp(1rem, 2.5vw, 2rem); 
+  padding: clamp(0.4rem, 1vw, 0.6rem) clamp(0.8rem, 2vw, 1.2rem); 
   background-color: transparent;
   color: #ff0000;
   border: 2px solid #ff0000;
-  font-size: 1rem;
+  font-size: clamp(1rem, 1.2vw, 1.8rem); 
+  font-weight: bold;
   cursor: pointer;
-  transition: all 0.3s;
 
   &:hover {
     background-color: #ff0000;

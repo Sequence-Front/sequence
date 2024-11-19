@@ -1,4 +1,5 @@
 // 2024-11-18 18:09 승균 작성
+// 2024-11-19 18:47 준용 작성
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import Header from '../asset/component/Header';
@@ -8,7 +9,7 @@ import Portfolio from './page/Portfolio';
 import MemberEvaluation from './page/MemberEvaluation';
 import MyActivity from './page/MyActivity';
 
-export const Container = styled.div`
+const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -18,16 +19,13 @@ export const Container = styled.div`
   color: #fff;
   padding-top: 120px;
   
-  @media (max-width: 768px) {
-    padding-top: 100px;
-  }
 `
 
 const TabContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 90%;
-  margin-bottom: 5rem;
+  margin-bottom: clamp(3rem, 5vw, 5rem);
 `
 
 interface TabButtonProps {
@@ -36,18 +34,15 @@ interface TabButtonProps {
 
 const TabButton = styled.button<TabButtonProps>`
   flex: 1;
-  padding: 10px 0;
+  padding: clamp(0.3rem, 2vw, 1.5rem);
+  margin-top: clamp(0.5rem, 2vw, 2rem);
   border: none;
   background-color: ${({ isActive }) => (isActive ? '#E32929' : '#151515')};
   color: #F5F5F5;
   cursor: pointer;
   border: 1px solid ${({isActive}) => (isActive? '#E32929': '#9E9E9E')};
-  font-size: 16px;
+  font-size: clamp(0.6rem, 2vw, 1.3rem);
   font-family: 'Noto Sans';
-
-  &:not(:last-child) {
-    border-right: 1px solid #333;
-  }
 
   &:hover {
     background-color: ${({ isActive }) => (isActive ? '#E32929' : '#151515')};
