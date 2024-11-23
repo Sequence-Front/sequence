@@ -1,3 +1,6 @@
+// 11-19 19:50 준용 완료
+//내활동 모음집
+// API: 포스트아이디, status, title, date, comments개수
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { MyActivityPost, PostProps} from '../component/MyActivityPost';
@@ -11,8 +14,16 @@ const dummyData: PostProps[] = [
   { id: 5, status: '모집 완료', title: '성장과 도전! 공모전에서 함께 할 팀원을 구합니다.', date: '24.08.08.', comments: 24 },
 ];
 
+const dummyData2: PostProps[] = [
+  { id: 1, status: '모집 중', title: '성장과 도전! 공모전에서 함께 할 팀원을 구합니다.', date: '24.08.08.', comments: 24 },
+  { id: 2, status: '모집 완료', title: '성장과 도전! 공모전에서 함께 할 팀원을 구합니다.', date: '24.08.08.', comments: 12 },
+  { id: 3, status: '모집 완료', title: '성장과 도전! 공모전에서 함께 할 팀원을 구합니다.', date: '24.08.08.', comments: 24 },
+  { id: 4, status: '모집 중', title: '성장과 도전! 공모전에서 함께 할 팀원을 구합니다.', date: '24.08.08.', comments: 12 },
+  { id: 5, status: '모집 완료', title: '성장과 도전! 공모전에서 함께 할 팀원을 구합니다.', date: '24.08.08.', comments: 24 },
+];
+
 const Section = styled.div`
-  margin-bottom: clamp(2rem, 5vw, 3rem); /* 반응형 margin-bottom */
+  margin-bottom: clamp(2rem, 5vw, 3rem); 
 `
 
 const Header = styled.div`
@@ -69,10 +80,16 @@ const Button = styled.button`
 
 const MyActivity = () => {
   const [showAll, setShowAll] = useState<boolean>(false);
+  const [BookshowAll, setBookShowAll] = useState<boolean>(false);
 
   const handleToggle = () => {
     setShowAll((prev) => !prev);
   };
+  
+  const handleBookToggle = () => {
+    setBookShowAll((prev) => !prev);
+  };
+  
 
   const sortedData = [...dummyData].sort((a, b) => {
     if (a.status === '모집 중' && b.status === '모집 완료') return -1;
@@ -80,7 +97,14 @@ const MyActivity = () => {
     return 0;
   });
 
+  const sortedBookData = [...dummyData2].sort((a, b) => {
+    if (a.status === '모집 중' && b.status === '모집 완료') return -1;
+    if (a.status === '모집 완료' && b.status === '모집 중') return 1;
+    return 0;
+  });
+
   const visibleData = showAll ? sortedData : sortedData.slice(0, 3);
+  const visibleBookData = BookshowAll ? sortedBookData : sortedBookData.slice(0, 3);
 
   return (
     <Container>
@@ -108,7 +132,7 @@ const MyActivity = () => {
       <Section>
         <Header>북마크한 글</Header>
         <PostListContainer>
-          {visibleData.map((post) => (
+          {visibleBookData.map((post) => (
             <MyActivityPost
               key={post.id}
               id={post.id}
@@ -120,8 +144,8 @@ const MyActivity = () => {
           ))}
         </PostListContainer>
         <ButtonWrapper>
-          <Button onClick={handleToggle}>
-            {showAll ? '접기' : '더보기'} <div>→</div>
+          <Button onClick={handleBookToggle}>
+            {BookshowAll ? '접기' : '더보기'} <div>→</div>
           </Button>
         </ButtonWrapper>
       </Section>
