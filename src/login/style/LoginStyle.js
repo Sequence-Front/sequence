@@ -53,10 +53,16 @@ export const InputField = styled.input`
   box-sizing: border-box;
   max-width: 560px;
   margin: 10px auto;
+  transition: all 0.3s ease;
   
   &::placeholder {
     color: #757575;
     text-align: center;
+  }
+
+  &:focus {
+    outline: 2px solid #757575;
+    box-shadow: 0 0 10px rgba(117, 117, 117, 0.5);
   }
 `;
 

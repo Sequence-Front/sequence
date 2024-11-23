@@ -9,6 +9,8 @@ import Archivelist from './archive/archivelist/ArchiveList';
 import ProjectRegistration from './archive/projectregistration/ProjectRegistration';
 import MyPage from './mypage/MyPage';
 import Register from './register/Register';
+import FindIdPage from './login/page/FindIdPage';
+import FindPasswordPage from './login/page/FindPasswordPage';
 
 const AppRouter = () => {
   return (
@@ -16,6 +18,8 @@ const AppRouter = () => {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<LoginPage />} />    
+        <Route path="/findId" element={<FindIdPage />} />
+        <Route path="/findPassword" element={<FindPasswordPage />} />
         <Route path="/announcement" element={<AnnouncementList />} />
         <Route path="/announcement/1" element={<AnnouncementDetail />} />
         <Route path="/archive" element={<Archivelist />} />

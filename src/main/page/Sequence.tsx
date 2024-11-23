@@ -97,7 +97,7 @@ function Sequence(){
                   <Logo src={LogoS}/>
                   <Title>equence</Title>
                 </TitleContainer>
-                <Img src={runningimg}/>
+                <Img rel="preload" src={runningimg}/>
             </SequenceContainer>
             <Content>새로운 이야기를 만들다. 시퀀스</Content>
             <Button onClick={() => navigate('/archive/registration')}>프로젝트 올리고 새로운 이야기를 만들어보세요!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
