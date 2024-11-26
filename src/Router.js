@@ -9,6 +9,7 @@ import Archivelist from './archive/archivelist/ArchiveList';
 import ProjectRegistration from './archive/projectregistration/ProjectRegistration';
 import MyPage from './mypage/MyPage';
 import Register from './register/Register';
+import SignUp2 from './signup2/SignUp2';
 import FindIdPage from './login/page/FindIdPage';
 import FindPasswordPage from './login/page/FindPasswordPage';
 import SignUpPage from './signup/SignUpPage';
@@ -29,6 +30,7 @@ const AppRouter = () => {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/header" element={<Header />} />
+        <Route path="/signup2" element={<SignUp2 />} />
       </Routes>
     </Router> 
   );
