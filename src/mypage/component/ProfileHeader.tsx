@@ -6,7 +6,7 @@ import { PiSirenThin } from "react-icons/pi";
 
 const ProfileContainer = styled.div`
   display: flex;
-  width: 75%;
+  width: 100%;
   gap: clamp(20px, 3vw, 40px);
   min-height: clamp(250px, 30vw, 400px);
   margin-bottom: 60px;
@@ -48,14 +48,12 @@ const TopInfo = styled.div`
 `;
 
 const Name = styled.div`
-  font-size: clamp(1rem, 2.2vw, 3rem);
+  font-size: clamp(2rem, 2.2vw, 3rem);
   font-weight: bold;
-  margin: 0;
 `;
 
 const Birth = styled.p`
   color: #ffffff;
-  margin: clamp(5px, 0.5vw, 0.5rem) 0;
   font-size: clamp(20px, 1.5vw, 22px);
   font-weight: bold;
 `;
@@ -248,7 +246,7 @@ const Profile = () => {
       <InfoSection>
         <TopInfo>
           <div>
-            <div style={{display: "flex", gap: "20px"}}>
+            <div style={{display: "flex", gap: "20px", alignItems: "center"}}>
               <Name>{userData.name}</Name>
               <Birth>{userData.birth}</Birth>
             </div>
