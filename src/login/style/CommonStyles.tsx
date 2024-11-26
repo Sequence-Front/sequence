@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+interface ContentWrapperProps {
+  showResult?: boolean;
+}
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -9,16 +13,22 @@ export const Container = styled.div`
 `;
 
 export const Title = styled.h1`
-  font-size: clamp(2.5rem, 3vw, 3.5rem);
+  font-size: clamp(3rem, 3.5vw, 4rem);
   margin-bottom: clamp(4rem, 6vw, 8rem);
   color: #FFFFFF;
 `;
 
-export const ContentWrapper = styled.div`
+export const ContentWrapper = styled.div<ContentWrapperProps>`
   display: grid;
   grid-template-columns: 150px 1fr;
   gap: clamp(1.5rem, 3vw, 2.5rem);
   width: 70%;
+
+  ${props => props.showResult && `
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  `}
 `;
 
 export const CategoryTitle = styled.div`
@@ -70,5 +80,41 @@ export const Input = styled.input`
 export const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
+  width: 100%;
   margin-top: clamp(5rem, 4vw, 10rem);
 `; 
+
+
+export const Result = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+`;
+
+export const ResultContainer = styled.div`
+  border: 1px solid #9E9E9E;
+  min-width: 300px;
+  padding: 3rem;
+  margin-top: 2rem;
+  margin-bottom: 5rem;
+  text-align: center;
+`;
+
+export const ResultText = styled.div`
+  color: #FFFFFF;
+  font-size: clamp(2rem, 1.5vw, 3rem);
+  margin-bottom: 1rem;
+`;
+
+export const IdText = styled.div`
+  font-size: clamp(1.5rem, 1.5vw, 2rem);
+  color: #FFFFFF;
+`;
+
+export const FormContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;

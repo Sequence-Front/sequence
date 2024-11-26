@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import LogoImage from '../asset/image/LoginLogo.png';
 
 import { FaArrowRight } from "react-icons/fa6";
@@ -28,6 +29,8 @@ const LoginPage: React.FC = () => {
     userId: '',
     password: ''
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -89,7 +92,7 @@ const LoginPage: React.FC = () => {
             </Link>
           </LinkWrapper>
           <LoginButton type="submit">로그인</LoginButton>
-          <SignUpButton type="button">
+          <SignUpButton type="button" onClick={() => navigate('/signup')}>
             회원가입하기 <FaArrowRight />
           </SignUpButton>
         </LoginForm>
