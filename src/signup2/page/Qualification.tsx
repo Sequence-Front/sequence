@@ -1,3 +1,4 @@
+//2024-11-28 02:20 정준용완성
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { SlArrowDown } from "react-icons/sl";
@@ -5,7 +6,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 
 const Container = styled.div`
   display: flex;
-  background-color: #121212;
+  background-color: #151515;
   color: white;
   width: 100%;
   flex-direction: column;
@@ -37,7 +38,7 @@ const DropdownButton = styled.div`
   font-size: clamp(10px, 1.2vw, 1.3rem);
   padding: 10px;
   padding-left: 0;
-  background: #121212;
+  background: #151515;
   color: #e32929;
   border: none;
   cursor: pointer;
@@ -75,7 +76,7 @@ const DropdownList = styled.ul`
 const Input = styled.input`
   display: flex;
   flex:1;
-  background: #121212;
+  background: #151515;
   padding: clamp(0.5rem, 1vw, 15px);
   font-size: clamp(10px, 1.2vw, 1.3rem);
   color: white;
@@ -116,7 +117,7 @@ const DateInputs = styled.div`
 const DateInput = styled.input`
   display: flex;
   width: clamp(0.5rem, 1.3vw, 1.4rem);
-  background: #121212;
+  background: #151515;
   color: white;
   border: none;
   font-size: clamp(10px, 1.2vw, 1.3rem);
@@ -141,7 +142,7 @@ const Dash = styled.div`
 const TextArea = styled.textarea`
   display: flex;
   width: 100%;
-  background: #121212;
+  background: #151515;
   color: white;
   border: none;
   border-bottom: 1px solid #757575;

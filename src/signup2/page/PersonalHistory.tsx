@@ -1,10 +1,11 @@
+//2024-11-28 02:20 완성
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { AiOutlinePlus } from "react-icons/ai";
 
 const Container = styled.div`
   display: flex;
-  background-color: #121212;
+  background-color: #151515;
   color: white;
   width: 100%;
   flex-direction: column;
@@ -19,7 +20,7 @@ const ContentContainer = styled.div`
 const Input = styled.input`
   display: flex;
   width: 55%;
-  background: #121212;
+  background: #151515;
   padding: clamp(0.5rem, 1.2vw, 15px);
   padding-left: 0;
   font-size: clamp(10px, 1.2vw, 1.3rem);
@@ -63,7 +64,7 @@ const DateInputs = styled.div`
 const DateInput = styled.input`
   display: flex;
   width: clamp(0.5rem, 1.3vw, 1.4rem);
-  background: #121212;
+  background: #151515;
   color: white;
   border: none;
   font-size: clamp(10px, 1.2vw, 1.3rem);
@@ -88,7 +89,7 @@ const Dash = styled.div`
 const TextArea = styled.textarea`
   display: flex;
   width: 100%;
-  background: #121212;
+  background: #151515;
   color: white;
   border: none;
   border-bottom: 1px solid #757575;

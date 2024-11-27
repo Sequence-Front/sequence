@@ -1,10 +1,11 @@
+//2024-11-28 02:20 정준용완성
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #121212;
+  background-color: #151515;
   color: white;
   width: 100%;
 `

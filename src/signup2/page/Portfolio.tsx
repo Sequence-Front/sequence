@@ -1,3 +1,4 @@
+//2024-11-28 02:20 정준용완성
 import React, { useState } from "react";
 import styled from "styled-components";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -6,7 +7,7 @@ import { BsUpload } from "react-icons/bs";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #121212;
+  background-color: #151515;
   color: white;
   width: 100%;
   gap: 20px;

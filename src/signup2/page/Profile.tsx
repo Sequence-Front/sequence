@@ -1,10 +1,11 @@
+//2024-11-28 02:20 완성
 import React, { useState } from "react";
 import styled from "styled-components";
 import { AiOutlinePlus } from "react-icons/ai";
 import { IoCheckmark } from "react-icons/io5";
 
 const Container = styled.div`
-  background-color: #121212;
+  background-color: #151515;
   color: white;
   width: 100%;
   display: flex;
@@ -79,7 +80,7 @@ const Input = styled.input`
   flex: 1;
   padding-bottom: 15px;
   padding-right: 40px;
-  background: #121212;
+  background: #151515;
   color: white;
   border: none;
   border-bottom: 1px solid #616161;
