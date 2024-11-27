@@ -13,6 +13,7 @@ import SignUp2 from './signup2/SignUp2';
 import FindIdPage from './login/page/FindIdPage';
 import FindPasswordPage from './login/page/FindPasswordPage';
 import SignUpPage from './signup/SignUpPage';
+import SignUpComplete from './signup2/SignUpComplete';
 
 const AppRouter = () => {
   return (
@@ -23,6 +24,8 @@ const AppRouter = () => {
         <Route path="/findId" element={<FindIdPage />} />
         <Route path="/findPassword" element={<FindPasswordPage />} />
         <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/signup2" element={<SignUp2 />} />
+        <Route path="/signup3" element={<SignUpComplete />} />
         <Route path="/announcement" element={<AnnouncementList />} />
         <Route path="/announcement/1" element={<AnnouncementDetail />} />
         <Route path="/archive" element={<Archivelist />} />
@@ -30,7 +33,6 @@ const AppRouter = () => {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/header" element={<Header />} />
-        <Route path="/signup2" element={<SignUp2 />} />
       </Routes>
     </Router> 
   );

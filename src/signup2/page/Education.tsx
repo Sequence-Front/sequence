@@ -1,10 +1,11 @@
+//2024-11-28 02:20 정준용완성
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { CiSearch } from "react-icons/ci";
 import { SlArrowDown } from "react-icons/sl";
 
 const Container = styled.div`
-  background-color: #121212;
+  background-color: #151515;
   color: white;
   width: 100%;
 `
@@ -31,7 +32,7 @@ const Input = styled.input`
   padding: clamp(0.5rem, 1vw, 15px);
   font-size: clamp(10px, 1vw, 1.3rem);
   padding-left: 0;
-  background: #121212;
+  background: #151515;
   color: white;
   border: none;
   border-bottom: 1px solid #616161;
@@ -96,7 +97,7 @@ const DropdownButton = styled.div`
   font-size: clamp(10px, 1vw, 1.3rem);
   padding: clamp(0.5rem, 1vw, 15px);
   padding-left: 0;
-  background: #121212;
+  background: #151515;
   color: #9e9e9e;
   border: none;
   border-bottom: 1px solid #616161;

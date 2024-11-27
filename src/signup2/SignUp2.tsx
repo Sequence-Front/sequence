@@ -1,5 +1,7 @@
+//2024-11-28 02:20 정준용완성
 import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
+import Header from '../asset/component/Header';
 import Profile from "./page/Profile";
 import Education from "./page/Education";
 import Activity from "./page/Activity";
@@ -7,6 +9,11 @@ import PersonalHistory from "./page/PersonalHistory";
 import Qualification from "./page/Qualification";
 import Portfolio from "./page/Portfolio";
 import SelfIntroduction from "./page/SelfIntroduction";
+import { PageNumber } from "../signup/SignUpPage";
+import { Title as STitle } from "../signup/style/SignUpPageStyle";
+import { AiOutlineArrowLeft } from "react-icons/ai";
+import { useNavigate } from 'react-router-dom';
+
 
 const Container = styled.div`
   display: flex;
@@ -15,6 +22,26 @@ const Container = styled.div`
   color: white;
   padding: 20px;
   flex-direction: column;
+`
+
+const TitleContainer = styled.div`
+  display: flex;
+  position: relative;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem; 
+  
+`
+
+const Arrow = styled.div`
+  position: absolute;
+  left: 2rem; 
+  top: 50%; 
+  transform: translateY(-50%); 
+  color: #E32929;
+  font-size: clamp(3rem, 5vw, 5rem);
+  cursor: pointer;
 `
 
 const ContentContainer = styled.div`
@@ -71,9 +98,9 @@ const Tag = styled.button<{ selected: boolean }>`
   padding: clamp(5px, 1vw, 8px) clamp(8px, 1vw, 13px);
   margin: clamp(5px, 1vw, 7px);
   font-size: clamp(0.7rem, 1.2vw, 1.1rem);
-  background-color: ${(props) => (props.selected ? "red" : "#121212")};
+  background-color: ${(props) => (props.selected ? "red" : "#151515")};
   border: 1px solid ${(props) => (props.selected ? "red" : "white")};
-  color: ${(props) => (props.selected ? "#121212" : "white")};
+  color: ${(props) => (props.selected ? "#151515" : "white")};
   border-radius: 20px;
   cursor: pointer;
 
@@ -377,6 +404,7 @@ const SignUp = () => {
     console.log("자격 및 수상:", qualificationData);
     console.log("포트폴리오", portfolioData);
     console.log("자기소개", selfIntroduction);
+    navigate('/sign3')
   };
 
   const isValid =
@@ -387,8 +415,17 @@ const SignUp = () => {
     selectedSkills.length > 0 &&
     selectedRoles.length > 0;
 
+  const  navigate = useNavigate();
   return (
-    <div style={{ backgroundColor: "#121212" }}>
+    <div style={{ backgroundColor: "#151515" }}>
+      <Header headerName="SignUp" />
+      <TitleContainer>
+        <Arrow>
+          <AiOutlineArrowLeft  onClick = {()=>navigate('/signup')}/>
+        </Arrow>
+        <STitle>회원가입</STitle>
+        <PageNumber>2/2</PageNumber>
+      </TitleContainer>
       <Container>
         <ContentContainer>
           <Label>

@@ -21,7 +21,7 @@ import * as S from './style/SignUpPageStyle';
 import { SignUpInput } from './component/SignUpInput';
 import { BirthDateInput } from '../common/components/BirthDateInput';
 
-const PageNumber = styled.div`
+export const PageNumber = styled.div`
   font-size: clamp(1.5rem, 1.5vw, 2rem);
   color: #8f8f8f;
   margin-bottom: clamp(4rem, 6vw, 8rem);
