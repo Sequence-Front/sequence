@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import Profile from "./page/Profile";
 import Education from "./page/Education";
@@ -10,7 +10,7 @@ import SelfIntroduction from "./page/SelfIntroduction";
 
 const Container = styled.div`
   display: flex;
-  width: 80%;
+  width: 70%;
   margin: 0px auto;
   color: white;
   padding: 20px;
@@ -20,14 +20,14 @@ const Container = styled.div`
 const ContentContainer = styled.div`
   display: flex;
   align-items: flex-start;
-  margin-bottom: 3rem;
+  margin-bottom: clamp(2rem, 4vw, 5rem);
 `
 
 const Label = styled.div`
   display: flex;
-  width: 200px;
-  font-size: 1rem;
-  font-weight: bold;
+  flex-direction: column;
+  width: 30%;
+  font-size: clamp(1rem, 2vw, 1.7rem);
 
   span {
     align-self: center;
@@ -35,20 +35,29 @@ const Label = styled.div`
     color: red;
   }
 `
+const Title = styled.div`
+  display: flex;
+`
 
+const Description = styled.div`
+  display: flex;
+  font-size: clamp(0.7rem, 1.2vw, 1rem);
+  color: #9E9E9E;
+  margin-top: 5px;
+`
 const Content = styled.div`
   flex: 1;
 `
 
 const SignUpButton = styled.button<{ isActive: boolean }>`
   display: flex;
-  width: 20rem;
+  width: clamp(14rem, 20vw, 30rem);
   justify-content: center;
   align-self: center;
   background-color: ${(props) => (props.isActive ? "red" : "#212121")};
-  font-size: 1rem;
+  font-size: clamp(0.6rem, 1vw, 2rem);
   color: ${(props) => (props.isActive ? "white" : "#616161")};
-  padding: 10px 20px;
+  padding: clamp(6px, 1vw, 12px) clamp(12px, 2vw, 24px);
   border: none;
   cursor: ${(props) => (props.isActive ? "pointer" : "not-allowed")};
   &:hover {
@@ -59,8 +68,9 @@ const SignUpButton = styled.button<{ isActive: boolean }>`
 const Tag = styled.button<{ selected: boolean }>`
   all: unset;
   display: inline-block;
-  padding: 5px 10px;
-  margin: 5px;
+  padding: clamp(5px, 1vw, 8px) clamp(8px, 1vw, 13px);
+  margin: clamp(5px, 1vw, 7px);
+  font-size: clamp(0.7rem, 1.2vw, 1.1rem);
   background-color: ${(props) => (props.selected ? "red" : "#121212")};
   border: 1px solid ${(props) => (props.selected ? "red" : "white")};
   color: ${(props) => (props.selected ? "#121212" : "white")};
@@ -72,6 +82,12 @@ const Tag = styled.button<{ selected: boolean }>`
   }
 `
 
+const ErrorMessage = styled.div`
+  color: red;
+  font-size: clamp(0.8rem, 1.5vw, 1.2rem);
+  text-align: center;
+  margin-bottom: 20px;
+`
 
 const SignUp = () => {
   const [skills] = useState<string[]>([
@@ -98,8 +114,9 @@ const SignUp = () => {
     "PM",
   ]);
 
-  const [profileData, setProfileData] = useState<{ nickname: string; imageUrl: string | null }>({
+  const [profileData, setProfileData] = useState<{ nickname: string; imageUrl: string | null; duplicateCheck: boolean }>({
     nickname: "",
+    duplicateCheck: false,
     imageUrl: null,
   });
 
@@ -148,6 +165,7 @@ const SignUp = () => {
 
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleSkillClick = (skill: string) => {
     if (selectedSkills.includes(skill)) {
@@ -165,7 +183,7 @@ const SignUp = () => {
     }
   };
 
-  const handleProfileDataChange = (data: { nickname: string; imageUrl: string | null }) => {
+  const handleProfileDataChange = (data: { nickname: string; imageUrl: string | null; duplicateCheck: boolean }) => {
     setProfileData(data);
   };
 
@@ -224,7 +242,132 @@ const SignUp = () => {
     setSelfIntroduction(data);
   };
 
+  const validateInputs = useCallback(() => {
+    if (profileData.nickname.trim() === "") {
+      return "별명을 입력해주세요.";
+    }
+    if (!profileData.duplicateCheck) {
+      return "별명 중복확인이 필요합니다.";
+    }
+    if (profileData.imageUrl === null) {
+      return "프로필 사진을 업로드해주세요.";
+    }
+    if (educationData.schoolName.trim() === "") {
+      return "학교명을 입력해주세요.";
+    }
+    if (educationData.major.trim() === "") {
+      return "전공을 입력해주세요.";
+    }
+    if (selectedSkills.length === 0) {
+      return "스킬을 선택해주세요.";
+    }
+    if (selectedRoles.length === 0) {
+      return "희망 역할을 선택해주세요.";
+    }
+  
+    if (activityData.length === 0) {
+      return "";
+    }
+  
+    if (activityData.length > 0) {
+      for (const activity of activityData) {
+        const isPartiallyFilled =
+          activity.type.trim() !== "유형 선택" ||
+          activity.name.trim() !== "" ||
+          activity.startDate.some((date) => date.trim() !== "") ||
+          activity.endDate.some((date) => date.trim() !== "") ||
+          activity.description.trim() !== "";
+  
+        if (isPartiallyFilled) {
+          if (activity.type.trim() === "유형 선택") {
+            return "경험 및 활동이력의 유형을 선택해주세요.";
+          }
+          if (activity.name.trim() === "") {
+            return "경험 및 활동이력의 제목을 적어주세요.";
+          }
+          if (
+            activity.startDate.some((date) => date.trim() === "") ||
+            activity.endDate.some((date) => date.trim() === "")
+          ) {
+            return "경험 및 활동이력의 활동 기간을 적어주세요.";
+          }
+          if (activity.description.trim() === "") {
+            return "경험 및 활동이력의 경험 내용을 적어주세요.";
+          }
+        }
+      }
+    }
+  
+    if (personalHistoryData.length > 0) {
+      for (const personalHistory of personalHistoryData) {
+        const isPartiallyFilled =
+          personalHistory.name.trim() !== "" ||
+          personalHistory.startDate.some((date) => date.trim() !== "") ||
+          personalHistory.endDate.some((date) => date.trim() !== "") ||
+          personalHistory.description.trim() !== "";
+  
+        if (isPartiallyFilled) {
+          if (personalHistory.name.trim() === "") {
+            return "경력의 회사명을 적어주세요.";
+          }
+          if (
+            personalHistory.startDate.some((date) => date.trim() === "") ||
+            personalHistory.endDate.some((date) => date.trim() === "")
+          ) {
+            return "경력의 활동 기간을 적어주세요.";
+          }
+          if (personalHistory.description.trim() === "") {
+            return "경력의 근무 내용을 적어주세요.";
+          }
+        }
+      }
+    }
+  
+    if (qualificationData.length > 0) {
+      for (const qualification of qualificationData) {
+        const isPartiallyFilled =
+          qualification.type.trim() !== "유형 선택" ||
+          qualification.name.trim() !== "" ||
+          qualification.date.some((date) => date.trim() !== "") ||
+          qualification.description.trim() !== "";
+  
+        if (isPartiallyFilled) {
+          if (qualification.type.trim() === "유형 선택") {
+            return "자격 및 수상의 유형을 선택해주세요.";
+          }
+          if (qualification.name.trim() === "") {
+            return "자격 및 수상의 이름을 적어주세요.";
+          }
+          if (qualification.date.some((date) => date.trim() === "")) {
+            return "자격 및 수상의 취득 날짜를 적어주세요.";
+          }
+          if (qualification.description.trim() === "") {
+            return "자격 및 수상의 자격증 및 수상명을 적어주세요.";
+          }
+        }
+      }
+    }
+
+    for (const portfolio of portfolioData) {
+      if (portfolio.fileSize !== null && portfolio.fileSize > 50) {
+        return "포트폴리오 파일 크기는 50MB를 초과할 수 없습니다.";
+      }
+    }
+
+    return "";
+  }, [profileData, educationData, selectedSkills, selectedRoles, activityData, personalHistoryData, qualificationData, portfolioData]);
+  
+  useEffect(() => {
+    setErrorMessage(validateInputs());
+  }, [profileData, educationData, selectedSkills, selectedRoles, activityData, personalHistoryData, qualificationData, portfolioData, validateInputs]);
+  
+
   const handleSignUp = () => {
+    const validationError = validateInputs(); 
+    if (validationError) {
+      setErrorMessage(validationError); 
+      return; 
+    }
     console.log("프로필:", profileData);
     console.log("학력:", educationData);
     console.log("스킬:", selectedSkills);
@@ -249,7 +392,9 @@ const SignUp = () => {
       <Container>
         <ContentContainer>
           <Label>
+            <Title>
             프로필 사진<span>*</span>
+            </Title>
           </Label>
           <Content>
             <Profile onDataChange={handleProfileDataChange} />
@@ -257,7 +402,9 @@ const SignUp = () => {
         </ContentContainer>
         <ContentContainer>
           <Label>
+            <Title>
             학력<span>*</span>
+            </Title>
           </Label>
           <Content>
             <Education onDataChange={handleEducationDataChange} />
@@ -265,7 +412,10 @@ const SignUp = () => {
         </ContentContainer>
         <ContentContainer>
           <Label>
+            <Title>
             스킬<span>*</span>
+            </Title>
+            <Description>복수 선택</Description>
           </Label>
           <Content>
             {skills.map((skill) => (
@@ -281,7 +431,10 @@ const SignUp = () => {
         </ContentContainer>
         <ContentContainer>
           <Label>
+            <Title>
             희망 역할<span>*</span>
+            </Title>
+            <Description>복수 선택</Description>
           </Label>
           <Content>
             {roles.map((role) => (
@@ -325,6 +478,7 @@ const SignUp = () => {
           <SelfIntroduction onDataChange={handleSelfIntroductionChange} />
           </Content>
         </ContentContainer>
+        <ErrorMessage>{errorMessage}</ErrorMessage>
         <SignUpButton isActive={isValid} onClick={isValid ? handleSignUp : undefined}>
           회원가입
         </SignUpButton>

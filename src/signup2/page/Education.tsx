@@ -9,15 +9,18 @@ const Container = styled.div`
   width: 100%;
 `
 
-const Row = styled.div`
+const EducationContainer = styled.div`
   display: flex;
   gap: 20px;
   margin-bottom: 20px;
+  align-items: center;
 `
 
 const InputContainer = styled.div`
   display: flex;
+  width: 33%;
   align-items: center;
+  margin-bottom: clamp(5px, 1vw, 1rem);
   flex: 1;
   position: relative;
 `
@@ -25,13 +28,12 @@ const InputContainer = styled.div`
 const Input = styled.input`
   display: flex;
   flex: 1;
-  padding: 15px;
+  padding: clamp(0.5rem, 1vw, 15px);
+  font-size: clamp(10px, 1vw, 1.3rem);
   padding-left: 0;
   background: #121212;
   color: white;
   border: none;
-  font-size: 14px;
-  font-weight: bold;
   border-bottom: 1px solid #616161;
 
   &::placeholder {
@@ -53,34 +55,12 @@ const IconContainer = styled.div`
   color: #e32929;
   font-size: 30px;
   stroke-width: 0.5;
-`
-
-const Dropdown = styled.div`
-  position: relative;
-  flex: 1;
-`
-
-const DropdownButton = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 11px;
-  padding-left: 0;
-  background: #121212;
-  color: #9e9e9e;
-  border: none;
-  border-bottom: 1px solid #616161;
   cursor: pointer;
-
-  &:focus {
-    outline: none;
-    border-bottom: 1px solid #e0e0e0;
-  }
 `
 
 const DropdownList = styled.ul`
   position: absolute;
-  top: 100%;
+  top: calc(100% + 2px);
   left: 0;
   right: 0;
   margin-top: 2px;
@@ -90,6 +70,7 @@ const DropdownList = styled.ul`
   list-style: none;
   overflow-y: auto;
   z-index: 100;
+  max-height: 150px;
 
   & > li {
     padding: 10px 15px;
@@ -98,6 +79,33 @@ const DropdownList = styled.ul`
     &:hover {
       background: #141414;
     }
+  }
+`
+
+const Dropdown = styled.div`
+  position: relative;
+  flex: 1;
+  margin-bottom: clamp(5px, 1vw, 1rem);
+`
+
+const DropdownButton = styled.div`
+  display: flex;
+  align-items: center;
+  height: 100%;
+  justify-content: space-between;
+  font-size: clamp(10px, 1vw, 1.3rem);
+  padding: clamp(0.5rem, 1vw, 15px);
+  padding-left: 0;
+  background: #121212;
+  color: #9e9e9e;
+  border: none;
+  border-bottom: 1px solid #616161;
+  cursor: pointer;
+  line-height: normal;
+
+  &:focus {
+    outline: none;
+    border-bottom: 1px solid #e0e0e0;
   }
 `
 
@@ -112,7 +120,7 @@ export interface EducationProps {
   }) => void;
 }
 
-const Education = ({onDataChange}:EducationProps) => {
+const Education = ({ onDataChange }: EducationProps) => {
   const [schoolName, setSchoolName] = useState("");
   const [major, setMajor] = useState("");
   const [year, setYear] = useState("학년");
@@ -120,11 +128,21 @@ const Education = ({onDataChange}:EducationProps) => {
   const [endYear, setEndYear] = useState("");
   const [status, setStatus] = useState("학적상태");
 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isYearOpen, setIsYearOpen] = useState(false);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
 
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const yearRef = useRef<HTMLDivElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
+
+  const schoolOptions = ["홍익대학교", "홍익대학교(세종)"];
+
+  const handleSchoolSelect = (school: string) => {
+    setSchoolName(school);
+    setIsDropdownOpen(false);
+    handleUpdate({ schoolName: school });
+  };
 
   const handleSelectYear = (option: string) => {
     setYear(option);
@@ -138,7 +156,10 @@ const Education = ({onDataChange}:EducationProps) => {
     handleUpdate({ status: option });
   };
 
-  // 데이터 업데이트 핸들러
+  const handleSearchClick = () => {
+    setIsDropdownOpen((prev) => !prev);
+  };
+
   const handleUpdate = (updates: Partial<EducationProps["onDataChange"]>) => {
     onDataChange({
       schoolName,
@@ -147,11 +168,17 @@ const Education = ({onDataChange}:EducationProps) => {
       startYear,
       endYear,
       status,
-      ...updates, // 변경된 데이터만 덮어쓰기
+      ...updates,
     });
   };
 
   const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setIsDropdownOpen(false);
+    }
     if (
       yearRef.current &&
       !yearRef.current.contains(event.target as Node) &&
@@ -172,8 +199,8 @@ const Education = ({onDataChange}:EducationProps) => {
 
   return (
     <Container>
-      <Row>
-        <InputContainer>
+      <EducationContainer>
+        <InputContainer ref={dropdownRef}>
           <Input
             placeholder="학교명을 입력해주세요"
             value={schoolName}
@@ -182,9 +209,18 @@ const Education = ({onDataChange}:EducationProps) => {
               handleUpdate({ schoolName: e.target.value });
             }}
           />
-          <IconContainer>
-            <CiSearch />
+          <IconContainer onClick={handleSearchClick}>
+            <CiSearch style={{ fontSize: "clamp(1.5rem, 2vw , 2.4rem)" }} />
           </IconContainer>
+          {isDropdownOpen && (
+            <DropdownList>
+              {schoolOptions.map((school) => (
+                <li key={school} onClick={() => handleSchoolSelect(school)}>
+                  {school}
+                </li>
+              ))}
+            </DropdownList>
+          )}
         </InputContainer>
         <InputContainer>
           <Input
@@ -199,7 +235,6 @@ const Education = ({onDataChange}:EducationProps) => {
         <Dropdown ref={yearRef}>
           <DropdownButton onClick={() => setIsYearOpen((prev) => !prev)}>
             {year}
-            <SlArrowDown style={{ color: "red", fontSize: "1.5rem", strokeWidth: "1" }} />
           </DropdownButton>
           {isYearOpen && (
             <DropdownList>
@@ -210,9 +245,12 @@ const Education = ({onDataChange}:EducationProps) => {
               ))}
             </DropdownList>
           )}
+          <IconContainer>
+            <SlArrowDown style={{ color: "red", fontSize: "clamp(0.9rem, 2vw, 1.6rem)", strokeWidth: "1" }} />
+          </IconContainer>
         </Dropdown>
-      </Row>
-      <Row>
+      </EducationContainer>
+      <EducationContainer>
         <InputContainer>
           <Input
             placeholder="입학연도 ex) 2000"
@@ -238,7 +276,6 @@ const Education = ({onDataChange}:EducationProps) => {
         <Dropdown ref={statusRef}>
           <DropdownButton onClick={() => setIsStatusOpen((prev) => !prev)}>
             {status}
-            <SlArrowDown style={{ color: "red", fontSize: "1.5rem", strokeWidth: "1" }} />
           </DropdownButton>
           {isStatusOpen && (
             <DropdownList>
@@ -249,8 +286,11 @@ const Education = ({onDataChange}:EducationProps) => {
               ))}
             </DropdownList>
           )}
+          <IconContainer>
+            <SlArrowDown style={{ color: "red", fontSize: "clamp(0.9rem, 2vw, 1.6rem)", strokeWidth: "1" }} />
+          </IconContainer>
         </Dropdown>
-      </Row>
+      </EducationContainer>
     </Container>
   );
 };
