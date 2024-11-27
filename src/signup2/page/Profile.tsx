@@ -14,25 +14,25 @@ const Container = styled.div`
 const Title = styled.div`
   display: flex;
   align-self: flex-start;
-  margin-bottom: 6px;
+  margin-bottom: clamp(1rem, 2vw, 1.6rem);
   font-family: 'Noto Sans';
   font-weight: bold;
-  font-size: 1rem;
+  font-size: clamp(1rem, 2vw, 1.6rem);
 `
 
 const PhotoContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-right: 20px;
+  margin-right: clamp(1rem, 2vw, 2rem);
 `
 
 const PhotoPreview = styled.label<{ imageUrl: string | null }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 150px;
-  height: 150px;
+  width: clamp(10rem, 10vw, 20rem);
+  height: clamp(10rem, 10vw, 20rem);
   background-color: #1e1e1e;
   border: 1px dashed ${(props) => (props.imageUrl ? "transparent" : "none")};
   border-radius: 5px;
@@ -69,7 +69,7 @@ const InputContainer = styled.div`
 const InputField = styled.div`
   display: flex;
   flex: 1;
-  max-width: 70%;
+  max-width: 80%;
   margin-right: 1rem;
   align-items: center;
   position: relative;
@@ -77,13 +77,13 @@ const InputField = styled.div`
 
 const Input = styled.input`
   flex: 1;
-  padding-bottom: 5px;
+  padding-bottom: 15px;
   padding-right: 40px;
   background: #121212;
   color: white;
   border: none;
   border-bottom: 1px solid #616161;
-  font-size: 14px;
+  font-size: clamp(10px, 1vw, 1.3rem);
 
   &::placeholder {
     color: #9e9e9e;
@@ -99,9 +99,9 @@ const CharacterCount = styled.div`
   position: absolute;
   right: 10px;
   top: 50%;
-  padding-bottom: 5px;
+  padding-bottom: 18px;
   transform: translateY(-50%);
-  font-size: 14px;
+  font-size: clamp(10px, 1vw, 1.3rem);
   color: #9e9e9e;
 `
 
@@ -109,6 +109,7 @@ const ConfirmButton = styled.button<{ active: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: clamp(1rem, 2vw, 1.5rem);
   background-color: ${(props) => (props.active ? "#ff5555" : "#424242")};
   color: white;
   padding: 5px 10px;
@@ -116,7 +117,6 @@ const ConfirmButton = styled.button<{ active: boolean }>`
   cursor: ${(props) => (props.active ? "pointer" : "not-allowed")};
   transition: background-color 0.3s;
   color: #212121;
-  font-weight: bold;
 
   &:hover {
     background-color: ${(props) => (props.active ? "#ff7777" : "#424242")};
@@ -124,13 +124,13 @@ const ConfirmButton = styled.button<{ active: boolean }>`
 `
 
 interface ProfileProps {
-  onDataChange: (data: { nickname: string; imageUrl: string | null }) => void;
+  onDataChange: (data: { nickname: string; imageUrl: string | null; duplicateCheck: boolean }) => void;
 }
 
 const Profile = ({ onDataChange }: ProfileProps) => {
   const [nickname, setNickname] = useState("");
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [isChecked, setIsChecked] = useState(false);
+  const [duplicateCheck, setDuplicateCheck] = useState(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -139,7 +139,7 @@ const Profile = ({ onDataChange }: ProfileProps) => {
       reader.onload = () => {
         if (reader.result) {
           setImageUrl(reader.result as string);
-          onDataChange({ nickname, imageUrl: reader.result as string });
+          onDataChange({ nickname, imageUrl: reader.result as string, duplicateCheck });
         }
       };
       reader.readAsDataURL(file);
@@ -148,13 +148,14 @@ const Profile = ({ onDataChange }: ProfileProps) => {
 
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
-    onDataChange({ nickname: e.target.value, imageUrl });
-    setIsChecked(false); 
+    setDuplicateCheck(false); 
+    onDataChange({ nickname: e.target.value, imageUrl, duplicateCheck: false });
   };
 
   const handleConfirmClick = () => {
     if (nickname.trim()) {
-      setIsChecked(true);
+      setDuplicateCheck(true); 
+      onDataChange({ nickname, imageUrl, duplicateCheck: true });
     }
   };
 
@@ -173,7 +174,7 @@ const Profile = ({ onDataChange }: ProfileProps) => {
       </PhotoContainer>
       <InputContainer>
         <Title>별명</Title>
-        <div style={{ display: "flex", flexDirection: "row", justifyContent:"space-between" }}>
+        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
           <InputField>
             <Input
               type="text"
@@ -184,8 +185,8 @@ const Profile = ({ onDataChange }: ProfileProps) => {
             />
             <CharacterCount>{nickname.length}/10</CharacterCount>
           </InputField>
-          {isChecked ? (
-            <IoCheckmark size={"25px"} color="#ff5555" style={{ marginLeft: "20px" }} />
+          {duplicateCheck ? (
+            <IoCheckmark size={"clamp(1.5rem, 3vw, 2.5rem)"} color="#ff5555" style={{ marginLeft: "20px" }} />
           ) : (
             <ConfirmButton active={nickname.length > 0} onClick={handleConfirmClick}>
               중복확인

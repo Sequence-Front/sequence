@@ -17,13 +17,12 @@ const TextAreaContainer = styled.div`
 
 const Introduce = styled.textarea`
   width: 100%;
-  height: 10rem;
+  height: clamp(10rem, 20vw, 20rem);
   background-color: #212121;
   color: white;
   border: none;
-  padding-left: 5px;
-  padding-top: 5px;
-  font-size: 14px;
+  padding: clamp(0.5rem, 1vw, 15px);
+  font-size: clamp(10px, 1.2vw, 1.3rem);
   resize: none;
 
   &::placeholder {
@@ -39,8 +38,8 @@ const Introduce = styled.textarea`
 
 const CharacterCount = styled.div`
   position: absolute;
-  bottom: 5px;
-  right: 0px;
+  bottom: clamp(5px, 1vw, 10px);
+  right: -5px;
   color: #616161;
   font-size: 12px;
 `

@@ -26,14 +26,15 @@ const ActivityContainer = styled.div<{ focused: boolean }>`
 `
 
 const Dropdown = styled.div`
-  position: relative;
   display: flex;
+  position: relative;
 `
 
 const DropdownButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-size: clamp(10px, 1.2vw, 1.3rem);
   padding: 10px;
   padding-left: 0;
   background: #121212;
@@ -51,7 +52,8 @@ const DropdownList = styled.ul`
   top: 100%;
   left: 0;
   right: 0;
-  width: 6.5rem;
+  font-size: clamp(10px, 1.2vw, 1.3rem);
+  width: clamp(5rem, 9vw, 9rem);
   margin-top: 2px;
   padding: 0;
   background: #212121;
@@ -72,10 +74,10 @@ const DropdownList = styled.ul`
 
 const Input = styled.input`
   display: flex;
-  flex: 1;
-  padding: 10px;
+  flex:1;
   background: #121212;
-  font-size: 14px;
+  padding: clamp(0.5rem, 1vw, 15px);
+  font-size: clamp(10px, 1.2vw, 1.3rem);
   color: white;
   border: none;
 
@@ -90,19 +92,22 @@ const Input = styled.input`
 
 const Label = styled.div`
   display: flex;
+  width: 40%;
   flex-shrink: 0;
-  font-size: 14px;
+  font-size: clamp(10px, 1.2vw, 1.3rem);
+  padding: clamp(0.5rem, 1.2vw, 15px);
+  padding-left: 0;
   color: white;
-  margin-right: 2rem;
 `
 
 const DateContainer = styled.div<{ focused: boolean }>`
   display: flex;
   flex:1;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   border-bottom: ${(props) => (props.focused ? "1px solid #e0e0e0" : "1px solid #757575")};
 `
+
 const DateInputs = styled.div`
   display: flex;
   align-items: center;
@@ -110,11 +115,11 @@ const DateInputs = styled.div`
 
 const DateInput = styled.input`
   display: flex;
-  width: 1rem;
+  width: clamp(0.5rem, 1.3vw, 1.4rem);
   background: #121212;
   color: white;
   border: none;
-  font-size: 14px;
+  font-size: clamp(10px, 1.2vw, 1.3rem);
   text-align: center;
   padding: 10px 2px;
 
@@ -141,7 +146,11 @@ const TextArea = styled.textarea`
   border: none;
   border-bottom: 1px solid #757575;
   margin-top: 10px;
-  padding-bottom: 10px;
+  margin-bottom: 2rem;
+  font-size: clamp(10px, 1.2vw, 1.3rem);
+  padding: clamp(0.5rem, 1vw, 15px);
+  padding-left: 0;
+  padding-right: 0;
   resize: none;
 
   &::placeholder {

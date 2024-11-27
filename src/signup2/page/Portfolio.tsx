@@ -17,9 +17,9 @@ const UploadContainer = styled.div<{ focused: boolean }>`
   align-items: center;
   justify-content: space-between;
   background-color: #212121;
-  padding: 10px;
   color: #9e9e9e;
-  font-size: 14px;
+  font-size: clamp(10px, 1.2vw, 1.3rem);
+  padding: clamp(0.5rem, 1vw, 15px);
   border: ${(props) => (props.focused ? "1px solid #757575" : "none")};
   box-shadow: ${(props) => (props.focused ? "1px #757575" : "none")};
   transition: border 0.3s, box-shadow 0.3s;
@@ -29,6 +29,7 @@ const Input = styled.input`
   flex: 1;
   background: none;
   border: none;
+  font-size: clamp(10px, 1.2vw, 1.3rem);
   color: white;
 
   &::placeholder {
@@ -44,7 +45,7 @@ const Input = styled.input`
 const FileDetails = styled.div`
   display: flex;
   align-items: center;
-  font-size: 12px;
+  font-size: clamp(10px, 1.2vw, 1.3rem);
   color: #9e9e9e;
 
   span {
@@ -57,7 +58,7 @@ const UploadButton = styled.label`
   align-items: center;
   cursor: pointer;
   color: #e32929;
-  font-size: 20px;
+  font-size: clamp(14px, 1.5vw, 30px);
 
   &:hover {
     color: #ff5555;
@@ -108,13 +109,16 @@ const Portfolio = ({onDataChange}:PortfolioProps) => {
   const handleFileChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
-      setPortfolios((prev) =>
-        prev.map((portfolio, idx) =>
+      const fileSizeInMB = file.size / 1024 / 1024;
+      setPortfolios((prev) => {
+        const updatedPortfolios = prev.map((portfolio, idx) =>
           idx === index
-            ? { ...portfolio, fileName: file.name, fileSize: file.size / 1024 / 1024, url: "" }
+            ? { ...portfolio, fileName: file.name, fileSize: fileSizeInMB, url: "" }
             : portfolio
-        )
-      );
+        );
+        onDataChange(updatedPortfolios); 
+        return updatedPortfolios;
+      });
     }
   };
 
