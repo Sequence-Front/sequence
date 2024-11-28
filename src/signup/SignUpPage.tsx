@@ -140,6 +140,14 @@ const SignUpPage: React.FC = () => {
     }
 
     // 비밀번호 검증
+    if (formData.userId.length < 4 || formData.userId.length > 10) {
+      newFieldErrors.userId = true;
+      setErrorMessage('아이디는 4~10자 이내로 입력해주세요.');
+      setFieldErrors(newFieldErrors);
+      return false;
+    }
+
+    // 비밀번호 검증
     if (formData.password.length < 8 || formData.password.length > 20) {
       newFieldErrors.password = true;
       setErrorMessage('비밀번호는 8~20자 이내로 입력해주세요.');
@@ -166,7 +174,7 @@ const SignUpPage: React.FC = () => {
     
     if (validateForm()) {
       // 다음 페이지로 이동
-      navigate('/signup/step2', { state: formData });
+      navigate('/signup2', { state: formData });
     }
   };
 
