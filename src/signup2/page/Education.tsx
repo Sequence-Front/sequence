@@ -137,7 +137,7 @@ const Education = ({ onDataChange }: EducationProps) => {
   const yearRef = useRef<HTMLDivElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
 
-  const schoolOptions = ["홍익대학교", "홍익대학교(세종)"];
+  const schoolOptions = ["고려대학교", "고려대학교(세종)", "홍익대학교", "홍익대학교(세종)" ];
 
   const handleSchoolSelect = (school: string) => {
     setSchoolName(school);
