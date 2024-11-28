@@ -411,7 +411,7 @@ const SignUp = () => {
     console.log("자격 및 수상:", qualificationData);
     console.log("포트폴리오", portfolioData);
     console.log("자기소개", selfIntroduction);
-    navigate('/sign3')
+    navigate('/signup3')
   };
 
   const isValid =

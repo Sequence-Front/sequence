@@ -23,9 +23,9 @@ const AppRouter = () => {
         <Route path="/login" element={<LoginPage />} />    
         <Route path="/findId" element={<FindIdPage />} />
         <Route path="/findPassword" element={<FindPasswordPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/signup/step2" element={<SignUp2 />} />
-        <Route path="/signup/succes" element={<SignUpComplete />} />
+        <Route path="/signup1" element={<SignUpPage />} />
+        <Route path="/signup2" element={<SignUp2 />} />
+        <Route path="/signup3" element={<SignUpComplete />} />
         <Route path="/announcement" element={<AnnouncementList />} />
         <Route path="/announcement/1" element={<AnnouncementDetail />} />
         <Route path="/archive" element={<Archivelist />} />

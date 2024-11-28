@@ -111,7 +111,7 @@ const ConfirmButton = styled.button<{ active: boolean }>`
   justify-content: center;
   align-items: center;
   font-size: clamp(1rem, 2vw, 1.5rem);
-  background-color: ${(props) => (props.active ? "#ff5555" : "#424242")};
+  background-color: ${(props) => (props.active ? "#e32929" : "#424242")};
   color: white;
   padding: 5px 10px;
   border: none;
@@ -187,7 +187,7 @@ const Profile = ({ onDataChange }: ProfileProps) => {
             <CharacterCount>{nickname.length}/10</CharacterCount>
           </InputField>
           {duplicateCheck ? (
-            <IoCheckmark size={"clamp(1.5rem, 3vw, 2.5rem)"} color="#ff5555" style={{ marginLeft: "20px" }} />
+            <IoCheckmark size={"clamp(1.5rem, 3vw, 2.5rem)"} color="#e32929" style={{ marginLeft: "20px" }} />
           ) : (
             <ConfirmButton active={nickname.length > 0} onClick={handleConfirmClick}>
               중복확인

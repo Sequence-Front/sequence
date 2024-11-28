@@ -166,7 +166,7 @@ const SignUpPage: React.FC = () => {
     
     if (validateForm()) {
       // 다음 페이지로 이동
-      navigate('/signup/step2', { state: formData });
+      navigate('/signup2', { state: formData });
     }
   };
 
