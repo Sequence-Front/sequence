@@ -404,7 +404,7 @@ const SignUp = () => {
     console.log("자격 및 수상:", qualificationData);
     console.log("포트폴리오", portfolioData);
     console.log("자기소개", selfIntroduction);
-    navigate('/sign3')
+    navigate('/signup3')
   };
 
   const isValid =
@@ -421,7 +421,7 @@ const SignUp = () => {
       <Header headerName="SignUp" />
       <TitleContainer>
         <Arrow>
-          <AiOutlineArrowLeft  onClick = {()=>navigate('/signup')}/>
+          <AiOutlineArrowLeft  onClick = {()=>navigate('/signup1')}/>
         </Arrow>
         <STitle>회원가입</STitle>
         <PageNumber>2/2</PageNumber>
