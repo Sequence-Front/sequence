@@ -428,7 +428,7 @@ const SignUp = () => {
       <Header headerName="SignUp" />
       <TitleContainer>
         <Arrow>
-          <AiOutlineArrowLeft  onClick = {()=>navigate('/signup')}/>
+          <AiOutlineArrowLeft  onClick = {()=>navigate('/signup1')}/>
         </Arrow>
         <STitle>회원가입</STitle>
         <PageNumber>2/2</PageNumber>
