@@ -25,6 +25,7 @@ const Introduce = styled.textarea`
   padding: clamp(0.5rem, 1vw, 15px);
   font-size: clamp(10px, 1.2vw, 1.3rem);
   resize: none;
+  box-sizing: border-box;
 
   &::placeholder {
     color: #9e9e9e;
@@ -40,7 +41,7 @@ const Introduce = styled.textarea`
 const CharacterCount = styled.div`
   position: absolute;
   bottom: clamp(5px, 1vw, 10px);
-  right: -5px;
+  right: 5px;
   color: #616161;
   font-size: 12px;
 `
