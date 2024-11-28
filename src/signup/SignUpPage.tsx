@@ -170,6 +170,11 @@ const SignUpPage: React.FC = () => {
   };
 
   const handleNext = () => {
+    //모든 곳에 값이 입력되어 있지 않으면 return
+    if (!isFormValid) {
+      return;
+    }
+    
     setErrorMessage(''); // 에러 메시지 초기화
     
     if (validateForm()) {
