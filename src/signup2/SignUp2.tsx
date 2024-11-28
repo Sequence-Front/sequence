@@ -21,7 +21,9 @@ const Container = styled.div`
   margin: 0px auto;
   color: white;
   padding: 20px;
+  box-sizing: border-box;
   flex-direction: column;
+  min-width: 680px;
 `
 
 const TitleContainer = styled.div`
@@ -32,6 +34,13 @@ const TitleContainer = styled.div`
   justify-content: center;
   gap: 1rem; 
   
+ `
+
+const ContentContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  margin-bottom: clamp(2rem, 4vw, 5rem);
 `
 
 const Arrow = styled.div`
@@ -44,11 +53,6 @@ const Arrow = styled.div`
   cursor: pointer;
 `
 
-const ContentContainer = styled.div`
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: clamp(2rem, 4vw, 5rem);
-`
 
 const Label = styled.div`
   display: flex;
@@ -60,6 +64,9 @@ const Label = styled.div`
     align-self: center;
     margin-left: 5px;
     color: red;
+  }
+  @media (max-width: 960px) {
+    width:25%;
   }
 `
 const Title = styled.div`
@@ -417,7 +424,7 @@ const SignUp = () => {
 
   const  navigate = useNavigate();
   return (
-    <div style={{ backgroundColor: "#151515" }}>
+    <div style={{ display:"flex",flexDirection:"column", backgroundColor: "#151515", minWidth: "680px" }}>
       <Header headerName="SignUp" />
       <TitleContainer>
         <Arrow>
@@ -430,7 +437,7 @@ const SignUp = () => {
         <ContentContainer>
           <Label>
             <Title>
-            프로필 사진<span>*</span>
+            프로필<span>*</span>
             </Title>
           </Label>
           <Content>
