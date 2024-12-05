@@ -36,6 +36,12 @@ const RegistrationDateText = styled.div`
   color: #9E9E9E;
 `;
 
+const ErrorMessage = styled.div`
+  color: #E51D1D;
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+  text-align: center;
+  margin-bottom: clamp(1rem, 1vw, 1.5rem);
+`;
 
 const FindIdPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -52,6 +58,9 @@ const FindIdPage: React.FC = () => {
     userId: '',
     registrationDate: ''
   });
+
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [fieldErrors, setFieldErrors] = useState<Record<string, boolean>>({});
 
   const navigate = useNavigate();
 
@@ -81,8 +90,52 @@ const FindIdPage: React.FC = () => {
     }));
   };
 
+  const validateForm = () => {
+    const newFieldErrors: Record<string, boolean> = {};
+    
+    // 이메일 형식 검증
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (!emailRegex.test(formData.email)) {
+      newFieldErrors.email = true;
+      setErrorMessage('올바른 이메일 형식이 아닙니다.');
+      setFieldErrors(newFieldErrors);
+      return false;
+    }
+
+    // 생년월일 형식 검증 (YYYY.MM.DD)
+    const birthDateRegex = /^\d{4}\.(0[1-9]|1[0-2])\.(0[1-9]|[12]\d|3[01])$/;
+    if (!birthDateRegex.test(formData.birthDate)) {
+      newFieldErrors.birthDate = true;
+      setErrorMessage('올바른 생년월일 형식이 아닙니다.');
+      setFieldErrors(newFieldErrors);
+      return false;
+    }
+
+    // 생년월일 유효성 검증
+    const [year, month, day] = formData.birthDate.split('.').map(Number);
+    const birthDate = new Date(year, month - 1, day);
+    const currentDate = new Date();
+    
+    if (
+      birthDate.getFullYear() !== year ||
+      birthDate.getMonth() !== month - 1 ||
+      birthDate.getDate() !== day ||
+      birthDate > currentDate ||
+      year < 1900
+    ) {
+      newFieldErrors.birthDate = true;
+      setErrorMessage('유효하지 않은 생년월일입니다.');
+      setFieldErrors(newFieldErrors);
+      return false;
+    }
+
+    setFieldErrors({});
+    setErrorMessage('');
+    return true;
+  };
+
   const handleSubmit = () => {
-    if (!isFormValid) return;  // 폼이 유효하지 않으면 함수 실행 중단
+    if (!isFormValid || !validateForm()) return;  // 폼이 유효하지 않으면 함수 실행 중단
     
     // 나중에 API 연동
     setFoundId({
@@ -116,7 +169,7 @@ const FindIdPage: React.FC = () => {
                     <BirthDateInput
                       value={formData.birthDate}
                       onChange={(value) => setFormData(prev => ({ ...prev, birthDate: value }))}
-                      hasError={false}
+                      hasError={fieldErrors.birthDate}
                     />
 
                     <InputBlock>
@@ -146,6 +199,7 @@ const FindIdPage: React.FC = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       placeholder="sequence@email.com"
+                      hasError={fieldErrors.email}
                     />
                   </S.FormGrid>
                   
@@ -166,7 +220,10 @@ const FindIdPage: React.FC = () => {
             )}
           </S.ContentWrapper>
           {!showResult && (
+            <>
+            {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
             <S.ButtonWrapper>
+              
               <CommonButton 
                 isActive={isFormValid}
                 onClick={handleSubmit}
@@ -174,6 +231,7 @@ const FindIdPage: React.FC = () => {
                 아이디 찾기
               </CommonButton>
             </S.ButtonWrapper>
+            </>
           )}
         </S.FormContainer>
       </S.Container>
