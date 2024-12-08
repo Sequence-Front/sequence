@@ -8,6 +8,7 @@ const Container = styled.div`
   background-color: #151515;
   justify-content: space-between;
   flex-direction: row;
+  z-index: 2;
 `
 
 const RightSide = styled.div`
