@@ -16,7 +16,7 @@ const Container = styled.div`
   flex-direction: row;
   background-color: #151515;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 `
 const TitleContainer = styled.div`
   display: flex;
