@@ -10,16 +10,13 @@ import Box from '@mui/material/Box';
 import ProjectCard from './components/ProjectCard';
 import Pagination from './components/Pagination';
 import { IoArrowUpOutline } from "react-icons/io5";
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   padding: clamp(1rem, 3vw, 2rem);
   color: white;
-  width: min(90%, 1400px);
+  width: 80%;
   margin: 0 auto;
-  
-  @media (max-width: 1200px) {
-    width: 95%;
-  }
 `;
 
 const SearchBar = styled.div`
@@ -169,6 +166,7 @@ const ProjectPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setCurrentPage(1);
@@ -216,7 +214,7 @@ const ProjectPage: React.FC = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <SearchIcon />
-        <AddProjectButton>
+        <AddProjectButton onClick={() => navigate('/archive/registration')}>
           프로젝트 등록하기 <AiOutlinePlus size={28}/>
         </AddProjectButton>
       </SearchBar>
