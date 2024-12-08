@@ -1,28 +1,41 @@
-import React from 'react';
+// 2024-12-08 박승균
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { FaPlus, FaSearch } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
+import { AiOutlinePlus } from "react-icons/ai";
 import Header from '../asset/component/Header';
+import { dummyProjects } from './data/dummyProjects';
+import Masonry from '@mui/lab/Masonry';
+import Box from '@mui/material/Box';
+import ProjectCard from './components/ProjectCard';
+import Pagination from './components/Pagination';
+import { IoArrowUpOutline } from "react-icons/io5";
 
 const Container = styled.div`
-  padding: 2rem;
+  padding: clamp(1rem, 3vw, 2rem);
   color: white;
-  min-width: 680px;
+  width: min(90%, 1400px);
+  margin: 0 auto;
+  
+  @media (max-width: 1200px) {
+    width: 95%;
+  }
 `;
 
 const SearchBar = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: clamp(3rem, 5vw, 5rem);
 `;
 
 const SearchInput = styled.input`
   background: transparent;
   border: none;
-  border-bottom: 1px solid #616161;
+  border-bottom: 2px solid #616161;
   color: white;
-  width: 300px;
+  width: clamp(200px, 30vw, 500px);
   padding: 0.5rem;
-  font-size: 1rem;
+  font-size: clamp(0.8rem, 1.2vw, 1.5rem);
   
   &:focus {
     outline: none;
@@ -40,17 +53,20 @@ const AddProjectButton = styled.button`
   align-items: center;
   gap: 0.5rem;
   background: transparent;
-  border: 1px solid #E51D1D;
-  color: #E51D1D;
-  padding: 0.5rem 1rem;
+  color: #E32929;
+  padding: clamp(0.5rem, 1vw, 1rem) clamp(0.8rem, 1.5vw, 1rem);
   margin-left: auto;
   cursor: pointer;
+  border: 1px solid #E32929;
+  font-size: clamp(0.8rem, 1.2vw, 1.5rem);
 `;
 
 const Navigation = styled.nav`
   display: flex;
   gap: 2rem;
-  margin: 2rem 0;
+  border-bottom: 1px solid #616161;
+  border-top: 1px solid #616161;
+  padding: 1rem 0;
 `;
 
 const NavItem = styled.a`
@@ -60,45 +76,148 @@ const NavItem = styled.a`
 `;
 
 const TagContainer = styled.div`
+  padding: 1rem 0;
+  position: relative;
+  margin-bottom: 4rem;
+`;
+
+const TagWrapper = styled.div`
   display: flex;
   gap: 0.5rem;
-  margin: 1rem 0;
   flex-wrap: wrap;
+  border-bottom: 1px solid #616161;
+  padding-bottom: 1rem;
 `;
 
 const Tag = styled.span<{ active?: boolean }>`
   background: ${props => props.active ? '#E51D1D' : 'transparent'};
   border: 1px solid ${props => props.active ? '#E51D1D' : 'white'};
-  color: ${props => props.active ? 'white' : 'white'};
+  color: white;
   padding: 0.3rem 0.8rem;
   border-radius: 20px;
   font-size: 0.9rem;
   cursor: pointer;
 `;
 
-const ProjectGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  margin-top: 2rem;
+const SelectedTags = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
 `;
 
-const ProjectCard = styled.div`
-  border: 1px solid #333;
-  padding: 1rem;
-  border-radius: 8px;
+const SelectedTag = styled.span`
+  background: #E51D1D;
+  color: white;
+  padding: 0.2rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  
+  &::after {
+    content: 'X';
+    font-size: 1rem;
+  }
+`;
+
+const ProjectSection = styled(Box)`
+  width: 100%;
+  margin: 0 auto;
+`;
+
+const NoResults = styled.div`
+  text-align: center;
+  padding: 40px;
+  color: white;
+  font-size: 1.1rem;
+`;
+
+const ScrollToTopButton = styled.button`
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  width: clamp(50px, 10vw, 90px);
+  height: clamp(50px, 10vw, 90px);
+  border-radius: 50%;
+  background: #E32929;
+  border: none;
+  cursor: pointer;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  
+  svg {
+    width: 90%;
+    height: 90%;
+    color: #212121;
+  }
+`;
+
+const TotalProjects = styled.div`
+  margin-bottom: 2rem;
+  font-size: clamp(1rem, 1.2vw, 1.5rem);
 `;
 
 const ProjectPage: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedTags]);
+
+  const filteredProjects = dummyProjects.filter(project => {
+    const matchesTags = selectedTags.length === 0 || 
+                       selectedTags.some(tag => project.tags.includes(tag));
+    
+    const matchesSearch = project.title.toLowerCase().includes(searchTerm.toLowerCase());
+
+    return matchesTags && matchesSearch;
+  });
+
+  const projectsPerPage = 12;
+  const indexOfLastProject = currentPage * projectsPerPage;
+  const indexOfFirstProject = indexOfLastProject - projectsPerPage;
+  const currentProjects = filteredProjects.slice(indexOfFirstProject, indexOfLastProject);
+  const totalPages = Math.ceil(filteredProjects.length / projectsPerPage);
+
+  const handleTagClick = (tag: string) => {
+    setCurrentPage(1);
+    setSelectedTags(prev => 
+      prev.includes(tag) 
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
+    );
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   return (
     <>
     <Header headerName="Project"/>
     <Container>
       <SearchBar>
-        <SearchInput placeholder="프로젝트를 직접 찾아보세요!" />
+        <SearchInput 
+          placeholder="프로젝트 제목을 검색해보세요!" 
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
         <SearchIcon />
         <AddProjectButton>
-          <FaPlus /> 프로젝트 등록하기
+          프로젝트 등록하기 <AiOutlinePlus size={28}/>
         </AddProjectButton>
       </SearchBar>
 
@@ -112,27 +231,69 @@ const ProjectPage: React.FC = () => {
       </Navigation>
 
       <TagContainer>
-        <Tag active>디자인</Tag>
-        <Tag>연구</Tag>
-        <Tag>데이터</Tag>
-        <Tag>웹/앱</Tag>
-        <Tag>스타트업</Tag>
+        <TagWrapper>
+          {['대회', '창업', '대외활동', '경험', '스터디'].map(tag => (
+            <Tag 
+              key={tag}
+              active={selectedTags.includes(tag)}
+              onClick={() => handleTagClick(tag)}
+            >
+              {tag}
+            </Tag>
+          ))}
+        </TagWrapper>
+        {selectedTags.length > 0 && (
+          <SelectedTags>
+            {selectedTags.map(tag => (
+              <SelectedTag 
+                key={tag}
+                onClick={() => handleTagClick(tag)}
+              >
+                {tag}
+              </SelectedTag>
+            ))}
+          </SelectedTags>
+        )}
       </TagContainer>
 
-      <TagContainer>
-        <Tag active>단기간</Tag>
-        <Tag active>단기간</Tag>
-        <Tag>스타트업</Tag>
-        <Tag>단기간</Tag>
-        <Tag>장기간</Tag>
-      </TagContainer>
+      <TotalProjects>총 {filteredProjects.length}건의 게시글</TotalProjects>
 
-      <h3>총 1,000건의 게시글</h3>
+      {filteredProjects.length > 0 ? (
+        <ProjectSection>
+          <Masonry
+            columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
+            spacing={2}
+            defaultHeight={450}
+            sx={{ margin: 0 }}
+          >
+            {currentProjects.map((project) => (
+              <ProjectCard 
+                key={project.id} 
+                project={project}
+                searchTerm={searchTerm}
+              />
+            ))}
+          </Masonry>
+        </ProjectSection>
+      ) : (
+        <NoResults>
+          "{searchTerm}"에 대한 검색 결과가 없습니다.
+          <br />
+          다른 단어로 검색을 시도해주세요!
+        </NoResults>
+      )}
 
-      <ProjectGrid>
-        {/* 프로젝트 카드들이 여기에 들어갈 예정 */}
-      </ProjectGrid>
-      </Container>
+      {filteredProjects.length > 0 && (
+        <Pagination 
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      )}
+    </Container>
+    <ScrollToTopButton onClick={scrollToTop}>
+      <IoArrowUpOutline />
+    </ScrollToTopButton>
     </>
   );
 };
