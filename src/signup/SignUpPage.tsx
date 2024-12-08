@@ -83,6 +83,20 @@ const SignUpPage: React.FC = () => {
       ...prev,
       [name]: value
     }));
+
+    // 이메일이나 아이디가 변경되면 해당 중복체크 상태를 초기화
+    if (name === 'email') {
+      setDuplicateChecks(prev => ({
+        ...prev,
+        email: false
+      }));
+    }
+    if (name === 'userId') {
+      setDuplicateChecks(prev => ({
+        ...prev,
+        userId: false
+      }));
+    }
   };
 
   const handleGenderSelect = (gender: string) => {
@@ -124,6 +138,42 @@ const SignUpPage: React.FC = () => {
   const validateForm = () => {
     const newFieldErrors: Record<string, boolean> = {};
     
+    // 이메일 형식 검증
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (!emailRegex.test(formData.email)) {
+      newFieldErrors.email = true;
+      setErrorMessage('올바른 이메일 형식이 아닙니다.');
+      setFieldErrors(newFieldErrors);
+      return false;
+    }
+
+    // 년월일 형식 검증 (YYYY.MM.DD)
+    const birthDateRegex = /^\d{4}\.(0[1-9]|1[0-2])\.(0[1-9]|[12]\d|3[01])$/;
+    if (!birthDateRegex.test(formData.birthDate)) {
+      newFieldErrors.birthDate = true;
+      setErrorMessage('올바른 생년월일 형식이 아닙니다.');
+      setFieldErrors(newFieldErrors);
+      return false;
+    }
+
+    // 생년월일 유효성 검증
+    const [year, month, day] = formData.birthDate.split('.').map(Number);
+    const birthDate = new Date(year, month - 1, day);
+    const currentDate = new Date();
+    
+    if (
+      birthDate.getFullYear() !== year ||
+      birthDate.getMonth() !== month - 1 ||
+      birthDate.getDate() !== day ||
+      birthDate > currentDate ||
+      year < 1900
+    ) {
+      newFieldErrors.birthDate = true;
+      setErrorMessage('유효하지 않은 생년월일입니다.');
+      setFieldErrors(newFieldErrors);
+      return false;
+    }
+
     // 중복체크 검증
     if (!duplicateChecks.email) {
       newFieldErrors.email = true;

@@ -22,6 +22,13 @@ const SubTitle = styled.p`
   width: 100%;
 `;
 
+const ErrorMessage = styled.div`
+  color: #E51D1D;
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+  text-align: center;
+  margin-bottom: 1.5rem;
+`;
+
 const FindPasswordPage: React.FC = () => {
   const [formData, setFormData] = useState({
     userId: '',
@@ -30,6 +37,8 @@ const FindPasswordPage: React.FC = () => {
 
   const [isFormValid, setIsFormValid] = useState(false);
   const [showResult, setShowResult] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [fieldErrors, setFieldErrors] = useState<Record<string, boolean>>({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,8 +54,25 @@ const FindPasswordPage: React.FC = () => {
     }));
   };
 
+  const validateForm = () => {
+    const newFieldErrors: Record<string, boolean> = {};
+    
+    // 이메일 형식 검증
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (!emailRegex.test(formData.email)) {
+      newFieldErrors.email = true;
+      setErrorMessage('올바른 이메일 형식이 아닙니다.');
+      setFieldErrors(newFieldErrors);
+      return false;
+    }
+
+    setFieldErrors({});
+    setErrorMessage('');
+    return true;
+  };
+
   const handleSubmit = () => {
-    if (!isFormValid) return;
+    if (!isFormValid || !validateForm()) return;
     setShowResult(true);
   };
 
@@ -72,6 +98,7 @@ const FindPasswordPage: React.FC = () => {
                       value={formData.userId}
                       onChange={handleInputChange}
                       placeholder="아이디를 입력해주세요."
+                      hasError={fieldErrors.userId}
                     />
                     <CommonInput
                       label="이메일"
@@ -80,6 +107,7 @@ const FindPasswordPage: React.FC = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       placeholder="sequence@email.com"
+                      hasError={fieldErrors.email}
                     />
                   </S.FormGrid>
                 </S.FormSection>
@@ -98,14 +126,17 @@ const FindPasswordPage: React.FC = () => {
             )}
           </S.ContentWrapper>
           {!showResult && (
-            <S.ButtonWrapper>
-              <CommonButton 
+            <>
+              {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+              <S.ButtonWrapper>
+                <CommonButton 
                 isActive={isFormValid}
                 onClick={handleSubmit}
               >
                 임시 비밀번호 발급
               </CommonButton>
             </S.ButtonWrapper>
+            </>
           )}
         </S.FormContainer>
       </S.Container>

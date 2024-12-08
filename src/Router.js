@@ -14,6 +14,7 @@ import FindIdPage from './login/page/FindIdPage';
 import FindPasswordPage from './login/page/FindPasswordPage';
 import SignUpPage from './signup/SignUpPage';
 import SignUpComplete from './signup2/SignUpComplete';
+import ProjectPage from './project/ProjectPage';
 
 const AppRouter = () => {
   return (
@@ -33,6 +34,7 @@ const AppRouter = () => {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/header" element={<Header />} />
+        <Route path="/project" element={<ProjectPage />} />
       </Routes>
     </Router> 
   );
