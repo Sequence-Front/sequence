@@ -64,34 +64,35 @@ function Experience() {
     }));
 
     const settings = {
-        infinite: true,
-        speed: 3000,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        arrows: true,
-        dots: false,
-        centerMode: false,
-        autoplay: true,
-        autoplaySpeed: 0,
-        pauseOnHover: false,
-        cssEase: "linear",
+      infinite: true,
+      slidesToShow: 4.5,
+      slidesToScroll: 1,
+      arrows: true,
+      dots: false,
+      centerMode: false,
+      autoplay: false,
+      cssEase: "linear",
+      initialSlide: -0.5,
+      startIndex: 0,
+      swipeToSlide: true,
+      speed: 500,
         responsive: [
           {
             breakpoint: 1800,
             settings: {
-                slidesToShow: 3,
+                slidesToShow: 3.5,
             }
           },
           {
             breakpoint: 1500,
             settings: {
-                slidesToShow: 2,
+                slidesToShow: 2.5,
             }
           },
           {
               breakpoint: 1000,
               settings: {
-                  slidesToShow: 1,
+                  slidesToShow: 1.5,
               }
           }
         ]
