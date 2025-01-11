@@ -24,7 +24,7 @@ const Container = styled.div`
 const TabContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 90%;
+  width: 75%;
   margin-bottom: clamp(3rem, 5vw, 5rem);
 `
 

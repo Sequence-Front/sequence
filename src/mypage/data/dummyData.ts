@@ -2,6 +2,11 @@
 import { HistoryDataType } from '../types/history.types';
 
 export const dummyData: HistoryDataType = {
+    introduction: "안녕하세요, 저는 홍길동입니다.",
+    portfolio: [
+      "www.thisislinkreference.com",
+      "portfolio.pdf"
+    ],
     activities: [
       {
         title: "TS파트너즈 3기",
@@ -44,19 +49,22 @@ export const dummyData: HistoryDataType = {
     ],
     certification: [
       {
-        title: "2종보통 운전면허",
-        category: "",
-        period: "2022.06.~2023.01"
+        title: "해커톤 최우수상",
+        category: "수상",
+        period: "2022.06.~2023.01",
+        description: "세종창업지원 센터"
       },
       {
         title: "TOEIC SPEAKING IM2",
-        category: "",
-        period: "2022.06.~2023.01"
+        category: "어학",
+        period: "2022.06.~2023.01",
+        description: "YBM 어학시험"
       },
       {
         title: "GTQ 2급",
-        category: "",
-        period: "2022.06.~2023.01"
+        category: "자격/면허",
+        period: "2022.06.~2023.01",
+        description: "KPC자격"
       }
     ]
   };

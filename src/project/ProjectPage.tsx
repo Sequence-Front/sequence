@@ -66,8 +66,8 @@ const Navigation = styled.nav`
   padding: 1rem 0;
 `;
 
-const NavItem = styled.a`
-  color: white;
+const NavItem = styled.a<{ active?: boolean }>`
+  color: ${props => props.active ? '#white' : '#757575'};
   text-decoration: none;
   cursor: pointer;
 `;
@@ -87,12 +87,12 @@ const TagWrapper = styled.div`
 `;
 
 const Tag = styled.span<{ active?: boolean }>`
-  background: ${props => props.active ? '#E51D1D' : 'transparent'};
-  border: 1px solid ${props => props.active ? '#E51D1D' : 'white'};
-  color: white;
+  background: ${props => props.active ? 'none' : 'transparent'};
+  border: 2px solid ${props => props.active ? '#757575' : 'white'};
+  color: ${props => props.active ? '#757575' : 'white'};
   padding: 0.3rem 0.8rem;
   border-radius: 20px;
-  font-size: 0.9rem;
+  font-size: 1rem;
   cursor: pointer;
 `;
 
@@ -108,13 +108,14 @@ const SelectedTags = styled.div`
 
 const SelectedTag = styled.span`
   background: #E51D1D;
-  color: white;
-  padding: 0.2rem 0.7rem;
+  color: #212121;
+  padding: 0.4rem 0.7rem;
   border-radius: 20px;
-  font-size: 0.9rem;
+  font-size: 1rem;
   display: flex;
   align-items: center;
   gap: 0.2rem;
+  cursor: pointer;
   
   &::after {
     content: 'X';
@@ -162,6 +163,17 @@ const TotalProjects = styled.div`
   font-size: clamp(1rem, 1.2vw, 1.5rem);
 `;
 
+type TagCategory = '분야' | '기간' | '역할' | '필요스킬' | '회의' | '프로젝트단계';
+
+const tagOptions: Record<TagCategory, string[]> = {
+  분야: ['대회', '창업', '대외활동', '경험', '스터디'],
+  기간: ['1개월 이하', '1개월 ~ 3개월', '3개월 ~ 6개월', '6개월 ~ 1년', '1년 이상'],
+  역할: ['Front-end', 'Back-end', 'UXUI Design', 'BX Design', 'PM'],
+  필요스킬: ['Figma', 'Adobe Illustration', 'Adobe Photoshop', 'MidJourney', 'Tool'],
+  회의: ['오프라인', '온라인', '병행'],
+  프로젝트단계: ['시작 전', '기획 중', '디자인 중', '개발 중', '창업 중']
+};
+
 const ProjectPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -176,7 +188,9 @@ const ProjectPage: React.FC = () => {
     const matchesTags = selectedTags.length === 0 || 
                        selectedTags.some(tag => project.tags.includes(tag));
     
-    const matchesSearch = project.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = searchTerm
+      .split('')
+      .every(char => project.title.toLowerCase().includes(char.toLowerCase()));
 
     return matchesTags && matchesSearch;
   });
@@ -203,6 +217,14 @@ const ProjectPage: React.FC = () => {
     });
   };
 
+  const [activeCategory, setActiveCategory] = useState<TagCategory>('분야');
+  const [tags, setTags] = useState(tagOptions[activeCategory]);
+
+  const handleNavItemClick = (category: TagCategory) => {
+    setActiveCategory(category);
+    setTags(tagOptions[category]);
+  };
+
   return (
     <>
     <Header headerName="Project"/>
@@ -220,17 +242,16 @@ const ProjectPage: React.FC = () => {
       </SearchBar>
 
       <Navigation>
-        <NavItem>분야</NavItem>
-        <NavItem>기간</NavItem>
-        <NavItem>역할</NavItem>
-        <NavItem>리소스</NavItem>
-        <NavItem>회의</NavItem>
-        <NavItem>프로젝트 단계</NavItem>
+        {Object.keys(tagOptions).map(category => (
+          <NavItem key={category} onClick={() => handleNavItemClick(category as TagCategory)} active={activeCategory === category}>
+            {category}
+          </NavItem>
+        ))}
       </Navigation>
 
       <TagContainer>
         <TagWrapper>
-          {['대회', '창업', '대외활동', '경험', '스터디'].map(tag => (
+          {tags.map(tag => (
             <Tag 
               key={tag}
               active={selectedTags.includes(tag)}
