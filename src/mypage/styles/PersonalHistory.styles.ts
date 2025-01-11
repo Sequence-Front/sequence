@@ -14,6 +14,23 @@ export const HistoryContainer = styled.div`
   }
 `;
 
+export const Introduction = styled.div`
+  color: white;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+`;
+
+export const PortfolioItem = styled.div`
+  color: white;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+`;
+
+export const PortfolioLink = styled.div`
+  text-decoration: underline;
+  color: white;
+`;
+
 export const HistorySection = styled.div`
   display: flex;
   gap: clamp(40px, 4vw, 60px);
@@ -68,8 +85,8 @@ export const ItemHeader = styled.div`
 `;
 
 export const ItemCategory = styled.span`
-  color: #888;
-  font-size: clamp(17px, 1.5vw, 19px);
+  color: #E32929;
+  font-size: clamp(19px, 1.9vw, 23px);
   min-width: max-content;
 `;
 
@@ -85,6 +102,7 @@ export const ItemPeriod = styled.div`
   color: #888;
   font-size: clamp(17px, 1.5vw, 19px);
   min-width: max-content;
+  margin-left: auto;
 `;
 
 export const ItemTitle = styled.div`

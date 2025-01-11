@@ -7,7 +7,9 @@ export type HistoryItemType = {
 };
 
 export type HistoryDataType = {
+  introduction: string;
   activities: HistoryItemType[];
   career: HistoryItemType[];
   certification: HistoryItemType[];
+  portfolio: string[];
 }; 

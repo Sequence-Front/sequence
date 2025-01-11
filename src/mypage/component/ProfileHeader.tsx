@@ -6,7 +6,7 @@ import { PiSirenThin } from "react-icons/pi";
 
 const ProfileContainer = styled.div`
   display: flex;
-  width: 100%;
+  width: 75%;
   gap: clamp(20px, 3vw, 40px);
   min-height: clamp(250px, 30vw, 400px);
   margin-bottom: 60px;

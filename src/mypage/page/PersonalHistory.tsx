@@ -1,18 +1,52 @@
 // 2024-11-18 18:09 승균 작성
 import React, { useState } from 'react';
-import { HistoryContainer } from '../styles/PersonalHistory.styles';
+import styled from 'styled-components';
+import { HistoryContainer, Introduction, PortfolioItem, PortfolioLink } from '../styles/PersonalHistory.styles';
 import HistorySection from '../component/HistorySection';
 import { HistoryDataType } from '../types/history.types';
 import { dummyData } from '../data/dummyData';
+import { SignUpButton } from '../../login/style/LoginStyle';
+import { FaArrowRight } from 'react-icons/fa';
+
+const EditButton = styled(SignUpButton)`
+  margin-bottom: -3rem;
+`;
+
+const WithDrawButton = styled.a`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9E9E9E;
+  font-size: 1.2rem;
+  margin-bottom: 5rem;
+  text-decoration: underline;
+  cursor: pointer;
+`;
 
 const PersonalHistory = () => {
   const [historyData, setHistoryData] = useState<HistoryDataType>(dummyData);
 
   return (
     <HistoryContainer>
+      <HistorySection title="자기소개" items={[]}>
+        <Introduction>{historyData.introduction}</Introduction>
+      </HistorySection>
+
       <HistorySection title="경험 및 활동이력" items={historyData.activities} />
       <HistorySection title="경력" items={historyData.career} />
       <HistorySection title="자격증" items={historyData.certification} />
+
+      <HistorySection title="포트폴리오" items={[]}>
+        {historyData.portfolio.map((item, index) => (
+          <PortfolioItem key={index}>
+            {/* <PortfolioLink href={item}>{item}</PortfolioLink> // 포트폴리오 링크 추가 */}
+            <PortfolioLink>{item}</PortfolioLink>
+          </PortfolioItem>
+        ))}
+      </HistorySection>
+
+      <EditButton>로그인 정보 수정 <FaArrowRight /> </EditButton>
+      <WithDrawButton>회원탈퇴</WithDrawButton>
     </HistoryContainer>
   );
 };
