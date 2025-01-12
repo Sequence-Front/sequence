@@ -2,12 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import Sequence from '../image/Sequence.svg'
 import { useNavigate, useLocation } from 'react-router-dom';
+import alert from '../image/alert.png'
 
 const Container = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  padding: 1.5rem 0;
+  padding: 1rem 0;
   margin: 0 auto;
   justify-content: space-between;
   flex-direction: row;
@@ -17,8 +18,8 @@ const Container = styled.div`
 `
 const TitleContainer = styled.div`
   display: flex;
-  width: 25%;
-  margin-left : clamp(2rem, 2vw, 7rem);
+  width: 10%;
+  margin-left : clamp(3.5rem, 3.5vw, 7rem);
   flex-direction: row;
   align-items: flex-end;
   cursor: pointer;
@@ -27,12 +28,12 @@ const TitleContainer = styled.div`
 const Logo = styled.img`
   display: flex;
   margin-bottom: clamp(0.1rem, 0.6vw, 1rem);
-  width: clamp(5rem, 10vw, 10rem);
+  width: clamp(4rem, 8vw, 8rem);
 `
 
 const ContentContainer = styled.div`
   display: flex;
-  width: 60%;
+  width: 49%;
   justify-content: space-between;
 `
 
@@ -45,7 +46,7 @@ const ContentWrap = styled.div`
 const Content = styled.div<{ isActive: boolean }>`
   display: flex;
   color: ${(props) => (props.isActive ? '#E32929' : 'white')};
-  font-size: clamp(1rem, 2vw, 2rem);
+  font-size: clamp(0.8rem, 1.6vw, 1.6rem);
   font-family: 'Playfair Display', serif;
   cursor: pointer;
 `
@@ -53,12 +54,12 @@ const Content = styled.div<{ isActive: boolean }>`
 const LoginContainer = styled.div`
   display : flex;
   flex : 1;
-  justify-content: space-around;
+  justify-content: flex-end;
 `
 
 const Login = styled.div`
   display: flex;
-  margin-right: 1rem;
+  margin-right: clamp(3rem, 6vw, 6rem);
   cursor: pointer;
   border: 2px solid #E32929;
   padding : 2px clamp(10px, 1.2vw, 1.2rem);
@@ -68,11 +69,29 @@ const Login = styled.div`
   color : #E32929;
 `
 
+const UserContainer = styled.div`
+  display: flex;
+  margin-right: clamp(2.6rem, 5vw, 5rem);
+  width: 30%;
+  justify-content: space-between;
+`
+const UserProfile = styled.img`
+  display: flex;
+  width: clamp(1.3rem, 2.6vw, 2.6rem);
+  height: clamp(1.3rem, 2.6vw, 2.6rem);
+  border-radius: 50%;
+`
+
+const AlertImg = styled.img`
+  display : flex;
+  width: clamp(1.3rem, 2.6vw, 2.6rem);
+  height: clamp(1.3rem, 2.6vw, 2.6rem);
+`
 
 function Header({ headerName, isMain = false }: { headerName: string; isMain?: boolean } ) {
   const navigate = useNavigate();
   const location = useLocation();
-
+  const isLogin = false;
   const getCurrentHeader = () => {
     if (location.pathname.startsWith('/project')) return 'Project';
     if (location.pathname.startsWith('/Announcement')) return 'Announcement';
@@ -119,133 +138,18 @@ function Header({ headerName, isMain = false }: { headerName: string; isMain?: b
         </ContentWrap>
       </ContentContainer>
       <LoginContainer>
-        <Login onClick={() => navigate('/login')}>Log In</Login>
+        {isLogin ? (
+          <Login onClick={() => navigate('/login')}>Log In</Login>
+      ) : (
+          <UserContainer>
+            <AlertImg src={alert}/>
+            <UserProfile src= {"https://search.pstatic.net/sunny/?src=https%3A%2F%2Fst.depositphotos.com%2F1177973%2F3836%2Fi%2F450%2Fdepositphotos_38368579-stock-photo-little-kitten-isolated-on-white.jpg&type=a340"} />
+          </UserContainer>
+      )}
       </LoginContainer>
+      
     </Container>
   );
 };
 
 export default Header;
-
-
-
-/*
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  padding: 1.5rem 0;
-  margin: 0 auto;
-  justify-content: space-between;
-  flex-direction: row;
-  background-color: #151515;
-  position: relative;
-  z-index: 2;
-`
-const TitleContainer = styled.div`
-  display: flex;
-  margin-left : clamp(2rem, 2vw, 7rem);
-  flex-direction: row;
-  align-items: flex-end;
-  cursor: pointer;
-`
-
-const Logo = styled.img`
-  display: flex;
-  margin-bottom: clamp(0.1rem, 0.6vw, 1rem);
-  width: clamp(1.2rem, 1.7vw, 3rem);
-  height: clamp(3rem,3.5vw, 6rem);
-`
-
-const Title = styled.div`
-  display: flex;
-  font-size: clamp(2.6rem, 3vw, 5.1rem);
-  color: #E32929;
-  font-family: 'Impact', sans-serif;
-  margin: 0;
-  margin-left: 1px;
-  align-self: flex-end;
-`
-
-const MainLogoStyle = styled.img`
-  display: flex;
-  margin : 0.5rem 2rem;
-  position : relative;
-  width: clamp(2rem, 5vw, 6rem);
-  height: clamp(2.6rem, 6.4vw, 7rem);
-  color : white;
-  cursor: pointer;
-`
-
-const ProjectContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-top : clamp(5px, 1vw, 10px);
-`
-
-const Now = styled.div`
-  display : flex;
-  align-items: flex-start;
-  justify-content: flex-end;
-  color: #e22828;
-  font-size: clamp(0.75rem, 1.5vw , 2rem);
-  margin-right : 10px;
-  font-family: 'SUIT' ;
-`
-
-const Project = styled.div`
-  top: 20px;
-  right: 20px;
-  color: white;
-  margin : clamp(0.5rem, 1vw, 1rem) clamp(1.5rem, 2.5vw, 3rem) 0 0;
-  font-size: clamp(2.6rem, 3vw, 6rem);
-  font-weight: 600;
-  font-family: 'Alike', serif;
-  
-`
-
-const SidebarContainer = styled.div<{ show: boolean }>`
-  position: absolute;
-  left: 0;
-  width: 100%;
-  background-color: white;
-  transform: ${({ show }) => (show ? 'translateY(0)' : 'translateY(-100%)')};
-  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-  visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
-
-`
-
-function Header({ headerName, isMain = false }: { headerName: string; isMain?: boolean } ) {
-  const [showSidebar, setShowSidebar] = useState(false);
-
-  const  navigate = useNavigate();
-
-  return (
-    <div onMouseEnter={() => setShowSidebar(true)}
-    onMouseLeave={() => setShowSidebar(false)}>
-    <Container>
-    {isMain ? (
-          <MainLogoStyle onClick = {() => window.location.reload()} src={MainLogo} alt="Main Logo" />
-        ) : (
-          <TitleContainer onClick = {()=>navigate('/')}>
-            <Logo src={LogoS} />
-            <Title>equence</Title>
-          </TitleContainer>
-        )}
-      <ProjectContainer>
-        <Now>NOW</Now>
-        <Project>{headerName}</Project>
-      </ProjectContainer>
-    </Container>
-    <SidebarContainer show={showSidebar}>
-        <Sidebar isMain = {isMain} />
-    </SidebarContainer>
-    </div>
-  );
-};
-
-export default Header;
-
-
-*/
