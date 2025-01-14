@@ -16,6 +16,7 @@ import SignUpPage from './signup/SignUpPage';
 import SignUpComplete from './signup2/SignUpComplete';
 import ProjectPage from './project/ProjectPage';
 import WithdrawPage from './withdraw/WithdrawPage';
+import ProjectDetailPage from './projectdetail/ProjectDetailPage';
 
 const AppRouter = () => {
   return (
@@ -37,6 +38,7 @@ const AppRouter = () => {
         <Route path="/header" element={<Header />} />
         <Route path="/project" element={<ProjectPage />} />
         <Route path="/withdraw" element={<WithdrawPage />} />
+        <Route path="/projectdetail" element={<ProjectDetailPage />} />
       </Routes>
     </Router> 
   );
