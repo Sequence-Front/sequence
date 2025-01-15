@@ -9,6 +9,7 @@ function App() {
       <GlobalStyles styles={{
         body: {
           backgroundColor: '#151515',
+          color: '#ffffff'
         },
       }} />
       <AppRouter />

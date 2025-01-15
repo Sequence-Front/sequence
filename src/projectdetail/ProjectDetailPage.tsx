@@ -1,11 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 import { projectData } from './projectData';
+import Header from '../asset/component/Header';
+
+const Wrapper = styled.div`
+`
+
 const Container = styled.div`
   background-color: #151515;
   color: white;
   padding: 2rem;
-  max-width: 1200px;
+  width: 75%;
   margin: 0 auto;
 `;
 
@@ -77,8 +82,69 @@ const DescriptionWrapper = styled.div`
   font-size: 1.2rem;
 `;
 
+const TitleSection = styled.div`
+  margin: 4rem auto;
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+`
+
+const Title = styled.div`
+  font-size: 5rem;
+`
+
+const Detail = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.5rem;
+  color: #BDBDBD;
+  margin-top: 2rem;
+`
+
+const DetailBox =styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`
+
+const TempImage = styled.div`
+  background-color: grey;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+`
+
+ const IconContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+ `
+
 const ProjectDetailPage = () => {
   return (
+    <Wrapper>
+    <Header headerName = "" isMain = {false}/>
+    <TitleSection>
+      <IconContainer>
+        <div>아이콘</div>
+        <div>아이콘</div>
+        <div>아이콘</div>
+      </IconContainer>
+      <Title>
+        프로젝트 디자이너 구합니다
+      </Title>
+      <Detail>
+        <DetailBox>
+          <TempImage/>
+          <div>홍길동</div>
+          <div>24.08.08</div>
+        </DetailBox>
+        <DetailBox>
+        <div>Comment 2</div>
+        <div>북마크 4</div>
+        <div>조회 10</div>
+        </DetailBox>
+      </Detail>
+    </TitleSection>
     <Container>
       <Section>
         <Content>
@@ -176,6 +242,7 @@ const ProjectDetailPage = () => {
         </Content>
       </Section>
     </Container>
+    </Wrapper>
   );
 };
 
