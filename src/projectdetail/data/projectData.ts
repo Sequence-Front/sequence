@@ -15,6 +15,11 @@ export interface ProjectData {
     stage: string[];
     reference: string;
   };
+  profile: {
+    name: string[];
+    role: string[];
+    userImage: string[];
+  }
 }
 
 export const projectData: ProjectData = {
@@ -33,5 +38,10 @@ export const projectData: ProjectData = {
     meeting: ["온라인"],
     stage: ["기획중"],
     reference: "www.thisislinkreference.com"
+  },
+  profile: {
+    name: ["홍길동", "김철수", "이영희", "박영수", "최영희", "정영수"],
+    role: ["백엔드 개발자", "프론트엔드 개발자", "디자이너", "프로젝트 매니저", "프로젝트 매니저", "프로젝트 매니저"],
+    userImage: ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"]
   }
 }; 
