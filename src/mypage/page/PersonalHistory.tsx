@@ -7,12 +7,15 @@ import { HistoryDataType } from '../types/history.types';
 import { dummyData } from '../data/dummyData';
 import { SignUpButton } from '../../login/style/LoginStyle';
 import { FaArrowRight } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const EditButton = styled(SignUpButton)`
   margin-bottom: -3rem;
 `;
 
-const WithDrawButton = styled.a`
+const WithDrawButton = styled.button`
+  background: none;
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -25,6 +28,7 @@ const WithDrawButton = styled.a`
 
 const PersonalHistory = () => {
   const [historyData, setHistoryData] = useState<HistoryDataType>(dummyData);
+  const navigate = useNavigate();
 
   return (
     <HistoryContainer>
@@ -46,7 +50,7 @@ const PersonalHistory = () => {
       </HistorySection>
 
       <EditButton>로그인 정보 수정 <FaArrowRight /> </EditButton>
-      <WithDrawButton>회원탈퇴</WithDrawButton>
+      <WithDrawButton onClick={() => navigate('/withdraw')}>회원탈퇴</WithDrawButton>
     </HistoryContainer>
   );
 };
