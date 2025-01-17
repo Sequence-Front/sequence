@@ -17,6 +17,7 @@ import SignUpComplete from './signup2/SignUpComplete';
 import ProjectPage from './project/ProjectPage';
 import WithdrawPage from './withdraw/WithdrawPage';
 import ProjectDetailPage from './projectdetail/ProjectDetailPage';
+import CommentDetail from './projectdetail/components/CommentDetail';
 
 const AppRouter = () => {
   return (
@@ -39,6 +40,7 @@ const AppRouter = () => {
         <Route path="/project" element={<ProjectPage />} />
         <Route path="/withdraw" element={<WithdrawPage />} />
         <Route path="/projectdetail" element={<ProjectDetailPage />} />
+        <Route path="/commentdetail" element={<CommentDetail />} />
       </Routes>
     </Router> 
   );
