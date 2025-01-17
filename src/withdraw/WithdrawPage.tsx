@@ -1,16 +1,3 @@
-//24-11-26 박승균
-// {
-// address : "서울시 여러분 담배꽁초",
-// birthDate : "1999.09.25",
-// email : "tmdrbs0925@gmail.com",
-// gender : "남성",
-// name : "박승균",
-// password : "qwer1234",
-// passwordConfirm : "qwer1234",
-// phone : "01090362183",
-// userId : "psg925"
-// }
-
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +7,7 @@ import { GenderSelect } from '../common/components/GenderSelect';
 import * as S from '../signup/style/SignUpPageStyle';
 import { SignUpInput } from '../signup/component/SignUpInput';
 import { BirthDateInput } from '../common/components/BirthDateInput';
+import { IoMdArrowBack } from "react-icons/io";
 
 export const PageNumber = styled.div`
   font-size: clamp(1.5rem, 1.5vw, 2rem);
@@ -36,15 +24,6 @@ const ErrorMessage = styled.div`
 
 const WithdrawPage: React.FC = () => {
   const [formData, setFormData] = useState({
-    // 기본 정보
-    name: '',
-    birthDate: '',
-    gender: '',
-    phone: '',
-    email: '',
-    address: '',
-    // 로그인 정보
-    userId: '',
     password: '',
     passwordConfirm: '',
   });
@@ -61,20 +40,11 @@ const WithdrawPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const { userId, password, passwordConfirm, name, birthDate, gender, phone, email, address } = formData;
+    const { password, passwordConfirm } = formData;
     setIsFormValid(
-      userId !== '' && 
       password !== '' && 
-      passwordConfirm !== '' &&
-      name !== '' &&
-      birthDate !== '' &&
-      gender !== '' &&
-      phone !== '' &&
-      email !== '' &&
-      address !== ''
+      passwordConfirm !== '' 
     );
-    setIsDuplicateIdCheckActive(userId.length > 0);
-    setIsDuplicateEmailCheckActive(email.length > 0);
   }, [formData]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,42 +65,6 @@ const WithdrawPage: React.FC = () => {
       setDuplicateChecks(prev => ({
         ...prev,
         userId: false
-      }));
-    }
-  };
-
-  const handleGenderSelect = (gender: string) => {
-    setFormData(prev => ({
-      ...prev,
-      gender
-    }));
-  };
-
-  const handleIdDuplicateCheck = () => {
-    if (isDuplicateIdCheckActive) {
-      // API 호출 로직이 들어갈 자리
-      // 중복 체크 후 중복이면 true, 아니면 false
-      // {
-      //   userId : "psg925"
-      // }
-      setDuplicateChecks(prev => ({
-        ...prev,
-        userId: true
-      }));
-    }
-  };
-
-  const handleEmailDuplicateCheck = () => {
-    if (isDuplicateEmailCheckActive) {
-      // API 호출 로직이 들어갈 자리
-      // 중복 체크 후 중복이면 true, 아니면 false
-      // {
-      //   email : "tmdrbs0925@gmail.com"
-      // }
-      
-      setDuplicateChecks(prev => ({
-        ...prev,
-        email: true
       }));
     }
   };
@@ -170,7 +104,10 @@ const WithdrawPage: React.FC = () => {
     <>
       <Header headerName="SignUp" />
       <S.Container>
-        <S.Title>회원탈퇴</S.Title>
+        <S.Title>
+          <IoMdArrowBack onClick={() => navigate(-1)} style={{cursor: 'pointer', color: '#E32929'}}/>
+          회원탈퇴
+        </S.Title>
         <S.FormContainer>
           <S.Section>
             <S.CategoryTitle>비밀번호 입력</S.CategoryTitle>
@@ -203,7 +140,7 @@ const WithdrawPage: React.FC = () => {
               isActive={isFormValid}
               onClick={handleNext}
             >
-              다음
+              회원 탈퇴
             </CommonButton>
           </S.ButtonWrapper>
         </S.FormContainer>

@@ -9,9 +9,13 @@ export const Container = styled.div`
   padding: 0 clamp(2rem, 4vw, 4rem);
 `;
 
-export const Title = styled.h1`
+export const Title = styled.div`
+  display: flex;
+  align-items: center;
   font-size: clamp(3rem, 3.5vw, 4rem);
+  margin: clamp(4rem, 6vw, 8rem) 0;
   color: #FFFFFF;
+  font-weight: bold;
 `;
 
 export const FormContainer = styled.div`
@@ -21,13 +25,13 @@ export const FormContainer = styled.div`
 
 export const Section = styled.div`
   display: grid;
-  grid-template-columns: 150px 1fr;
+  grid-template-columns: 200px 1fr;
   gap: clamp(2rem, 4vw, 6rem);
   margin-bottom: clamp(4rem, 6vw, 8rem);
 `;
 
 export const CategoryTitle = styled.div`
-  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  font-size: clamp(1.2rem, 1.8vw, 1.5rem);
   color: #FFFFFF;
 `;
 
