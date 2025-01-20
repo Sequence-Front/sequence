@@ -1,30 +1,25 @@
-//24-11-26 박승균
-// {
-// address : "서울시 여러분 담배꽁초",
-// birthDate : "1999.09.25",
-// email : "tmdrbs0925@gmail.com",
-// gender : "남성",
-// name : "박승균",
-// password : "qwer1234",
-// passwordConfirm : "qwer1234",
-// phone : "01090362183",
-// userId : "psg925"
-// }
-
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Header from '../asset/component/Header';
 import { CommonButton } from '../login/components/CommonButton';
-import { GenderSelect } from '../common/components/GenderSelect';
 import * as S from '../signup/style/SignUpPageStyle';
 import { SignUpInput } from '../signup/component/SignUpInput';
-import { BirthDateInput } from '../common/components/BirthDateInput';
+import { FaArrowLeft } from "react-icons/fa";
 
 export const PageNumber = styled.div`
   font-size: clamp(1.5rem, 1.5vw, 2rem);
   color: #8f8f8f;
   margin-bottom: clamp(4rem, 6vw, 8rem);
+`;
+
+export const Title = styled.div`
+  display: flex;
+  font-size: clamp(3rem, 3.5vw, 4rem);
+  font-weight: bold;
+  color: #FFFFFF;
+  margin: clamp(6rem, 8vw, 10rem) 0;
+  width: 90%;
 `;
 
 const ErrorMessage = styled.div`
@@ -34,47 +29,32 @@ const ErrorMessage = styled.div`
   margin-bottom: 1.5rem;
 `;
 
+const SubTitle = styled.p`
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: clamp(2rem, 3vw, 4rem);
+  width: 100%;
+`;
+
 const WithdrawPage: React.FC = () => {
   const [formData, setFormData] = useState({
-    // 기본 정보
-    name: '',
-    birthDate: '',
-    gender: '',
-    phone: '',
-    email: '',
-    address: '',
-    // 로그인 정보
-    userId: '',
     password: '',
     passwordConfirm: '',
   });
 
   const [isFormValid, setIsFormValid] = useState(false);
-  const [isDuplicateIdCheckActive, setIsDuplicateIdCheckActive] = useState(false);
-  const [isDuplicateEmailCheckActive, setIsDuplicateEmailCheckActive] = useState(false);
-  const [duplicateChecks, setDuplicateChecks] = useState({
-    userId: false,
-    email: false
-  });
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, boolean>>({});
+  const [showResult, setShowResult] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const { userId, password, passwordConfirm, name, birthDate, gender, phone, email, address } = formData;
+    const { password, passwordConfirm } = formData;
     setIsFormValid(
-      userId !== '' && 
       password !== '' && 
-      passwordConfirm !== '' &&
-      name !== '' &&
-      birthDate !== '' &&
-      gender !== '' &&
-      phone !== '' &&
-      email !== '' &&
-      address !== ''
+      passwordConfirm !== ''
     );
-    setIsDuplicateIdCheckActive(userId.length > 0);
-    setIsDuplicateEmailCheckActive(email.length > 0);
   }, [formData]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,58 +63,8 @@ const WithdrawPage: React.FC = () => {
       ...prev,
       [name]: value
     }));
-
-    // 이메일이나 아이디가 변경되면 해당 중복체크 상태를 초기화
-    if (name === 'email') {
-      setDuplicateChecks(prev => ({
-        ...prev,
-        email: false
-      }));
-    }
-    if (name === 'userId') {
-      setDuplicateChecks(prev => ({
-        ...prev,
-        userId: false
-      }));
-    }
-  };
-
-  const handleGenderSelect = (gender: string) => {
-    setFormData(prev => ({
-      ...prev,
-      gender
-    }));
-  };
-
-  const handleIdDuplicateCheck = () => {
-    if (isDuplicateIdCheckActive) {
-      // API 호출 로직이 들어갈 자리
-      // 중복 체크 후 중복이면 true, 아니면 false
-      // {
-      //   userId : "psg925"
-      // }
-      setDuplicateChecks(prev => ({
-        ...prev,
-        userId: true
-      }));
-    }
-  };
-
-  const handleEmailDuplicateCheck = () => {
-    if (isDuplicateEmailCheckActive) {
-      // API 호출 로직이 들어갈 자리
-      // 중복 체크 후 중복이면 true, 아니면 false
-      // {
-      //   email : "tmdrbs0925@gmail.com"
-      // }
-      
-      setDuplicateChecks(prev => ({
-        ...prev,
-        email: true
-      }));
-    }
-  };
-
+  }
+    
   const validateForm = () => {
     const newFieldErrors: Record<string, boolean> = {};
 
@@ -161,8 +91,7 @@ const WithdrawPage: React.FC = () => {
     setErrorMessage(''); // 에러 메시지 초기화
     
     if (validateForm()) {
-      // 다음 페이지로 이동
-      navigate('/signup2', { state: formData });
+      setShowResult(true);
     }
   };
 
@@ -170,8 +99,12 @@ const WithdrawPage: React.FC = () => {
     <>
       <Header headerName="SignUp" />
       <S.Container>
-        <S.Title>회원탈퇴</S.Title>
+        <Title> <div style={{display: 'flex', alignItems: 'center', cursor: 'pointer', color: '#E32929'}}> <FaArrowLeft onClick={() => navigate(-1)} /></div> <div style={{margin: '0 auto'}}>회원탈퇴</div> </Title>
         <S.FormContainer>
+          {showResult && (
+            <SubTitle>탈퇴 되었습니다.</SubTitle>
+          )}
+          {!showResult && (
           <S.Section>
             <S.CategoryTitle>비밀번호 입력</S.CategoryTitle>
             <S.FormSection>
@@ -196,6 +129,7 @@ const WithdrawPage: React.FC = () => {
               />
             </S.FormSection>
           </S.Section>
+          )}
 
           <S.ButtonWrapper>
             {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
@@ -205,7 +139,7 @@ const WithdrawPage: React.FC = () => {
             >
               다음
             </CommonButton>
-          </S.ButtonWrapper>
+            </S.ButtonWrapper>
         </S.FormContainer>
       </S.Container>
     </>
