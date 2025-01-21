@@ -6,7 +6,7 @@ import Header from './asset/component/Header';
 import AnnouncementList from './announcement/list/AnnouncementList';
 import AnnouncementDetail from './announcement/detail/AnnouncementDetail';
 import Archivelist from './archive/archivelist/ArchiveList';
-import ProjectRegistration from './archive/projectregistration/ProjectRegistration';
+import ProjectRegistration from './projectregistration/ProjectRegistration';
 import MyPage from './mypage/MyPage';
 import Register from './register/Register';
 import SignUp2 from './signup2/SignUp2';
@@ -33,7 +33,7 @@ const AppRouter = () => {
         <Route path="/announcement" element={<AnnouncementList />} />
         <Route path="/announcement/1" element={<AnnouncementDetail />} />
         <Route path="/archive" element={<Archivelist />} />
-        <Route path="/archive/registration" element={<ProjectRegistration />} />
+        <Route path="/project/registration" element={<ProjectRegistration />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/header" element={<Header />} />

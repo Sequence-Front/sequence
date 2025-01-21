@@ -8,9 +8,9 @@ import { dummyProjects } from './data/dummyProjects';
 import Masonry from '@mui/lab/Masonry';
 import Box from '@mui/material/Box';
 import ProjectCard from './components/ProjectCard';
-import Pagination from './components/Pagination';
-import { IoArrowUpOutline } from "react-icons/io5";
+import Pagination from '../asset/component/Pagination';
 import { useNavigate } from 'react-router-dom';
+import ScrollToTopButton from '../asset/component/ScrollToTopButton';
 
 const Container = styled.div`
   padding: clamp(1rem, 3vw, 2rem);
@@ -135,29 +135,6 @@ const NoResults = styled.div`
   font-size: 1.1rem;
 `;
 
-const ScrollToTopButton = styled.button`
-  position: fixed;
-  bottom: 40px;
-  right: 40px;
-  width: clamp(50px, 10vw, 90px);
-  height: clamp(50px, 10vw, 90px);
-  border-radius: 50%;
-  background: #E32929;
-  border: none;
-  cursor: pointer;
-  z-index: 999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  
-  svg {
-    width: 90%;
-    height: 90%;
-    color: #212121;
-  }
-`;
-
 const TotalProjects = styled.div`
   margin-bottom: 2rem;
   font-size: clamp(1rem, 1.2vw, 1.5rem);
@@ -236,7 +213,7 @@ const ProjectPage: React.FC = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <SearchIcon />
-        <AddProjectButton onClick={() => navigate('/archive/registration')}>
+        <AddProjectButton onClick={() => navigate('/project/registration')}>
           프로젝트 등록하기 <AiOutlinePlus size={28}/>
         </AddProjectButton>
       </SearchBar>
@@ -310,9 +287,7 @@ const ProjectPage: React.FC = () => {
         />
       )}
     </Container>
-    <ScrollToTopButton onClick={scrollToTop}>
-      <IoArrowUpOutline />
-    </ScrollToTopButton>
+    <ScrollToTopButton />
     </>
   );
 };

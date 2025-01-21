@@ -3,7 +3,7 @@ import { PortfolioContainer } from '../styles/Portfolio.styles';
 import ProjectCard from '../component/ProjectCard';
 import { ProjectType } from '../types/portfolio.types';
 import { dummyData } from '../data/portfolioData';
-import Pagination from '../../project/components/Pagination';
+import Pagination from '../../asset/component/Pagination';
 
 const Portfolio = () => {
   const [projects, setProjects] = useState<ProjectType[]>(dummyData);
