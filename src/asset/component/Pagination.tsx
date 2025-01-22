@@ -8,6 +8,7 @@ const PaginationContainer = styled.div`
   align-items: center;
   gap: 0.5rem;
   margin-top: 5rem;
+  margin-bottom: 5rem;
 `;
 
 const PageButton = styled.button<{ active?: boolean }>`
