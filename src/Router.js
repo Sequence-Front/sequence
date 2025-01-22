@@ -5,7 +5,7 @@ import LoginPage from './login/LoginPage';
 import Header from './asset/component/Header';
 import AnnouncementList from './announcement/list/AnnouncementList';
 import AnnouncementDetail from './announcement/detail/AnnouncementDetail';
-import Archivelist from './archive/archivelist/ArchiveList';
+import Archivelist from './archive/ArchiveList';
 import ProjectRegistration from './projectregistration/ProjectRegistration';
 import MyPage from './mypage/MyPage';
 import Register from './register/Register';
