@@ -18,8 +18,7 @@ export const Title = styled.div`
 `;
 
 export const FormContainer = styled.div`
-  width: 100%;
-  max-width: 1200px;
+  width: 75%;
 `;
 
 export const Section = styled.div`

@@ -5,7 +5,9 @@ import Header from '../asset/component/Header';
 import { CommonButton } from '../login/components/CommonButton';
 import * as S from '../signup/style/SignUpPageStyle';
 import { SignUpInput } from '../signup/component/SignUpInput';
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { Result, ResultContainer, IdText } from '../login/style/CommonStyles';
+import { SignUpButton } from '../login/style/LoginStyle';
 
 export const PageNumber = styled.div`
   font-size: clamp(1.5rem, 1.5vw, 2rem);
@@ -27,14 +29,6 @@ const ErrorMessage = styled.div`
   font-size: clamp(0.9rem, 1.2vw, 1.1rem);
   text-align: center;
   margin-bottom: 1.5rem;
-`;
-
-const SubTitle = styled.p`
-  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
-  color: #ffffff;
-  text-align: center;
-  margin-bottom: clamp(2rem, 3vw, 4rem);
-  width: 100%;
 `;
 
 const WithdrawPage: React.FC = () => {
@@ -102,7 +96,12 @@ const WithdrawPage: React.FC = () => {
         <Title> <div style={{display: 'flex', alignItems: 'center', cursor: 'pointer', color: '#E32929'}}> <FaArrowLeft onClick={() => navigate(-1)} /></div> <div style={{margin: '0 auto'}}>회원탈퇴</div> </Title>
         <S.FormContainer>
           {showResult && (
-            <SubTitle>탈퇴 되었습니다.</SubTitle>
+            <Result>
+              회원탈퇴 되었습니다.
+            <ResultContainer>
+              <IdText>이메일</IdText>
+            </ResultContainer>
+            </Result>
           )}
           {!showResult && (
           <S.Section>
@@ -131,15 +130,23 @@ const WithdrawPage: React.FC = () => {
           </S.Section>
           )}
 
-          <S.ButtonWrapper>
-            {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-            <CommonButton 
-              isActive={isFormValid}
-              onClick={handleNext}
-            >
-              다음
-            </CommonButton>
+          {showResult ? (
+            <S.ButtonWrapper>
+            <SignUpButton type="button" onClick={() => navigate('/')}>
+                  돌아가기 <FaArrowRight />
+                </SignUpButton>
             </S.ButtonWrapper>
+          ) : (
+            <S.ButtonWrapper>
+              {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+              <CommonButton 
+                isActive={isFormValid}
+                onClick={handleNext}
+              >
+                회원 탈퇴
+              </CommonButton>
+            </S.ButtonWrapper>
+          )}
         </S.FormContainer>
       </S.Container>
     </>
