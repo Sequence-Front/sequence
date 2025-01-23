@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Header from '../asset/component/Header';
 import Pagination from '../asset/component/Pagination';
@@ -75,16 +75,34 @@ export const ProjectInfo = styled.div`
   gap: clamp(8px, 1vw, 12px);
 `;
 
+const NoResults = styled.div`
+  text-align: center;
+  padding: 40px;
+  color: white;
+  font-size: 1.1rem;
+`;
+
 const ArchiveList = () => {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
     
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchTerm]);
+
+    const filteredArchives = archiveDummyData.filter(archive => {
+        const matchesSearch = searchTerm
+            .split('')
+            .every(char => archive.title.toLowerCase().includes(char.toLowerCase()));
+        return matchesSearch;
+    });
+    
     const itemsPerPage = 18;
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = archiveDummyData.slice(indexOfFirstItem, indexOfLastItem);
-    const totalPages = Math.ceil(archiveDummyData.length / itemsPerPage);
+    const currentItems = filteredArchives.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(filteredArchives.length / itemsPerPage);
 
     const handleArchiveClick = (id: number) => {
         navigate(`/archive/${id}`);
@@ -103,22 +121,32 @@ const ArchiveList = () => {
                     />
                     <SearchIcon />
                     <AddProjectButton onClick={() => navigate('/project/registration')}>
-                    아카이브 프로젝트 등록하기 <AiOutlinePlus size={28}/>
+                        아카이브 프로젝트 등록하기 <AiOutlinePlus size={28}/>
                     </AddProjectButton>
                 </SearchBar>
                 <div style={{width: '75%'}}>
-                    총 {archiveDummyData.length}건의 게시글
+                    총 {filteredArchives.length}건의 게시글
                 </div>
-                <ArchiveGrid>
-                    {currentItems.map((item) => (
-                        <ArchiveItem 
-                            id={item.id}
-                            item={item}
-                        />
-                    ))}
-                </ArchiveGrid>
                 
-                {archiveDummyData.length > 0 && (
+                {filteredArchives.length > 0 ? (
+                    <ArchiveGrid>
+                        {currentItems.map((item) => (
+                            <ArchiveItem 
+                                key={item.id}
+                                id={item.id}
+                                item={item}
+                            />
+                        ))}
+                    </ArchiveGrid>
+                ) : (
+                    <NoResults>
+                        "{searchTerm}"에 대한 검색 결과가 없습니다.
+                        <br />
+                        다른 단어로 검색을 시도해주세요!
+                    </NoResults>
+                )}
+                
+                {filteredArchives.length > 0 && (
                     <Pagination 
                         currentPage={currentPage}
                         totalPages={totalPages}

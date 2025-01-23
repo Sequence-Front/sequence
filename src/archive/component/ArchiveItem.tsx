@@ -65,25 +65,32 @@ const HoverOverlay = styled.div`
     color: #212121;
     opacity: 0;
     transition: opacity 0.3s ease;
-    padding: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    padding: 10px;
+    box-sizing: border-box;
 `;
 
 const OverlayTitle = styled.div`
-    font-size: 1rem;
-    margin: 0;
+    font-size: clamp(1rem, 2vw, 3rem);
+    font-weight: bold;
+    margin-bottom: 8px;
 `;
 
 const StatusContainer = styled.div`
     display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
 `;
 
 const StatItem = styled.div`
     display: flex;
     align-items: center;
     gap: 8px;
+`;
+
+const StatText = styled.div`
+    font-size: clamp(0.5rem, 1.25vw, 1.8rem);
 `;
 
 interface ArchiveItemProps {
@@ -109,16 +116,16 @@ const ArchiveItem = ({ id, item }: ArchiveItemProps) => {
                     <OverlayTitle>{item.title}</OverlayTitle>
                     <StatusContainer>
                         <StatItem>
-                            <span>comment</span>
-                            <span>{item.comment}</span>
+                            <StatText>comment</StatText>
+                            <StatText>{item.comment}</StatText>
                         </StatItem>
                         <StatItem>
-                            <span>bookmark</span>
-                            <span>{item.bookmark}</span>
+                            <StatText>북마크</StatText>
+                            <StatText>{item.bookmark}</StatText>
                         </StatItem>
                         <StatItem>
-                            <span>view</span>
-                            <span>{item.view}</span>
+                            <StatText>조회</StatText>
+                            <StatText>{item.view}</StatText>
                         </StatItem>
                     </StatusContainer>
                 </HoverOverlay>

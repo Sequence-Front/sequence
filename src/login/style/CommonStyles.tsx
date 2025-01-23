@@ -93,10 +93,9 @@ export const Result = styled.div`
 
 export const ResultContainer = styled.div`
   border: 1px solid #9E9E9E;
-  min-width: 300px;
+  display: inline-block;
   padding: 3rem;
-  margin-top: 2rem;
-  margin-bottom: 5rem;
+  margin: 3rem auto;
   text-align: center;
 `;
 
