@@ -1,9 +1,13 @@
-// 2024-1208- 14:56 정준용 완성
 import React, { useState, useEffect, useCallback } from "react";
-import styled from "styled-components";
 import { formatPeriod, validatePeriodInput } from "./utils/func";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import Header from '../asset/component/Header';
 import ProjectMember from "./page/ProjectMember";
-import { AiOutlineArrowRight } from "react-icons/ai";
+import SkillSearch from "./page/SkillSearch";
+import Thumbnail from "./page/Thumbnail";
+import ProjectImg from "./page/ProjectImg";
+import { AiOutlineArrowRight, AiOutlineArrowLeft } from "react-icons/ai";
 
 const Container = styled.div`
   display: flex;
@@ -13,21 +17,60 @@ const Container = styled.div`
   margin: 0 auto;
   align-items: center;
   flex-direction: column;
+  font-family: 'SUIT', sans-serif;
+`
+
+const Arrow = styled.div`
+  display: flex;
+  position: absolute;
+  left: 5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #E32929;
+  font-size: clamp(3rem, 5vw, 5rem);
+  cursor: pointer;
+`;
+
+const HeaderTitleContainer = styled.div`
+  display: flex;
+  position: relative;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(30px, 3.3vw, 44px);
+  font-weight: 700;
+  line-height: 66px;
+  margin: 2rem 0;
+`;
+
+const HeaderTitle= styled.div`
+  display : flex;
 `
 
 const HeaderContainer = styled.div`
   display: flex;
   width: 80%;
   flex-direction: column;
-
-  margin: clamp(4rem, 8vw, 8rem) 0;
+  margin: clamp(3rem, 6vw, 6rem) 0;
+  margin-top: clamp(1rem, 2vw, 2rem);
 `
-const ProjectTitle = styled.div`
+const ProjectTitle = styled.input`
   display :flex;
-  font-size:clamp(1.9rem, 3.8vw, 3.8rem);
-  color: white;
-  margin-bottom: clamp(2rem, 3vw, 3.5rem);
+  font-size:clamp(60px, 5vw, 100px);
+  margin-bottom: clamp(2rem, 3vw, 2rem);
   font-weight: bold;
+  color: white;
+  background-color: #151515;
+  border: none;
+
+  &::placeholder {
+    color: #9e9e9e;
+  }
+
+  &:focus {
+    outline: none;
+    border-bottom: 1px solid #e0e0e0;
+  }
 `
 
 const User = styled.div`
@@ -50,7 +93,7 @@ const ProfileImage = styled.div<{ src: string }>`
 const UserName = styled.div`
   display: flex;
   margin-right: clamp(10px, 1vw, 1rem);
-  font-size: clamp(10px, 1.5vw, 1.5rem);
+  font-size: clamp(18px, 1.5vw, 24px);
   font-family: 'SUIT', sans-serif;
   color: #BDBDBD;
 `
@@ -63,42 +106,17 @@ const Date = styled.div`
   color: #BDBDBD;
 `
 
-const InfoContainer = styled.div`
-  display:flex;
-  width: 20%;
-  margin-right: clamp(1rem, 2vw, 2rem);
-  flex-direction: column;
-  box-sizing: border-box;
-`
-
-const Tag = styled.div`
-  display: flex;
-  color : #E32929;
-  margin-bottom: clamp(1rem, 1.5vw, 1.5rem);
-  font-size:clamp(0.8rem, 1.5vw, 1.5rem);
-  font-family: 'SUIT', sans-serif;
-  font-weight: 700;
-`
-
-const Info = styled.div`
-  display: flex;
-  font-size: clamp(0.8rem, 1.5vw, 1.5rem);
-  color: white;
-    font-family: 'SUIT', sans-serif;
-    font-weight: 600;
-`
-
 const ContentContainer = styled.div`
   display: flex;
   width: 80%;
-  margin-bottom: clamp(5rem,5vw,10rem);
+  margin-bottom: clamp(5rem, 5vw, 10rem);
   
 `
 
 const MetadataContainer = styled.div`
   display: flex;
-  width: 30%;
-  margin-right: clamp(2rem, 3vw, 3rem);
+  width: clamp(300px, 25vw, 400px);
+  margin-right: clamp(1rem, 2vw, 2rem);
   flex-direction: column;
   box-sizing: border-box;
 `
@@ -113,7 +131,7 @@ const Input = styled.input`
   display: flex;
   flex: 1;
   padding: clamp(0.5rem, 1vw, 15px);
-  font-size: clamp(10px, 1vw, 1.3rem);
+  font-size: clamp(10px, 1vw, 18px);
   padding-left: 0;
   background: #151515;
   color: white;
@@ -135,10 +153,9 @@ const InputLink = styled.input`
   width: 100%;
   background-color: #212121;
   color: #9e9e9e;
-  font-size: clamp(10px, 1.2vw, 1.3rem);
+  font-size: clamp(10px, 1vw, 18px);
   padding: clamp(0.5rem, 1vw, 15px);
   border: none;
-  font-size: clamp(10px, 1.2vw, 1.3rem);
   box-sizing: border-box;
 
   &::placeholder {
@@ -152,7 +169,6 @@ const InputLink = styled.input`
 `
 
 const Content = styled.div`
-  flex: 1;
   margin-bottom: clamp(1rem, 2vw, 2rem);
 `
 
@@ -169,16 +185,16 @@ const Title = styled.div`
   font-family: "SUIT";
   font-weight: 500;
   margin-bottom: clamp(5px, 0.5vw, 10px);
-  font-size: clamp(1rem, 1.5vw, 1.5rem);
+  font-size: clamp(1rem, 1vw, 20px);
 `
 
 const Option = styled.button<{ selected: boolean }>`
   all: unset;
   display: inline-block;
-  padding: clamp(5px, 1vw, 8px) clamp(6px, 1vw, 10px);
+  padding: clamp(3px, 1vw, 6px) clamp(5px, 1vw, 8px);
   margin: clamp(5px, 1vw, 7px);
   margin-left: 0;
-  font-size: clamp(0.7rem, 1.2vw, 1.1rem);
+  font-size: clamp(0.5rem, 1vw, 1rem);
   background-color: ${(props) => (props.selected ? "red" : "#151515")};
   border: 1px solid ${(props) => (props.selected ? "red" : "white")};
   color: ${(props) => (props.selected ? "#151515" : "white")};
@@ -193,16 +209,17 @@ const Option = styled.button<{ selected: boolean }>`
 const TextAreaContainer = styled.div`
   position: relative;
   width: 100%;
+  margin-bottom: clamp(1rem, 2vw, 2rem);
 `
 
 const TextArea = styled.textarea`
   width: 100%;
-  height: clamp(13rem, 26vw, 26rem);
+  height: clamp(13rem, 20vw, 24rem);
   background-color: #212121;
   color: white;
   border: none;
   padding: clamp(0.5rem, 1vw, 15px);
-  font-size: clamp(10px, 1.2vw, 1.3rem);
+  font-size: clamp(10px, 1vw, 18px);
   resize: none;
   box-sizing: border-box;
 
@@ -233,7 +250,7 @@ const ButtonContainer = styled.button`
   padding: 10px 20px;
   border: 1px solid #e32929;
   background-color: transparent;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   color: #e32929;
   font-family: 'SUIT', sans-serif;
   font-size: clamp(0.8rem, 1.5vw, 1.5rem);
@@ -252,24 +269,19 @@ const ButtonText = styled.div`
 `
 
 const ErrorMessage = styled.div`
-  color: red;
-  font-size: 1rem;
+  color: white;
+  font-size: clamp(12px,1.5vw,24px);
   margin-bottom: 1rem;
 `
 
-const ProjectRegistration = () => {
+const ArchiveRegistration = () => {
+  const navigate = useNavigate();
+
   const [projectData, setProjectData] = useState({
     title: "",
     period: "",
     field: "",
     description: "",
-  });
-
-  const [recruitmentData, setRecruitmentData] = useState({
-    person: "",
-    role: "",
-    skill: "",
-    recruitmentComment: "",
   });
 
   const [ProgressData, setProgressData] = useState({
@@ -283,13 +295,15 @@ const ProjectRegistration = () => {
     "경험", 
     "스터디"
 ]);
-  const [roles] = useState<string[]>([
-    "UX/UI Design",
-    "BX Design",
-    "Front-end",
-    "Back-end",
-    "PM",
+
+  const [thumbnailImage, setThumbnailImage] = useState<string | null>(null);
+  const [projectImages, setProjectImages] = useState<string[]>([]); 
+  const [users] = useState([
+    { name: "홍길동", role: "PM", profile: "" },
+    { name: "홍길동", role: "Front-end", profile: "" },
+    { name: "정준용", role: "Back-end", profile: "" },
   ]);
+
   const [skills] = useState<string[]>([
     "Adobe Illustration",
     "Adobe Photoshop",
@@ -306,26 +320,9 @@ const ProjectRegistration = () => {
     "Blender",
   ]);
   
-  const [meetings] = useState<string[]>([
-    "오프라인",
-    "온라인",
-    "병행",
-  ]);
-
-  const [steps] = useState<string[]>([
-    "시작 전",
-    "기획 중",
-    "디자인 중",
-    "개발중",
-    "창업중",
-  ]);
-
 
   const [selectedFields, setSelectedFields] = useState<string[]>([]);
-  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
-  const [selectedMeetings, setSelectedMeetings] = useState<string[]>([]);
-  const [selectedSteps, setSelectedSteps] = useState<string[]>([]);
   const [selectedMembers, setSelectedMembers] = useState<
     { id: number; name: string; role: string; profile: string }[]
   >([]);
@@ -336,38 +333,6 @@ const ProjectRegistration = () => {
       setSelectedFields(selectedFields.filter((s) => s !== field));
     } else {
       setSelectedFields([...selectedFields, field]);
-    }
-  };
-
-  const handleRoleClick = (role: string) => {
-    if (selectedRoles.includes(role)) {
-      setSelectedRoles(selectedRoles.filter((s) => s !== role));
-    } else {
-      setSelectedRoles([...selectedRoles, role]);
-    }
-  };
-
-  const handleSkillClick = (skill: string) => {
-    if (selectedSkills.includes(skill)) {
-      setSelectedSkills(selectedSkills.filter((s) => s !== skill));
-    } else {
-      setSelectedSkills([...selectedSkills, skill]);
-    }
-  };
-
-  const handleMeetingClick = (meeting: string) => {
-    if (selectedMeetings.includes(meeting)) {
-      setSelectedMeetings(selectedMeetings.filter((s) => s !== meeting));
-    } else {
-      setSelectedMeetings([...selectedMeetings, meeting]);
-    }
-  };
-
-  const handleStepClick = (step: string) => {
-    if (selectedSteps.includes(step)) {
-      setSelectedSteps(selectedSteps.filter((s) => s !== step));
-    } else {
-      setSelectedSteps([...selectedSteps, step]);
     }
   };
 
@@ -389,6 +354,7 @@ const ProjectRegistration = () => {
 
 
   const validateInputs = useCallback(() => {
+    return "팀원들이 모두 평가를 진행해야 프로젝트가 등록됩니다.";
     if (!projectData.title.trim()) {
       return "프로젝트 제목을 입력해주세요.";
     }
@@ -401,37 +367,16 @@ const ProjectRegistration = () => {
     if (!projectData.description.trim()) {
       return "프로젝트 소개를 입력해주세요.";
     }
-    if (!recruitmentData.person.trim()) {
-      return "모집 인원을 입력해주세요.";
-    }
-    if (selectedRoles.length === 0) {
-      return "역할을 선택해주세요.";
-    }
     if (selectedSkills.length === 0) {
       return "스킬을 선택해주세요.";
     }
-    if (!recruitmentData.recruitmentComment.trim()) {
-      return "모집 설명을 입력해주세요.";
-    }
-    if(selectedMeetings.length===0){
-      return "회의를 선택해 주세요."
-    }
-    if(selectedSteps.length===0){
-      return "프로젝트 단계를 선택해 주세요."
-    }
 
-    return "";
   }, [
     projectData.title,
     projectData.period,
     projectData.description,
-    recruitmentData.person,
-    recruitmentData.recruitmentComment,
     selectedFields,
-    selectedRoles,
     selectedSkills,
-    selectedMeetings,
-    selectedSteps,
   ]);
 
   useEffect(() => {
@@ -447,20 +392,32 @@ const ProjectRegistration = () => {
     }
 
     console.log("프로젝트 데이터:", projectData);
-    console.log("모집 데이터:", recruitmentData);
     console.log("프로세스 데이터:", ProgressData);
     console.log("선택된 분야:", selectedFields);
-    console.log("선택된 역할:", selectedRoles);
     console.log("선택된 스킬:", selectedSkills);
-    console.log("선택된 회의 방식:", selectedMeetings);
-    console.log("선택된 단계:", selectedSteps);
     console.log("선택된 멤버: ", selectedMembers)
+    console.log("썸네일 이미지:", thumbnailImage);
+    console.log("프로젝트 이미지들:", projectImages);
   };
 
   return (
+    <>
+      <Header headerName="archive"/> 
     <Container>
+      <HeaderTitleContainer>
+        <Arrow>
+          <AiOutlineArrowLeft style={{fontSize: "clamp(30px, 3vw, 50px"}}  onClick = {()=>navigate('/archive')}/>
+        </Arrow>
+        <HeaderTitle>아카이브 프로젝트 등록</HeaderTitle>
+      </HeaderTitleContainer>
       <HeaderContainer>
-        <ProjectTitle>프로젝트 제목을 입력해주세요!</ProjectTitle>
+        <ProjectTitle
+        placeholder="프로젝트 제목을 입력해주세요!"
+        value={projectData.title}
+        onChange={(e) =>
+          setProjectData((prev) => ({ ...prev, title: e.target.value }))
+        }
+        />
         <User>
           <ProfileImage src = ""/>
           <UserName>홍길동</UserName>
@@ -468,21 +425,7 @@ const ProjectRegistration = () => {
         </User>
       </HeaderContainer>
       <ContentContainer>
-      <InfoContainer>
-        <Tag>Project</Tag>
-        <Info>어떤 프로젝트인가요?</Info>
-      </InfoContainer>
       <MetadataContainer>
-        <Title>제목</Title>
-        <InputContainer>
-          <Input
-            placeholder="프로젝트 제목을 입력해주세요"
-            value={projectData.title}
-            onChange={(e) =>
-              setProjectData((prev) => ({ ...prev, title: e.target.value }))
-            }
-          />
-        </InputContainer>
         <Title>기간</Title>
         <InputContainer>
           <Input
@@ -503,8 +446,6 @@ const ProjectRegistration = () => {
             </Option>
           ))}
         </Content>
-      </MetadataContainer>
-      <ProjectContainer>
         <Title>프로젝트 소개</Title>
         <TextAreaContainer>
           <TextArea
@@ -515,112 +456,24 @@ const ProjectRegistration = () => {
                 description: e.target.value,
               }))
             }
-            placeholder="프로젝트 소개를 450자 이내로 적어주세요!"
-            maxLength={450}
+            placeholder="프로젝트 소개를 300자 이내로 적어주세요!"
+            maxLength={300}
           />
           <CharacterCount>
-            {projectData.description.length}/450
+            {projectData.description.length}/300
           </CharacterCount>
         </TextAreaContainer>
-      </ProjectContainer>
-      </ContentContainer>
-
-
-      <ContentContainer>
-      <InfoContainer>
-        <Tag>Recruitment</Tag>
-        <Info>어떤 사람을 모집하나요?</Info>
-      </InfoContainer>
-      <MetadataContainer>
-        <Title>인원</Title>
-        <InputContainer>
-          <Input
-            placeholder="모집하는 인원 숫자를 입력해주세요"
-            value={recruitmentData.person}
-            onChange={(e) =>
-              setRecruitmentData((prev) => ({ ...prev, person: e.target.value }))
-            }
-          />
-        </InputContainer>
-        <Title>역할</Title>
-        <Content>
-          {roles.map((role) => (
-            <Option
-              key={role}
-              selected={selectedRoles.includes(role)}
-              onClick={() => handleRoleClick(role)}
-            >
-              {role}
-            </Option>
-          ))}
-        </Content>
-        <Title>필요 스킬</Title>
-        <Content>
-          {skills.map((skill) => (
-            <Option
-              key={skill}
-              selected={selectedSkills.includes(skill)}
-              onClick={() => handleSkillClick(skill)}
-            >
-              {skill}
-            </Option>
-          ))}
-        </Content>
-      </MetadataContainer>
-      <ProjectContainer>
-        <Title>모집</Title>
-        <TextAreaContainer>
-          <TextArea
-            value={recruitmentData.recruitmentComment}
-            onChange={(e) =>
-              setRecruitmentData((prev) => ({
-                ...prev,
-                recruitmentComment: e.target.value,
-              }))
-            }
-            placeholder="모집 인원에 대한 글을 450자 이내로 적어주세요!"
-            maxLength={450}
-          />
-          <CharacterCount>
-            {recruitmentData.recruitmentComment.length}/450
-          </CharacterCount>
-        </TextAreaContainer>
-      </ProjectContainer>
-      </ContentContainer>
-
-      <ContentContainer>
-      <InfoContainer>
-        <Tag>Progress</Tag>
-        <Info>진행방식은 어떤가요?</Info>
-      </InfoContainer>
-      <MetadataContainer>
-        <Title>회의</Title>
-        <Content>
-          {meetings.map((meeting) => (
-            <Option
-              key={meeting}
-              selected={selectedMeetings.includes(meeting)}
-              onClick={() => handleMeetingClick(meeting)}
-            >
-              {meeting}
-            </Option>
-          ))}
-        </Content>
-        <Title>프로젝트 단계</Title>
-        <Content>
-          {steps.map((step) => (
-            <Option
-              key={step}
-              selected={selectedSteps.includes(step)}
-              onClick={() => handleStepClick(step)}
-            >
-              {step}
-            </Option>
-          ))}
-        </Content>
-      </MetadataContainer>
-      <ProjectContainer>
-        <Title>링크 및 첨부</Title>
+        <Title>함께한 멤버</Title>
+        <ProjectMember
+         results={users} 
+         onMemberSelect={setSelectedMembers}
+         />
+        <Title>사용 스킬</Title>
+        <SkillSearch
+            results={skills}
+            onSkillSelect={setSelectedSkills}
+        />
+        <Title>링크</Title>
         <TextAreaContainer>
           <InputLink
             value={ProgressData.link}
@@ -630,29 +483,25 @@ const ProjectRegistration = () => {
                 link: e.target.value,
               }))
             }
-            placeholder="URL을 입력해 주세요"
+            placeholder="프로젝트가 올라간 페이지의 링크를 입력해 주세요!"
           />
         </TextAreaContainer>
+      </MetadataContainer>
+      <ProjectContainer>
+        <Thumbnail onDataChange={({ imageUrl }) => setThumbnailImage(imageUrl)} />
+        <ProjectImg
+              onDataChange={({ imageUrls }) => setProjectImages(imageUrls)} 
+            />
       </ProjectContainer>
       </ContentContainer>
- 
-
-      <ContentContainer>
-      <InfoContainer>
-        <Tag>Member</Tag>
-        <Info>함께한 멤버들은 누구인가요?</Info>
-      </InfoContainer>
-      <div style= {{display: 'flex', flex:'1'}}>
-      <ProjectMember onMemberSelect={setSelectedMembers} />
-      </div>
-      </ContentContainer>
-      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
       <ButtonContainer onClick={handleRegisterClick}>
         <ButtonText>등록하기</ButtonText>
         <AiOutlineArrowRight style={{ fontSize: "30px", strokeWidth: "0.5px" }} />
       </ButtonContainer>
+      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
     </Container>
+    </>
   );
 };
 
-export default ProjectRegistration;
+export default ArchiveRegistration;
