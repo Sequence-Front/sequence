@@ -130,7 +130,7 @@ const DeleteButton = styled.button`
   }
 `
 
-const ArchiveMember = ({ onMemberSelect }: { onMemberSelect: (members: { id: number; name: string; role: string; profile: string }[]) => void }) => {
+const ProjectMember = ({ onMemberSelect }: { onMemberSelect: (members: { id: number; name: string; role: string; profile: string }[]) => void }) => {
   const [userList, setUserList] = useState<
     { id: number; name: string; role: string; profile: string }[]
   >([]);
@@ -210,4 +210,4 @@ const ArchiveMember = ({ onMemberSelect }: { onMemberSelect: (members: { id: num
   );
 };
 
-export default ArchiveMember;
+export default ProjectMember;

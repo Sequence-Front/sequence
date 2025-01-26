@@ -120,7 +120,7 @@ const ArchiveList = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                     <SearchIcon />
-                    <AddProjectButton onClick={() => navigate('/project/registration')}>
+                    <AddProjectButton onClick={() => navigate('/archive/registration')}>
                         아카이브 프로젝트 등록하기 <AiOutlinePlus size={28}/>
                     </AddProjectButton>
                 </SearchBar>
