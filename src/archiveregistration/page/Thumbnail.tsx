@@ -3,17 +3,18 @@ import styled from "styled-components";
 import { AiOutlinePlus } from "react-icons/ai";
 
 const Container = styled.div`
+  display: flex;
+  width: 100%;
   background-color: #151515;
   color: white;
-  display: flex;
   align-items: flex-start;
 `;
 
 const PhotoContainer = styled.div`
   display: flex;
+  width: 100%;
   flex-direction: column;
   align-items: center;
-  margin-right: clamp(1rem, 2vw, 2rem);
 `;
 
 const ShowInitial = styled.div`
@@ -34,7 +35,7 @@ const PhotoPreview = styled.label<{ imageUrl: string | null }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: clamp(600px, 56vw, 990px);
+  width: 100%;
   background-color: #1e1e1e;
   cursor: pointer;
   overflow: hidden;

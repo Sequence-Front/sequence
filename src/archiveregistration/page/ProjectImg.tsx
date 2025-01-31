@@ -5,6 +5,7 @@ import { FiTrash } from "react-icons/fi";
 
 const Container = styled.div`
   background-color: #151515;
+  width: 100%;
   color: white;
   display: flex;
   flex-direction: column;
@@ -16,7 +17,7 @@ const PhotoContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: clamp(600px, 56vw, 990px);
+  width: 100%;
 `;
 
 const ShowInitial = styled.div`
@@ -37,7 +38,7 @@ const PhotoPreview = styled.label<{ imageUrl?: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: clamp(600px, 56vw, 990px);
+  width: 100%;
   background-color: none;
   cursor: pointer;
   overflow: hidden;
@@ -59,8 +60,7 @@ const PhotoPreview = styled.label<{ imageUrl?: string }>`
 const ImageGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
-  width: clamp(600px, 56vw, 990px);
+  width: 100%;
 `;
 
 const ImageContainer = styled.div`

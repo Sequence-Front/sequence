@@ -17,9 +17,17 @@ const Container = styled.div`
   margin: 0 auto;
   align-items: center;
   flex-direction: column;
-  font-family: 'SUIT', sans-serif;
+
 `
 
+const FlexContainer = styled.div`
+  display: flex;
+  width: 75%;
+  margin: 0 auto;
+  align-items: center;
+  flex-direction: column;
+  font-family: 'SUIT', sans-serif;
+`
 const Arrow = styled.div`
   display: flex;
   position: absolute;
@@ -49,7 +57,7 @@ const HeaderTitle= styled.div`
 
 const HeaderContainer = styled.div`
   display: flex;
-  width: 80%;
+  width: 100%;
   flex-direction: column;
   margin: clamp(3rem, 6vw, 6rem) 0;
   margin-top: clamp(1rem, 2vw, 2rem);
@@ -108,14 +116,14 @@ const Date = styled.div`
 
 const ContentContainer = styled.div`
   display: flex;
-  width: 80%;
+  width: 100%;
   margin-bottom: clamp(5rem, 5vw, 10rem);
   
 `
 
 const MetadataContainer = styled.div`
   display: flex;
-  width: clamp(300px, 25vw, 400px);
+  width: 30%;
   margin-right: clamp(1rem, 2vw, 2rem);
   flex-direction: column;
   box-sizing: border-box;
@@ -169,12 +177,12 @@ const InputLink = styled.input`
 `
 
 const Content = styled.div`
-  margin-bottom: clamp(1rem, 2vw, 2rem);
+  margin-bottom: clamp(1rem, 4vw, 4rem);
 `
 
 const ProjectContainer = styled.div`
   display: flex;
-  flex:1;
+  width: 70%;
   flex-direction: column;
   box-sizing: border-box;
   gap: clamp(8px, 1vw, 1rem);
@@ -209,7 +217,7 @@ const Option = styled.button<{ selected: boolean }>`
 const TextAreaContainer = styled.div`
   position: relative;
   width: 100%;
-  margin-bottom: clamp(1rem, 2vw, 2rem);
+  margin-bottom: clamp(1rem, 4vw, 4rem);
 `
 
 const TextArea = styled.textarea`
@@ -410,6 +418,7 @@ const ArchiveRegistration = () => {
         </Arrow>
         <HeaderTitle>아카이브 프로젝트 등록</HeaderTitle>
       </HeaderTitleContainer>
+      <FlexContainer>
       <HeaderContainer>
         <ProjectTitle
         placeholder="프로젝트 제목을 입력해주세요!"
@@ -499,6 +508,7 @@ const ArchiveRegistration = () => {
         <AiOutlineArrowRight style={{ fontSize: "30px", strokeWidth: "0.5px" }} />
       </ButtonContainer>
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      </FlexContainer>
     </Container>
     </>
   );
