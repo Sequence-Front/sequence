@@ -3,16 +3,26 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Header from '../asset/component/Header';
 import { CommonButton } from '../login/components/CommonButton';
-import { GenderSelect } from '../common/components/GenderSelect';
 import * as S from '../signup/style/SignUpPageStyle';
 import { SignUpInput } from '../signup/component/SignUpInput';
-import { BirthDateInput } from '../common/components/BirthDateInput';
-import { IoMdArrowBack } from "react-icons/io";
+import { FaArrowRight } from "react-icons/fa";
+import { Result, ResultContainer, IdText } from '../login/style/CommonStyles';
+import { SignUpButton } from '../login/style/LoginStyle';
+import BackButton from '../common/components/BackButton';
 
 export const PageNumber = styled.div`
   font-size: clamp(1.5rem, 1.5vw, 2rem);
   color: #8f8f8f;
   margin-bottom: clamp(4rem, 6vw, 8rem);
+`;
+
+export const Title = styled.div`
+  display: flex;
+  font-size: clamp(3rem, 3.5vw, 4rem);
+  font-weight: bold;
+  color: #FFFFFF;
+  margin: clamp(6rem, 8vw, 10rem) 0;
+  width: 90%;
 `;
 
 const ErrorMessage = styled.div`
@@ -29,21 +39,16 @@ const WithdrawPage: React.FC = () => {
   });
 
   const [isFormValid, setIsFormValid] = useState(false);
-  const [isDuplicateIdCheckActive, setIsDuplicateIdCheckActive] = useState(false);
-  const [isDuplicateEmailCheckActive, setIsDuplicateEmailCheckActive] = useState(false);
-  const [duplicateChecks, setDuplicateChecks] = useState({
-    userId: false,
-    email: false
-  });
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, boolean>>({});
+  const [showResult, setShowResult] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const { password, passwordConfirm } = formData;
     setIsFormValid(
       password !== '' && 
-      passwordConfirm !== '' 
+      passwordConfirm !== ''
     );
   }, [formData]);
 
@@ -53,22 +58,8 @@ const WithdrawPage: React.FC = () => {
       ...prev,
       [name]: value
     }));
-
-    // 이메일이나 아이디가 변경되면 해당 중복체크 상태를 초기화
-    if (name === 'email') {
-      setDuplicateChecks(prev => ({
-        ...prev,
-        email: false
-      }));
-    }
-    if (name === 'userId') {
-      setDuplicateChecks(prev => ({
-        ...prev,
-        userId: false
-      }));
-    }
-  };
-
+  }
+    
   const validateForm = () => {
     const newFieldErrors: Record<string, boolean> = {};
 
@@ -95,8 +86,7 @@ const WithdrawPage: React.FC = () => {
     setErrorMessage(''); // 에러 메시지 초기화
     
     if (validateForm()) {
-      // 다음 페이지로 이동
-      navigate('/signup2', { state: formData });
+      setShowResult(true);
     }
   };
 
@@ -104,11 +94,17 @@ const WithdrawPage: React.FC = () => {
     <>
       <Header headerName="SignUp" />
       <S.Container>
-        <S.Title>
-          <IoMdArrowBack onClick={() => navigate(-1)} style={{cursor: 'pointer', color: '#E32929'}}/>
-          회원탈퇴
-        </S.Title>
+      <Title> <div style={{display: 'flex', alignItems: 'center', cursor: 'pointer', color: '#E32929'}}> {showResult ? <></> : <BackButton /> }</div> <div style={{margin: '0 auto'}}>회원탈퇴</div> </Title>
         <S.FormContainer>
+          {showResult && (
+            <Result>
+              회원탈퇴 되었습니다.
+            <ResultContainer>
+              <IdText>이메일</IdText>
+            </ResultContainer>
+            </Result>
+          )}
+          {!showResult && (
           <S.Section>
             <S.CategoryTitle>비밀번호 입력</S.CategoryTitle>
             <S.FormSection>
@@ -133,16 +129,25 @@ const WithdrawPage: React.FC = () => {
               />
             </S.FormSection>
           </S.Section>
+          )}
 
-          <S.ButtonWrapper>
-            {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-            <CommonButton 
-              isActive={isFormValid}
-              onClick={handleNext}
-            >
-              회원 탈퇴
-            </CommonButton>
-          </S.ButtonWrapper>
+          {showResult ? (
+            <S.ButtonWrapper>
+            <SignUpButton type="button" onClick={() => navigate('/')}>
+                  돌아가기 <FaArrowRight />
+                </SignUpButton>
+            </S.ButtonWrapper>
+          ) : (
+            <S.ButtonWrapper>
+              {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+              <CommonButton 
+                isActive={isFormValid}
+                onClick={handleNext}
+              >
+                회원 탈퇴
+              </CommonButton>
+            </S.ButtonWrapper>
+          )}
         </S.FormContainer>
       </S.Container>
     </>

@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { formatPeriod, validatePeriodInput } from "./utils/func";
-import ArchiveMember from "./page/ArchiveMember";
+import ProjectMember from "./page/ProjectMember";
 import { AiOutlineArrowRight } from "react-icons/ai";
 
 const Container = styled.div`
@@ -398,9 +398,6 @@ const ProjectRegistration = () => {
     if (selectedFields.length === 0) {
       return "분야를 선택해주세요.";
     }
-    if (!projectData.description.trim()) {
-      return "프로젝트 소개를 입력해주세요.";
-    }
     if (!recruitmentData.person.trim()) {
       return "모집 인원을 입력해주세요.";
     }
@@ -409,9 +406,6 @@ const ProjectRegistration = () => {
     }
     if (selectedSkills.length === 0) {
       return "스킬을 선택해주세요.";
-    }
-    if (!recruitmentData.recruitmentComment.trim()) {
-      return "모집 설명을 입력해주세요.";
     }
     if(selectedMeetings.length===0){
       return "회의를 선택해 주세요."
@@ -424,9 +418,7 @@ const ProjectRegistration = () => {
   }, [
     projectData.title,
     projectData.period,
-    projectData.description,
     recruitmentData.person,
-    recruitmentData.recruitmentComment,
     selectedFields,
     selectedRoles,
     selectedSkills,
@@ -643,7 +635,7 @@ const ProjectRegistration = () => {
         <Info>함께한 멤버들은 누구인가요?</Info>
       </InfoContainer>
       <div style= {{display: 'flex', flex:'1'}}>
-      <ArchiveMember onMemberSelect={setSelectedMembers} />
+      <ProjectMember onMemberSelect={setSelectedMembers} />
       </div>
       </ContentContainer>
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
