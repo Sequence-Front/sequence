@@ -75,7 +75,7 @@ const NavItem = styled.a<{ active?: boolean }>`
 const TagContainer = styled.div`
   padding: 1rem 0;
   position: relative;
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
 `;
 
 const TagWrapper = styled.div`
@@ -100,10 +100,7 @@ const SelectedTags = styled.div`
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
+  margin-top: 1rem;
 `;
 
 const SelectedTag = styled.span`
@@ -185,13 +182,6 @@ const ProjectPage: React.FC = () => {
         ? prev.filter(t => t !== tag)
         : [...prev, tag]
     );
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
   };
 
   const [activeCategory, setActiveCategory] = useState<TagCategory>('분야');

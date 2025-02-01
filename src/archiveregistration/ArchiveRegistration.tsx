@@ -250,7 +250,7 @@ const CharacterCount = styled.div`
   font-size: 12px;
 `
 
-const ButtonContainer = styled.button`
+export const ButtonContainer = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -272,7 +272,7 @@ const ButtonContainer = styled.button`
   }
 `
 
-const ButtonText = styled.div`
+export const ButtonText = styled.div`
   margin-right: 20px;
 `
 
@@ -363,21 +363,6 @@ const ArchiveRegistration = () => {
 
   const validateInputs = useCallback(() => {
     return "팀원들이 모두 평가를 진행해야 프로젝트가 등록됩니다.";
-    if (!projectData.title.trim()) {
-      return "프로젝트 제목을 입력해주세요.";
-    }
-    if (!projectData.period.trim()) {
-      return "프로젝트 기간을 입력해주세요.";
-    }
-    if (selectedFields.length === 0) {
-      return "분야를 선택해주세요.";
-    }
-    if (!projectData.description.trim()) {
-      return "프로젝트 소개를 입력해주세요.";
-    }
-    if (selectedSkills.length === 0) {
-      return "스킬을 선택해주세요.";
-    }
 
   }, [
     projectData.title,
@@ -406,6 +391,8 @@ const ArchiveRegistration = () => {
     console.log("선택된 멤버: ", selectedMembers)
     console.log("썸네일 이미지:", thumbnailImage);
     console.log("프로젝트 이미지들:", projectImages);
+    
+    navigate('/teamevaluation');
   };
 
   return (
@@ -504,7 +491,7 @@ const ArchiveRegistration = () => {
       </ProjectContainer>
       </ContentContainer>
       <ButtonContainer onClick={handleRegisterClick}>
-        <ButtonText>등록하기</ButtonText>
+        <ButtonText>팀원평가 하러가기</ButtonText>
         <AiOutlineArrowRight style={{ fontSize: "30px", strokeWidth: "0.5px" }} />
       </ButtonContainer>
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}

@@ -5,9 +5,10 @@ import Header from '../asset/component/Header';
 import { CommonButton } from '../login/components/CommonButton';
 import * as S from '../signup/style/SignUpPageStyle';
 import { SignUpInput } from '../signup/component/SignUpInput';
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa";
 import { Result, ResultContainer, IdText } from '../login/style/CommonStyles';
 import { SignUpButton } from '../login/style/LoginStyle';
+import BackButton from '../common/components/BackButton';
 
 export const PageNumber = styled.div`
   font-size: clamp(1.5rem, 1.5vw, 2rem);
@@ -93,7 +94,7 @@ const WithdrawPage: React.FC = () => {
     <>
       <Header headerName="SignUp" />
       <S.Container>
-        <Title> <div style={{display: 'flex', alignItems: 'center', cursor: 'pointer', color: '#E32929'}}> <FaArrowLeft onClick={() => navigate(-1)} /></div> <div style={{margin: '0 auto'}}>회원탈퇴</div> </Title>
+      <Title> <div style={{display: 'flex', alignItems: 'center', cursor: 'pointer', color: '#E32929'}}> {showResult ? <></> : <BackButton /> }</div> <div style={{margin: '0 auto'}}>회원탈퇴</div> </Title>
         <S.FormContainer>
           {showResult && (
             <Result>

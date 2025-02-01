@@ -29,7 +29,7 @@ export const Section = styled.div`
 `;
 
 export const CategoryTitle = styled.div`
-  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  font-size: clamp(1.2rem, 1.8vw, 1.5rem);
   color: #FFFFFF;
   white-space: nowrap;
   margin-right: clamp(2rem, 2vb, 3rem);

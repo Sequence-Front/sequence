@@ -12,10 +12,11 @@ export const Container = styled.div`
   background-color: #151515;
 `;
 
-export const Title = styled.h1`
+export const Title = styled.div`
   font-size: clamp(3rem, 3.5vw, 4rem);
-  margin-bottom: clamp(4rem, 6vw, 8rem);
+  margin: clamp(4rem, 6vw, 8rem) 0;
   color: #FFFFFF;
+  font-weight: bold;
 `;
 
 export const ContentWrapper = styled.div<ContentWrapperProps>`

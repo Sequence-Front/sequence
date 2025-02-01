@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const CommonButton = styled.button<{ isActive: boolean }>`
-  min-width: 25%;
+  min-width: 500px;
   padding: clamp(0.8rem, 1.5vw, 1.2rem) clamp(2rem, 3vw, 4rem);
   border: none;
   border-radius: 4px;

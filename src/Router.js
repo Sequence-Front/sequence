@@ -19,6 +19,7 @@ import ProjectPage from './project/ProjectPage';
 import WithdrawPage from './withdraw/WithdrawPage';
 import ProjectDetailPage from './projectdetail/ProjectDetailPage';
 import CommentDetail from './projectdetail/components/CommentDetail';
+import TeamEvaluationPage from './teamevaluation/TeamEvaluationPage';
 
 const AppRouter = () => {
   return (
@@ -43,6 +44,7 @@ const AppRouter = () => {
         <Route path="/withdraw" element={<WithdrawPage />} />
         <Route path="/projectdetail" element={<ProjectDetailPage />} />
         <Route path="/commentdetail" element={<CommentDetail />} />
+        <Route path="/teamevaluation" element={<TeamEvaluationPage />} />
       </Routes>
     </Router> 
   );
