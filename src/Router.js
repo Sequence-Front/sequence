@@ -16,6 +16,7 @@ import FindPasswordPage from './login/page/FindPasswordPage';
 import SignUpPage from './signup/SignUpPage';
 import SignUpComplete from './signup2/SignUpComplete';
 import ProjectPage from './project/ProjectPage';
+import ArchiveDetail from './archivedetail/ArchiveDetail'
 import WithdrawPage from './withdraw/WithdrawPage';
 import ProjectDetailPage from './projectdetail/ProjectDetailPage';
 import CommentDetail from './projectdetail/components/CommentDetail';
@@ -35,6 +36,7 @@ const AppRouter = () => {
         <Route path="/announcement" element={<AnnouncementList />} />
         <Route path="/announcement/1" element={<AnnouncementDetail />} />
         <Route path="/archive" element={<Archivelist />} />
+        <Route path="/archive/1" element={<ArchiveDetail />} />
         <Route path="/archive/registration" element={<ArchiveRegistration />} />
         <Route path="/project/registration" element={<ProjectRegistration />} />
         <Route path="/mypage" element={<MyPage />} />

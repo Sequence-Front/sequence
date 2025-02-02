@@ -49,6 +49,7 @@ const HeaderTitleContainer = styled.div`
   font-weight: 700;
   line-height: 66px;
   margin: 2rem 0;
+  margin-top: 5rem;
 `;
 
 const HeaderTitle= styled.div`
