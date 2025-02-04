@@ -12,7 +12,7 @@ import SelfIntroduction from "./page/SelfIntroduction";
 import { PageNumber } from "../signup/SignUpPage";
 import { Title as STitle } from "../signup/style/SignUpPageStyle";
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 const Container = styled.div`
@@ -124,6 +124,10 @@ const ErrorMessage = styled.div`
 `
 
 const SignUp = () => {
+  const location = useLocation();
+  const data = location.state;
+  console.log(data);
+
   const [skills] = useState<string[]>([
     "Adobe Illustration",
     "Adobe Photoshop",

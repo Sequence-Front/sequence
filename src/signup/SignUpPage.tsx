@@ -1,14 +1,14 @@
 //24-11-26 박승균
 // {
 // address : "서울시 여러분 담배꽁초",
-// birthDate : "1999.09.25",
+// birth : "1999.09.25",
 // email : "tmdrbs0925@gmail.com",
 // gender : "남성",
 // name : "박승균",
 // password : "qwer1234",
 // passwordConfirm : "qwer1234",
 // phone : "01090362183",
-// userId : "psg925"
+// username : "psg925"
 // }
 
 import React, { useState, useEffect } from 'react';
@@ -38,13 +38,13 @@ const SignUpPage: React.FC = () => {
   const [formData, setFormData] = useState({
     // 기본 정보
     name: '',
-    birthDate: '',
+    birth: '',
     gender: '',
     phone: '',
     email: '',
     address: '',
     // 로그인 정보
-    userId: '',
+    username: '',
     password: '',
     passwordConfirm: '',
   });
@@ -53,7 +53,7 @@ const SignUpPage: React.FC = () => {
   const [isDuplicateIdCheckActive, setIsDuplicateIdCheckActive] = useState(false);
   const [isDuplicateEmailCheckActive, setIsDuplicateEmailCheckActive] = useState(false);
   const [duplicateChecks, setDuplicateChecks] = useState({
-    userId: false,
+    username: false,
     email: false
   });
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -61,19 +61,19 @@ const SignUpPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const { userId, password, passwordConfirm, name, birthDate, gender, phone, email, address } = formData;
+    const { username, password, passwordConfirm, name, birth, gender, phone, email, address } = formData;
     setIsFormValid(
-      userId !== '' && 
+      username !== '' && 
       password !== '' && 
       passwordConfirm !== '' &&
       name !== '' &&
-      birthDate !== '' &&
+      birth !== '' &&
       gender !== '' &&
       phone !== '' &&
       email !== '' &&
       address !== ''
     );
-    setIsDuplicateIdCheckActive(userId.length > 0);
+    setIsDuplicateIdCheckActive(username.length > 0);
     setIsDuplicateEmailCheckActive(email.length > 0);
   }, [formData]);
 
@@ -91,10 +91,10 @@ const SignUpPage: React.FC = () => {
         email: false
       }));
     }
-    if (name === 'userId') {
+    if (name === 'username') {
       setDuplicateChecks(prev => ({
         ...prev,
-        userId: false
+        username: false
       }));
     }
   };
@@ -111,11 +111,11 @@ const SignUpPage: React.FC = () => {
       // API 호출 로직이 들어갈 자리
       // 중복 체크 후 중복이면 true, 아니면 false
       // {
-      //   userId : "psg925"
+      //   username : "psg925"
       // }
       setDuplicateChecks(prev => ({
         ...prev,
-        userId: true
+        username: true
       }));
     }
   };
@@ -148,27 +148,27 @@ const SignUpPage: React.FC = () => {
     }
 
     // 년월일 형식 검증 (YYYY.MM.DD)
-    const birthDateRegex = /^\d{4}\.(0[1-9]|1[0-2])\.(0[1-9]|[12]\d|3[01])$/;
-    if (!birthDateRegex.test(formData.birthDate)) {
-      newFieldErrors.birthDate = true;
+    const birthRegex = /^\d{4}\.(0[1-9]|1[0-2])\.(0[1-9]|[12]\d|3[01])$/;
+    if (!birthRegex.test(formData.birth)) {
+      newFieldErrors.birth = true;
       setErrorMessage('올바른 생년월일 형식이 아닙니다.');
       setFieldErrors(newFieldErrors);
       return false;
     }
 
     // 생년월일 유효성 검증
-    const [year, month, day] = formData.birthDate.split('.').map(Number);
-    const birthDate = new Date(year, month - 1, day);
+    const [year, month, day] = formData.birth.split('.').map(Number);
+    const birth = new Date(year, month - 1, day);
     const currentDate = new Date();
     
     if (
-      birthDate.getFullYear() !== year ||
-      birthDate.getMonth() !== month - 1 ||
-      birthDate.getDate() !== day ||
-      birthDate > currentDate ||
+      birth.getFullYear() !== year ||
+      birth.getMonth() !== month - 1 ||
+      birth.getDate() !== day ||
+      birth > currentDate ||
       year < 1900
     ) {
-      newFieldErrors.birthDate = true;
+      newFieldErrors.birth = true;
       setErrorMessage('유효하지 않은 생년월일입니다.');
       setFieldErrors(newFieldErrors);
       return false;
@@ -182,16 +182,16 @@ const SignUpPage: React.FC = () => {
       return false;
     }
 
-    if (!duplicateChecks.userId) {
-      newFieldErrors.userId = true;
+    if (!duplicateChecks.username) {
+      newFieldErrors.username = true;
       setErrorMessage('아이디 중복확인을 해주세요.');
       setFieldErrors(newFieldErrors);
       return false;
     }
 
     // 비밀번호 검증
-    if (formData.userId.length < 4 || formData.userId.length > 10) {
-      newFieldErrors.userId = true;
+    if (formData.username.length < 4 || formData.username.length > 10) {
+      newFieldErrors.username = true;
       setErrorMessage('아이디는 4~10자 이내로 입력해주세요.');
       setFieldErrors(newFieldErrors);
       return false;
@@ -254,9 +254,9 @@ const SignUpPage: React.FC = () => {
                   hasError={fieldErrors.name}
                 />
                 <BirthDateInput
-                  value={formData.birthDate}
-                  onChange={(value) => setFormData(prev => ({ ...prev, birthDate: value }))}
-                  hasError={fieldErrors.birthDate}
+                  value={formData.birth}
+                  onChange={(value) => setFormData(prev => ({ ...prev, birth: value }))}
+                  hasError={fieldErrors.birth}
                 />
                 <GenderSelect
                   selectedGender={formData.gender}
@@ -306,14 +306,14 @@ const SignUpPage: React.FC = () => {
                 label="아이디"
                 description="4~10자 이내"
                 type="text"
-                name="userId"
-                value={formData.userId}
+                name="username"
+                value={formData.username}
                 onChange={handleInputChange}
                 placeholder="아이디를 입력해주세요."
-                hasError={fieldErrors.userId}
+                hasError={fieldErrors.username}
                 showDuplicateCheck
                 isDuplicateCheckActive={isDuplicateIdCheckActive}
-                isDuplicateChecked={duplicateChecks.userId}
+                isDuplicateChecked={duplicateChecks.username}
                 onDuplicateCheck={handleIdDuplicateCheck}
               />
               <SignUpInput
