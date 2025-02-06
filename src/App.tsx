@@ -14,6 +14,7 @@ function App() {
       }} />
       <AppRouter />
     </RecoilRoot>
+    //글로벌 스타일
   );
 }
 
