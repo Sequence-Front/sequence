@@ -3,14 +3,15 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { FaSearch } from 'react-icons/fa';
 import { AiOutlinePlus } from "react-icons/ai";
-import Header from '../asset/component/Header';
+import Header from '../../asset/component/Header';
 import { dummyProjects } from './data/dummyProjects';
 import Masonry from '@mui/lab/Masonry';
 import Box from '@mui/material/Box';
 import ProjectCard from './components/ProjectCard';
-import Pagination from '../asset/component/Pagination';
+import Pagination from '../../asset/component/Pagination';
 import { useNavigate } from 'react-router-dom';
-import ScrollToTopButton from '../asset/component/ScrollToTopButton';
+import ScrollToTopButton from '../../asset/component/ScrollToTopButton';
+import { ProjectService } from './services/ProjectService';
 
 const Container = styled.div`
   padding: clamp(1rem, 3vw, 2rem);
@@ -84,7 +85,6 @@ const TagWrapper = styled.div`
   flex-wrap: wrap;
   border-bottom: 1px solid #616161;
   padding-bottom: 1rem;
-  width: calc(100% - 200px);
 `;
 
 const Tag = styled.span<{ active?: boolean }>`
@@ -134,9 +134,7 @@ const NoResults = styled.div`
 `;
 
 const TotalProjects = styled.div`
-  position: absolute;
-  right: 0;
-  top: 1rem;
+  margin-bottom: 2rem;
   font-size: clamp(1rem, 1.2vw, 1.5rem);
 `;
 
@@ -151,32 +149,54 @@ const tagOptions: Record<TagCategory, string[]> = {
   프로젝트단계: ['시작 전', '기획 중', '디자인 중', '개발 중', '창업 중']
 };
 
+export class ProjectPageManager {
+  private projectService: ProjectService;
+
+  constructor() {
+    this.projectService = new ProjectService(dummyProjects);
+  }
+
+  getFilteredAndPaginatedProjects(
+    searchTerm: string, 
+    selectedTags: string[], 
+    currentPage: number,
+    projectsPerPage: number
+  ) {
+    const filteredProjects = this.projectService.getFilteredProjects(searchTerm, selectedTags);
+    const paginatedProjects = this.projectService.getPaginatedProjects(
+      filteredProjects,
+      currentPage,
+      projectsPerPage
+    );
+    const totalPages = this.projectService.getTotalPages(filteredProjects, projectsPerPage);
+
+    return {
+      filteredProjects,
+      currentProjects: paginatedProjects,
+      totalPages
+    };
+  }
+}
+
 const ProjectPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [activeCategory, setActiveCategory] = useState<TagCategory>('분야');
+  const projectManager = new ProjectPageManager();
   const navigate = useNavigate();
 
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, selectedTags]);
 
-  const filteredProjects = dummyProjects.filter(project => {
-    const matchesTags = selectedTags.length === 0 || 
-                       selectedTags.some(tag => project.tags.includes(tag));
-    
-    const matchesSearch = searchTerm
-      .split('')
-      .every(char => project.title.toLowerCase().includes(char.toLowerCase()));
-
-    return matchesTags && matchesSearch;
-  });
-
-  const projectsPerPage = 12;
-  const indexOfLastProject = currentPage * projectsPerPage;
-  const indexOfFirstProject = indexOfLastProject - projectsPerPage;
-  const currentProjects = filteredProjects.slice(indexOfFirstProject, indexOfLastProject);
-  const totalPages = Math.ceil(filteredProjects.length / projectsPerPage);
+  const { filteredProjects, currentProjects, totalPages } = 
+    projectManager.getFilteredAndPaginatedProjects(
+      searchTerm,
+      selectedTags,
+      currentPage,
+      12
+    );
 
   const handleTagClick = (tag: string) => {
     setCurrentPage(1);
@@ -187,7 +207,6 @@ const ProjectPage: React.FC = () => {
     );
   };
 
-  const [activeCategory, setActiveCategory] = useState<TagCategory>('분야');
   const [tags, setTags] = useState(tagOptions[activeCategory]);
 
   const handleNavItemClick = (category: TagCategory) => {
