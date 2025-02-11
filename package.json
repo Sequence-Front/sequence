@@ -58,5 +58,6 @@
   "homepage": "https://seungyun-Park.github.io/sequence",
   "devDependencies": {
     "@types/react": "^18.3.14"
-  }
+  },
+  "proxy" : "https://sequence.agong.store/"
 }
