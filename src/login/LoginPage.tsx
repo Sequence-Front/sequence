@@ -23,10 +23,11 @@ import {
  } from './style/LoginStyle';
 
 import Header from '../asset/component/Header';
+import { login } from '../api/login';
 
 const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState({
-    userId: '',
+    username: '',
     password: ''
   });
 
@@ -42,17 +43,7 @@ const LoginPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // try {
-    //   const response = await axios.post('/api/login', formData);
-      
-    //   if (response.status === 200) {
-    //     console.log('로그인 성공');
-    //     // 로그인 성공 시 처리할 작업
-    //   }
-    // } catch (error) {
-    //   console.error('로그인 에러:', error);
-    //   console.log('로그인 실패');
-    // }
+    login(formData);
   };
 
   return (
@@ -66,8 +57,8 @@ const LoginPage: React.FC = () => {
           <InputField 
             type="text" 
             placeholder="아이디를 입력해주세요." 
-            name="userId"
-            value={formData.userId}
+            name="username"
+            value={formData.username}
             onChange={handleChange}
           />
           <InputField 
