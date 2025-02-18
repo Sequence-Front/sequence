@@ -5,7 +5,6 @@ import LogoImage from '../asset/image/LoginLogo.png';
 import { FaArrowRight } from "react-icons/fa6";
 import { IoIosArrowForward } from "react-icons/io";
 
-import axios from 'axios';
 import { useState } from 'react';
 import { 
   LoginContainer, 
@@ -20,7 +19,7 @@ import {
   LoginButton, 
   SignUpButton,
   BlackBox
- } from './style/LoginStyle';
+} from './style/LoginStyle';
 
 import Header from '../asset/component/Header';
 import { login } from '../api/login';
@@ -44,6 +43,7 @@ const LoginPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     login(formData);
+    navigate('/project');
   };
 
   return (

@@ -160,7 +160,7 @@ const ProjectPage: React.FC = () => {
 
   const filteredProjects = dummyProjects.filter(project => {
     const matchesTags = selectedTags.length === 0 || 
-                       selectedTags.some(tag => project.tags.includes(tag));
+                      selectedTags.some(tag => project.tags.includes(tag));
     
     const matchesSearch = searchTerm
       .split('')
