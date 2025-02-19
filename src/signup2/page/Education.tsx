@@ -137,8 +137,44 @@ const Education = ({ onDataChange }: EducationProps) => {
   const yearRef = useRef<HTMLDivElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
 
-  const schoolOptions = ["고려대학교", "고려대학교(세종)", "홍익대학교", "홍익대학교(세종)" ];
+  const schoolOptions = [
+    "고려대학교",
+    "고려대학교(세종)",
+    "홍익대학교",
+    "홍익대학교(세종)"
+  ];
+  
+  const yearOptions = [
+    "1학년",
+    "2학년",
+    "3학년",
+    "4학년",
+    "5학년",
+    "6학년",
+    "졸업"
+  ];
+  
+  const statusOptions = [
+    "재학",
+    "휴학",
+    "졸업",
+    "석사",
+    "박사",
+    "제적",
+    "중퇴"
+  ];
+  
+  const statusMapping: Record<string, string> = {
+    "재학": "ENROLLMENT",
+    "휴학": "LEAVE_OF_ABSENCE",
+    "졸업": "GRADUATION",
+    "석사": "MASTER",
+    "박사": "DOCTORATE",
+    "제적": "EXPELLED",
+    "중퇴": "DROPOUT"
+  };
 
+  
   const handleSchoolSelect = (school: string) => {
     setSchoolName(school);
     setIsDropdownOpen(false);
@@ -154,7 +190,9 @@ const Education = ({ onDataChange }: EducationProps) => {
   const handleSelectStatus = (option: string) => {
     setStatus(option);
     setIsStatusOpen(false);
-    handleUpdate({ status: option });
+    const englishStatus = statusMapping[option] || option;
+
+    handleUpdate({ status: englishStatus });
   };
 
   const handleSearchClick = () => {
@@ -198,6 +236,9 @@ const Education = ({ onDataChange }: EducationProps) => {
     };
   }, []);
 
+
+
+  
   return (
     <Container>
       <EducationContainer>
@@ -239,12 +280,12 @@ const Education = ({ onDataChange }: EducationProps) => {
           </DropdownButton>
           {isYearOpen && (
             <DropdownList>
-              {["1학년", "2학년", "3학년", "4학년", "5학년", "6학년", "졸업"].map((option) => (
-                <li key={option} onClick={() => handleSelectYear(option)}>
-                  {option}
-                </li>
-              ))}
-            </DropdownList>
+            {yearOptions.map((option) => (
+              <li key={option} onClick={() => handleSelectYear(option)}>
+                {option}
+              </li>
+            ))}
+          </DropdownList>
           )}
           <IconContainer>
             <SlArrowDown style={{ color: "red", fontSize: "clamp(0.9rem, 2vw, 1.6rem)", strokeWidth: "1" }} />
@@ -280,7 +321,7 @@ const Education = ({ onDataChange }: EducationProps) => {
           </DropdownButton>
           {isStatusOpen && (
             <DropdownList>
-              {["재학", "휴학", "졸업", "졸업유예"].map((option) => (
+              {statusOptions.map((option) => (
                 <li key={option} onClick={() => handleSelectStatus(option)}>
                   {option}
                 </li>

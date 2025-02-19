@@ -10,7 +10,8 @@
 // phone : "01090362183",
 // userId : "psg925"
 // }
-
+// 25-02-18 정준용
+// API연동
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +21,7 @@ import { GenderSelect } from '../common/components/GenderSelect';
 import * as S from './style/SignUpPageStyle';
 import { SignUpInput } from './component/SignUpInput';
 import { BirthDateInput } from '../common/components/BirthDateInput';
+import { IdDupCheck, eMailDupCheck } from '../api/SignUpAPI';
 
 export const PageNumber = styled.div`
   font-size: clamp(1.5rem, 1.5vw, 2rem);
@@ -30,8 +32,13 @@ export const PageNumber = styled.div`
 const ErrorMessage = styled.div`
   color: #E51D1D;
   font-size: clamp(0.9rem, 1.2vw, 1.1rem);
-  text-align: center;
   margin-bottom: 1.5rem;
+`;
+
+const InputWrapper = styled.div`
+  position: relative; 
+  width: 100%;
+  margin-top: clamp(-3.9rem, -6.2vw, -7.1rem);
 `;
 
 const SignUpPage: React.FC = () => {
@@ -57,6 +64,8 @@ const SignUpPage: React.FC = () => {
     email: false
   });
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [idErrorMessage, setIdErrorMessage] = useState<string>('');
+  const [emailErrorMessage, setEmailErrorMessage] = useState<string>('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, boolean>>({});
   const navigate = useNavigate();
 
@@ -106,34 +115,57 @@ const SignUpPage: React.FC = () => {
     }));
   };
 
-  const handleIdDuplicateCheck = () => {
-    if (isDuplicateIdCheckActive) {
-      // API 호출 로직이 들어갈 자리
-      // 중복 체크 후 중복이면 true, 아니면 false
-      // {
-      //   userId : "psg925"
-      // }
-      setDuplicateChecks(prev => ({
-        ...prev,
-        userId: true
-      }));
+  const handleIdDuplicateCheck = async () => {
+    if (!isDuplicateIdCheckActive) return;
+  
+    try {
+      const result = await IdDupCheck(formData.userId);
+  
+      if (!result) {
+        setIdErrorMessage('아이디 중복 확인 중 오류가 발생했습니다.');
+        return;
+      }
+  
+      if (result.isDuplicate) {
+        setDuplicateChecks(prev => ({ ...prev, userId: false }));
+        setIdErrorMessage(result.message);
+        setFieldErrors(prev => ({ ...prev, userId: true }));
+      } else {
+        setDuplicateChecks(prev => ({ ...prev, userId: true }));
+        setIdErrorMessage(''); 
+        setFieldErrors(prev => ({ ...prev, userId: false }));
+      }
+    } catch (error) {
+      setIdErrorMessage('아이디 중복 확인 중 오류가 발생했습니다.');
     }
   };
-
-  const handleEmailDuplicateCheck = () => {
-    if (isDuplicateEmailCheckActive) {
-      // API 호출 로직이 들어갈 자리
-      // 중복 체크 후 중복이면 true, 아니면 false
-      // {
-      //   email : "tmdrbs0925@gmail.com"
-      // }
+  
+  
+  const handleEmailDuplicateCheck = async() => {
+    if(!isDuplicateEmailCheckActive) return;
       
-      setDuplicateChecks(prev => ({
-        ...prev,
-        email: true
-      }));
+    try {
+      const result = await eMailDupCheck(formData.email);
+  
+      if (!result) {
+        setEmailErrorMessage('이메일 중복 확인 중 오류가 발생했습니다.');
+        return;
+      }
+  
+      if (result.isDuplicate) {
+        setDuplicateChecks(prev => ({ ...prev, email: false }));
+        setEmailErrorMessage(result.message);
+        setFieldErrors(prev => ({ ...prev, email: true }));
+      } else {
+        setDuplicateChecks(prev => ({ ...prev, email: true }));
+        setEmailErrorMessage(''); 
+        setFieldErrors(prev => ({ ...prev, email: false }));
+      }
+    } catch (error) {
+      setEmailErrorMessage('아이디 중복 확인 중 오류가 발생했습니다.');
     }
   };
+  
 
   const validateForm = () => {
     const newFieldErrors: Record<string, boolean> = {};
@@ -219,17 +251,35 @@ const SignUpPage: React.FC = () => {
     return true;
   };
 
+  //핸드폰 번호 000-0000-0000 형식으로 변환
+  const formatPhoneNumber = (phone: string): string => {
+    const digits = phone.replace(/\D/g, "");
+  
+    return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`;
+  };
+
+  //성별 영어로 변환
+  const formatGender = (gender: string): string =>{
+    return gender ==="남성" ? "M" : gender ==="여성" ? "F" : "";
+  }
+
+  // 유효성 검사
   const handleNext = () => {
-    //모든 곳에 값이 입력되어 있지 않으면 return
     if (!isFormValid) {
       return;
     }
-    
-    setErrorMessage(''); // 에러 메시지 초기화
-    
+  
+    setErrorMessage(''); 
+  
     if (validateForm()) {
-      // 다음 페이지로 이동
-      navigate('/signup2', { state: formData });
+      const formattedData = {
+        ...formData,
+        birthDate: formData.birthDate.replace(/\./g, '-'),
+        phone : formatPhoneNumber(formData.phone),
+        gender: formatGender(formData.gender)
+      };
+  
+      navigate('/signup2', { state: formattedData });
     }
   };
 
@@ -273,6 +323,7 @@ const SignUpPage: React.FC = () => {
                   placeholder="- 없이 입력하세요"
                   hasError={fieldErrors.phone}
                 />
+                <div style={{display : "flex", flexDirection: "column", position:"relative"}}>
                 <SignUpInput
                   label="이메일"
                   type="email"
@@ -285,7 +336,9 @@ const SignUpPage: React.FC = () => {
                   isDuplicateCheckActive={isDuplicateEmailCheckActive}
                   isDuplicateChecked={duplicateChecks.email}
                   onDuplicateCheck={handleEmailDuplicateCheck}
-                />
+                />         
+                  {emailErrorMessage && <ErrorMessage style={{position: "absolute", top:"101%", left:"0"}}>{emailErrorMessage}</ErrorMessage>}
+                </div>
               </S.FormGrid>
               <SignUpInput
                 label="주소지"
@@ -302,6 +355,7 @@ const SignUpPage: React.FC = () => {
           <S.Section>
             <S.CategoryTitle>로그인</S.CategoryTitle>
             <S.FormSection>
+            <div style={{display : "flex", flexDirection: "column", position:"relative"}}>
               <SignUpInput
                 label="아이디"
                 description="4~10자 이내"
@@ -315,7 +369,9 @@ const SignUpPage: React.FC = () => {
                 isDuplicateCheckActive={isDuplicateIdCheckActive}
                 isDuplicateChecked={duplicateChecks.userId}
                 onDuplicateCheck={handleIdDuplicateCheck}
-              />
+              />                  
+                {idErrorMessage && <ErrorMessage style={{position: "absolute", top:"105%"}}>{idErrorMessage}</ErrorMessage>}
+              </div>
               <SignUpInput
                 label="비밀번호"
                 description="영어, 숫자 포함 8~20자 이내"

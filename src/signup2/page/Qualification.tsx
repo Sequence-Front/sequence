@@ -185,10 +185,10 @@ const ActivityBlock = styled.div`
 `
 
 interface QualificationData {
-  type: string;
-  name: string;
-  date: [string, string, string];
-  description: string;
+  awardType: string;
+  organizer: string;
+  awardDuration: [string, string, string];
+  awardName: string;
 }
 
 interface QualificationProps {
@@ -197,7 +197,7 @@ interface QualificationProps {
 
 const Qualification = ({onDataChange}: QualificationProps) => {
   const [qualifications, setQualifications] = useState<QualificationData[]>([
-    { type: "유형 선택", name: "", date: ["", "", ""], description: "" },
+    { awardType: "유형 선택", organizer: "", awardDuration: ["", "", ""], awardName: "" },
   ]);
 
   const startRefs = useRef<Array<Array<React.RefObject<HTMLInputElement>>>>([]);
@@ -213,7 +213,7 @@ const Qualification = ({onDataChange}: QualificationProps) => {
   const handleAddActivity = () => {
     setQualifications((prev) => [
       ...prev,
-      { type: "유형 선택", name: "", date: ["", "", ""], description: "" },
+      { awardType: "유형 선택", organizer: "", awardDuration: ["", "", ""], awardName: "" },
     ]);
     setTextAreasRows((prev) => [...prev, 1]);
     setIsDropdownOpen((prev) => [...prev, false]);
@@ -222,33 +222,71 @@ const Qualification = ({onDataChange}: QualificationProps) => {
 
   const handleDateChange = (
     index: number,
-    type: "date",
+    type: "awardDuration",
     fieldIndex: number,
     value: string
   ) => {
     const updatedQualifications = [...qualifications];
     let newValue = value.replace(/[^0-9]/g, "");
-
-    if (fieldIndex === 1 && parseInt(newValue, 10) > 12) {
-      newValue = "12";
+  
+    if (fieldIndex === 1) { 
+      if (parseInt(newValue, 10) > 12) {
+        newValue = "12";
+      }
     }
-    if (fieldIndex === 2 && parseInt(newValue, 10) > 31) {
-      newValue = "31";
+  
+    if (fieldIndex === 2) {
+      const month = parseInt(updatedQualifications[index][type][1], 10) || 0;
+      let maxDays = 31; 
+  
+      if ([4, 6, 9, 11].includes(month)) { 
+        maxDays = 30;
+      } else if (month === 2) { 
+        maxDays = 29;
+      }
+  
+      if (parseInt(newValue, 10) > maxDays) {
+        newValue = maxDays.toString();
+      }
+  
     }
-
+  
     updatedQualifications[index][type][fieldIndex] = newValue.slice(0, 2);
     setQualifications(updatedQualifications);
   };
 
+  const handleDateBlur = (index: number, type: "awardDuration", fieldIndex: number) => {
+    const updatedQualifications = [...qualifications];
+    let value = updatedQualifications[index][type][fieldIndex];
+  
+
+    if (value.length === 1) {
+      updatedQualifications[index][type][fieldIndex] = `0${value}`;
+    }
+  
+    setQualifications(updatedQualifications);
+  };
+
+  const convertAwardType = (type: string) => {
+    const mapping: Record<string, string> = {
+      "자격증": "CERTIFICATE",
+      "수상": "AWARD",
+    };
+    return mapping[type] || type;
+  };
+  
+
+  
   const handleDropdownToggle = (index: number) => {
     setIsDropdownOpen((prev) =>
       prev.map((open, idx) => (idx === index ? !open : false))
     );
   };
 
+
   const handleDropdownSelect = (index: number, value: string) => {
     const updatedQualifications = [...qualifications];
-    updatedQualifications[index].type = value;
+    updatedQualifications[index].awardType = value;
     setQualifications(updatedQualifications);
     setIsDropdownOpen((prev) =>
       prev.map((open, idx) => (idx === index ? false : open))
@@ -258,7 +296,7 @@ const Qualification = ({onDataChange}: QualificationProps) => {
 
   const handleChange = (
     index: number,
-    field: "type" | "name" | "description",
+    field: "awardType" | "organizer" | "awardName",
     value: string
   ) => {
     const updatedQualifications = [...qualifications];
@@ -266,7 +304,7 @@ const Qualification = ({onDataChange}: QualificationProps) => {
     updatedQualifications[index][field] = value;
     setQualifications(updatedQualifications);
 
-    if (field === "description") {
+    if (field === "awardName") {
       const lineCount = value.split("\n").length;
       setTextAreasRows((prev) =>
         prev.map((rows, idx) => (idx === index ? Math.min(lineCount, 5) : rows))
@@ -282,12 +320,12 @@ const Qualification = ({onDataChange}: QualificationProps) => {
             <ActivityContainer focused={focusedIndex === index}>
               <Dropdown>
                 <DropdownButton onClick={() => handleDropdownToggle(index)}>
-                  {activity.type}
+                  {activity.awardType}
                   <SlArrowDown style={{ marginLeft: "8px" }} />
                 </DropdownButton>
                 {isDropdownOpen[index] && (
                   <DropdownList>
-                    {["수상", "자격/면허", "어학"].map((option) => (
+                    {["수상", "자격증"].map((option) => (
                       <li key={option} onClick={() => handleDropdownSelect(index, option)}>
                         {option}
                       </li>
@@ -297,10 +335,10 @@ const Qualification = ({onDataChange}: QualificationProps) => {
               </Dropdown>
               <Input
                 placeholder="주최 기관을 적어주세요."
-                value={activity.name}
+                value={activity.organizer}
                 onChange={(e) => {
                   const updatedQualifications = [...qualifications];
-                  updatedQualifications[index].name = e.target.value;
+                  updatedQualifications[index].organizer = e.target.value;
                   setQualifications(updatedQualifications);
                 }}
                 onFocus={() => setFocusedIndex(index)}
@@ -310,16 +348,19 @@ const Qualification = ({onDataChange}: QualificationProps) => {
             <DateContainer focused={focusedDateIndex === index}>
               <Label>수상/취득일자</Label>
               <DateInputs>
-              {activity.date.map((value, fieldIndex) => (
+              {activity.awardDuration.map((value, fieldIndex) => (
                 <React.Fragment key={`start-${fieldIndex}`}>
                   <DateInput
                     type="text"
                     placeholder="00"
                     value={value}
                     ref={startRefs.current[index]?.[fieldIndex]}
-                    onChange={(e) => handleDateChange(index, "date", fieldIndex, e.target.value)}
+                    onChange={(e) => handleDateChange(index, "awardDuration", fieldIndex, e.target.value)}
                     onFocus={() => setFocusedDateIndex(index)}
-                    onBlur={() => setFocusedDateIndex(null)}
+                    onBlur={() => {
+                      setFocusedDateIndex(null);
+                      handleDateBlur(index, "awardDuration", fieldIndex);
+                    }}
                   />
                   {fieldIndex < 2 && <Dash>.</Dash>}
                 </React.Fragment>
@@ -330,8 +371,8 @@ const Qualification = ({onDataChange}: QualificationProps) => {
           <TextArea
             placeholder="자격증 또는 수상명을 적어주세요!"
             rows={textAreasRows[index]}
-            value={activity.description}
-            onChange={(e) => handleChange(index, "description", e.target.value)}
+            value={activity.awardName}
+            onChange={(e) => handleChange(index, "awardName", e.target.value)}
           />
         </ActivityBlock>
       ))}
