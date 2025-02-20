@@ -133,10 +133,10 @@ const ActivityBlock = styled.div`
 
 
 interface PersonalHistoryData {
-  name: string;
+  companyName: string;
   startDate: [string, string, string];
   endDate: [string, string, string];
-  description: string;
+  careerDescription: string;
 }
 
 interface PersonalHistoryProps {
@@ -144,7 +144,7 @@ interface PersonalHistoryProps {
 }
 const PersonalHistory = ({ onDataChange }: PersonalHistoryProps) => {
   const [activities, setActivities] = useState<PersonalHistoryData[]>([
-    { name: "", startDate: ["", "", ""], endDate: ["", "", ""], description: "" },
+    { companyName: "", startDate: ["", "", ""], endDate: ["", "", ""], careerDescription: "" },
   ]);
 
   const startRefs = useRef<Array<Array<React.RefObject<HTMLInputElement>>>>([]);
@@ -159,13 +159,25 @@ const PersonalHistory = ({ onDataChange }: PersonalHistoryProps) => {
   const handleAddActivity = () => {
     setActivities((prev) => [
       ...prev,
-      { name: "", startDate: ["", "", ""], endDate: ["", "", ""], description: "" },
+      { companyName: "", startDate: ["", "", ""], endDate: ["", "", ""], careerDescription: "" },
     ]);
     setTextAreasRows((prev) => [...prev, 1]);
     startRefs.current.push([React.createRef(), React.createRef(), React.createRef()]);
     endRefs.current.push([React.createRef(), React.createRef(), React.createRef()]);
   };
 
+  const handleDateBlur = (index: number, type: "startDate" | "endDate", fieldIndex: number) => {
+    const updatedActivities = [...activities];
+    let value = updatedActivities[index][type][fieldIndex];
+  
+    if (value.length === 1) {
+      updatedActivities[index][type][fieldIndex] = `0${value}`;
+    }
+  
+    setActivities(updatedActivities);
+  };
+
+  
   const handleDateChange = (
     index: number,
     type: "startDate" | "endDate",
@@ -173,25 +185,41 @@ const PersonalHistory = ({ onDataChange }: PersonalHistoryProps) => {
     value: string
   ) => {
     const updatedActivities = [...activities];
-    let newValue = value.replace(/[^0-9]/g, "");
-
-    if (fieldIndex === 1 && parseInt(newValue, 10) > 12) {
-      newValue = "12";
+    let newValue = value.replace(/[^0-9]/g, ""); 
+  
+    if (fieldIndex === 1) { 
+      if (parseInt(newValue, 10) > 12) {
+        newValue = "12";
+      }
     }
-    if (fieldIndex === 2 && parseInt(newValue, 10) > 31) {
-      newValue = "31";
+  
+    if (fieldIndex === 2) { 
+      const month = parseInt(updatedActivities[index][type][1], 10) || 0;
+      let maxDays = 31; 
+  
+      if ([4, 6, 9, 11].includes(month)) { 
+        maxDays = 30;
+      } else if (month === 2) {
+        maxDays = 29;
+      }
+  
+      if (parseInt(newValue, 10) > maxDays) {
+        newValue = maxDays.toString();
+      }
+  
     }
-
+  
     updatedActivities[index][type][fieldIndex] = newValue.slice(0, 2);
     setActivities(updatedActivities);
   };
+  
 
   const handleChange = (index: number, field: keyof PersonalHistoryData, value: string) => {
     const updatedActivities = [...activities];
     updatedActivities[index][field] = value as never;
     setActivities(updatedActivities);
 
-    if (field === "description") {
+    if (field === "careerDescription") {
       const lineCount = value.split("\n").length;
       setTextAreasRows((prev) =>
         prev.map((rows, idx) => (idx === index ? Math.min(lineCount, 5) : rows))
@@ -206,8 +234,8 @@ const PersonalHistory = ({ onDataChange }: PersonalHistoryProps) => {
           <ContentContainer>
             <Input
               placeholder="회사명을 적어주세요."
-              value={activity.name}
-              onChange={(e) => handleChange(index, "name", e.target.value)}
+              value={activity.companyName}
+              onChange={(e) => handleChange(index, "companyName", e.target.value)}
             />
             <DateContainer focused={focusedDateIndex === index}>
               <Label>근무 기간</Label>
@@ -221,7 +249,10 @@ const PersonalHistory = ({ onDataChange }: PersonalHistoryProps) => {
                     ref={startRefs.current[index]?.[fieldIndex]}
                     onChange={(e) => handleDateChange(index, "startDate", fieldIndex, e.target.value)}
                     onFocus={() => setFocusedDateIndex(index)}
-                    onBlur={() => setFocusedDateIndex(null)}
+                    onBlur={() => {
+                      setFocusedDateIndex(null);
+                      handleDateBlur(index, "startDate", fieldIndex);
+                    }}
                   />
                   {fieldIndex < 2 && <Dash>.</Dash>}
                 </React.Fragment>
@@ -236,7 +267,10 @@ const PersonalHistory = ({ onDataChange }: PersonalHistoryProps) => {
                     ref={endRefs.current[index]?.[fieldIndex]}
                     onChange={(e) => handleDateChange(index, "endDate", fieldIndex, e.target.value)}
                     onFocus={() => setFocusedDateIndex(index)}
-                    onBlur={() => setFocusedDateIndex(null)}
+                    onBlur={() => {
+                      setFocusedDateIndex(null);
+                      handleDateBlur(index, "endDate", fieldIndex);
+                    }}
                   />
                   {fieldIndex < 2 && <Dash>.</Dash>}
                 </React.Fragment>
@@ -247,8 +281,8 @@ const PersonalHistory = ({ onDataChange }: PersonalHistoryProps) => {
           <TextArea
             placeholder="맡았던 직무와 업무를 적어주세요!!"
             rows={textAreasRows[index]}
-            value={activity.description}
-            onChange={(e) => handleChange(index, "description", e.target.value)}
+            value={activity.careerDescription}
+            onChange={(e) => handleChange(index, "careerDescription", e.target.value)}
           />
         </ActivityBlock>
       ))}

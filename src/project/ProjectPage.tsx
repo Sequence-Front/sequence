@@ -4,13 +4,14 @@ import styled from 'styled-components';
 import { FaSearch } from 'react-icons/fa';
 import { AiOutlinePlus } from "react-icons/ai";
 import Header from '../asset/component/Header';
-import { dummyProjects } from './data/dummyProjects';
 import Masonry from '@mui/lab/Masonry';
 import Box from '@mui/material/Box';
 import ProjectCard from './components/ProjectCard';
 import Pagination from '../asset/component/Pagination';
 import { useNavigate } from 'react-router-dom';
 import ScrollToTopButton from '../asset/component/ScrollToTopButton';
+import { getProjects, searchProjects, filterProjects } from '../api/project';
+import { Project } from './models/Project';
 
 const Container = styled.div`
   padding: clamp(1rem, 3vw, 2rem);
@@ -156,27 +157,104 @@ const ProjectPage: React.FC = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
+  //모든 프로젝트 조회
   useEffect(() => {
-    setCurrentPage(1);
-  }, [searchTerm, selectedTags]);
+    const fetchProjects = async () => {
+      setIsLoading(true);
+      try {
+        const response = await getProjects();
+        const projectList = response.data.map((item: any) => new Project(
+          item.id,
+          item.title,
+          item.writer,
+          item.createdDate,
+          item.roles,
+          [] 
+        ));
+        setProjects(projectList);
+      } catch (error) {
+        console.error('프로젝트 로딩 실패:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const filteredProjects = dummyProjects.filter(project => {
-    const matchesTags = selectedTags.length === 0 || 
-                       selectedTags.some(tag => project.tags.includes(tag));
-    
-    const matchesSearch = searchTerm
-      .split('')
-      .every(char => project.title.toLowerCase().includes(char.toLowerCase()));
+    fetchProjects();
+  }, []);
 
-    return matchesTags && matchesSearch;
-  });
+  //검색어 필터링
+  useEffect(() => {
+    const fetchFilteredProjects = async () => {
+      setIsLoading(true);
+      try {
+        let response;
+        if (searchTerm) {
+          response = await searchProjects(searchTerm);
+        } else {
+          response = await getProjects();
+        }
+        const projectList = response.data.map((item: any) => new Project(
+          item.id,
+          item.title,
+          item.writer,
+          item.createdDate,
+          item.roles,
+          []
+        ));
+        setProjects(projectList);
+      } catch (error) {
+        console.error('프로젝트 검색 실패:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchFilteredProjects();
+  }, [searchTerm]);
+
+  //키워드 필터링
+  useEffect(() => {
+    const fetchFilteredProjects = async () => {
+      if (selectedTags.length === 0) return;
+      
+      setIsLoading(true);
+      try {
+        const filters = {
+          category: selectedTags.find(tag => tagOptions.분야.includes(tag)),
+          periodKey: selectedTags.find(tag => tagOptions.기간.includes(tag)),
+          roles: selectedTags.find(tag => tagOptions.역할.includes(tag)),
+          skills: selectedTags.find(tag => tagOptions.필요스킬.includes(tag)),
+          meetingOption: selectedTags.find(tag => tagOptions.회의.includes(tag)),
+          step: selectedTags.find(tag => tagOptions.프로젝트단계.includes(tag))
+        };
+        const response = await filterProjects(filters);
+        const projectList = response.data.map((item: any) => new Project(
+          item.id,
+          item.title,
+          item.writer,
+          item.createdDate,
+          item.roles,
+          []
+        ));
+        setProjects(projectList);
+      } catch (error) {
+        console.error('프로젝트 필터링 실패:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchFilteredProjects();
+  }, [selectedTags]);
 
   const projectsPerPage = 12;
   const indexOfLastProject = currentPage * projectsPerPage;
   const indexOfFirstProject = indexOfLastProject - projectsPerPage;
-  const currentProjects = filteredProjects.slice(indexOfFirstProject, indexOfLastProject);
-  const totalPages = Math.ceil(filteredProjects.length / projectsPerPage);
+  const currentProjects = projects.slice(indexOfFirstProject, indexOfLastProject);
+  const totalPages = Math.ceil(projects.length / projectsPerPage);
 
   const handleTagClick = (tag: string) => {
     setCurrentPage(1);
@@ -245,9 +323,11 @@ const ProjectPage: React.FC = () => {
         )}
       </TagContainer>
 
-      <TotalProjects>총 {filteredProjects.length}건의 게시글</TotalProjects>
+      <TotalProjects>총 {projects.length}건의 게시글</TotalProjects>
 
-      {filteredProjects.length > 0 ? (
+      {isLoading ? (
+        <NoResults>로딩 중...</NoResults>
+      ) : projects.length > 0 ? (
         <ProjectSection>
           <Masonry
             columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
@@ -266,13 +346,13 @@ const ProjectPage: React.FC = () => {
         </ProjectSection>
       ) : (
         <NoResults>
-          "{searchTerm}"에 대한 검색 결과가 없습니다.
+          {searchTerm ? `"${searchTerm}"에 대한 검색 결과가 없습니다.` : "프로젝트가 없습니다."}
           <br />
-          다른 단어로 검색을 시도해주세요!
+          다른 검색어나 필터를 시도해주세요!
         </NoResults>
       )}
 
-      {filteredProjects.length > 0 && (
+      {projects.length > 0 && (
         <Pagination 
           currentPage={currentPage}
           totalPages={totalPages}

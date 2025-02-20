@@ -12,7 +12,8 @@ import SelfIntroduction from "./page/SelfIntroduction";
 import { PageNumber } from "../signup/SignUpPage";
 import { Title as STitle } from "../signup/style/SignUpPageStyle";
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { signUpApi } from '../api/SignUpAPI';
 
 
 const Container = styled.div`
@@ -124,9 +125,13 @@ const ErrorMessage = styled.div`
 `
 
 const SignUp = () => {
+
   const location = useLocation();
-  const data = location.state;
-  console.log(data);
+  const userData = location.state;
+
+  useEffect(() => {
+    console.log("1단계데이터:", userData);
+  }, [userData]);
 
   const [skills] = useState<string[]>([
     "Adobe Illustration",
@@ -169,29 +174,29 @@ const SignUp = () => {
 
   const [activityData, setActivityData] =  useState<
   {
-    type: string;
-    name: string;
+    experienceType: string;
+    experienceName: string;
     startDate: [string, string, string];
     endDate: [string, string, string];
-    description: string;
+    experienceDescription: string;
     }[]
   >([]);
 
   const [personalHistoryData, setPersonalHistoryData] =  useState<
   {
-    name: string;
+    companyName: string;
     startDate: [string, string, string];
     endDate: [string, string, string];
-    description: string;
+    careerDescription: string;
   }[]
   >([]);
 
   const [qualificationData, setQualificationData] = useState<
   {
-    type: string;
-    name: string;
-    date: [string, string, string];
-    description: string;
+    awardType: string;
+    organizer: string;
+    awardDuration: [string, string, string];
+    awardName: string;
   }[]
   >([]);
 
@@ -227,11 +232,11 @@ const SignUp = () => {
 
   const handleActivityDataChange = (
     data: {
-      type: string;
-      name: string;
+      experienceType: string;
+      experienceName: string;
       startDate: [string, string, string];
       endDate: [string, string, string];
-      description: string;
+      experienceDescription: string;
     }[]
   ) => {
     setActivityData(data);
@@ -239,10 +244,10 @@ const SignUp = () => {
 
   const handlePersonalHistoryDataChange = (
     data: {
-      name: string;
+      companyName: string;
       startDate: [string, string, string];
       endDate: [string, string, string];
-      description: string;
+      careerDescription: string;
     }[]
   ) => {
     setPersonalHistoryData(data);
@@ -261,10 +266,10 @@ const SignUp = () => {
 
   const handleQualificationDataChange = (
     data: {
-      type: string;
-      name: string;
-      date: [string, string, string];
-      description: string;
+      awardType: string;
+      awardName: string;
+      awardDuration: [string, string, string];
+      organizer: string;
     }[]
   ) => {
     setQualificationData(data);
@@ -293,6 +298,9 @@ const SignUp = () => {
     if (educationData.schoolName.trim() === "") {
       return "학교명을 입력해주세요.";
     }
+    if (educationData.year.trim() ===""){
+      return "학년을 입력해주세요."
+    }
     if (educationData.major.trim() === "") {
       return "전공을 입력해주세요.";
     }
@@ -310,17 +318,17 @@ const SignUp = () => {
     if (activityData.length > 0) {
       for (const activity of activityData) {
         const isPartiallyFilled =
-          activity.type.trim() !== "유형 선택" ||
-          activity.name.trim() !== "" ||
+          activity.experienceType.trim() !== "유형 선택" ||
+          activity.experienceName.trim() !== "" ||
           activity.startDate.some((date) => date.trim() !== "") ||
           activity.endDate.some((date) => date.trim() !== "") ||
-          activity.description.trim() !== "";
+          activity.experienceDescription.trim() !== "";
   
         if (isPartiallyFilled) {
-          if (activity.type.trim() === "유형 선택") {
+          if (activity.experienceType.trim() === "유형 선택") {
             return "경험 및 활동이력의 유형을 선택해주세요.";
           }
-          if (activity.name.trim() === "") {
+          if (activity.experienceName.trim() === "") {
             return "경험 및 활동이력의 제목을 적어주세요.";
           }
           if (
@@ -329,7 +337,7 @@ const SignUp = () => {
           ) {
             return "경험 및 활동이력의 활동 기간을 적어주세요.";
           }
-          if (activity.description.trim() === "") {
+          if (activity.experienceDescription.trim() === "") {
             return "경험 및 활동이력의 경험 내용을 적어주세요.";
           }
         }
@@ -339,13 +347,13 @@ const SignUp = () => {
     if (personalHistoryData.length > 0) {
       for (const personalHistory of personalHistoryData) {
         const isPartiallyFilled =
-          personalHistory.name.trim() !== "" ||
+          personalHistory.companyName.trim() !== "" ||
           personalHistory.startDate.some((date) => date.trim() !== "") ||
           personalHistory.endDate.some((date) => date.trim() !== "") ||
-          personalHistory.description.trim() !== "";
+          personalHistory.careerDescription.trim() !== "";
   
         if (isPartiallyFilled) {
-          if (personalHistory.name.trim() === "") {
+          if (personalHistory.companyName.trim() === "") {
             return "경력의 회사명을 적어주세요.";
           }
           if (
@@ -354,7 +362,7 @@ const SignUp = () => {
           ) {
             return "경력의 활동 기간을 적어주세요.";
           }
-          if (personalHistory.description.trim() === "") {
+          if (personalHistory.careerDescription.trim() === "") {
             return "경력의 근무 내용을 적어주세요.";
           }
         }
@@ -364,22 +372,22 @@ const SignUp = () => {
     if (qualificationData.length > 0) {
       for (const qualification of qualificationData) {
         const isPartiallyFilled =
-          qualification.type.trim() !== "유형 선택" ||
-          qualification.name.trim() !== "" ||
-          qualification.date.some((date) => date.trim() !== "") ||
-          qualification.description.trim() !== "";
+          qualification.awardType.trim() !== "유형 선택" ||
+          qualification.organizer.trim() !== "" ||
+          qualification.awardDuration.some((date) => date.trim() !== "") ||
+          qualification.awardName.trim() !== "";
   
         if (isPartiallyFilled) {
-          if (qualification.type.trim() === "유형 선택") {
+          if (qualification.awardType.trim() === "유형 선택") {
             return "자격 및 수상의 유형을 선택해주세요.";
           }
-          if (qualification.name.trim() === "") {
+          if (qualification.organizer.trim() === "") {
             return "자격 및 수상의 이름을 적어주세요.";
           }
-          if (qualification.date.some((date) => date.trim() === "")) {
+          if (qualification.awardDuration.some((date) => date.trim() === "")) {
             return "자격 및 수상의 취득 날짜를 적어주세요.";
           }
-          if (qualification.description.trim() === "") {
+          if (qualification.awardName.trim() === "") {
             return "자격 및 수상의 자격증 및 수상명을 적어주세요.";
           }
         }
@@ -400,24 +408,140 @@ const SignUp = () => {
   }, [profileData, educationData, selectedSkills, selectedRoles, activityData, personalHistoryData, qualificationData, portfolioData, validateInputs]);
   
 
-  const handleSignUp = () => {
-    const validationError = validateInputs(); 
+  const handleSignUp = async () => {
+    const validationError = validateInputs();
     if (validationError) {
-      setErrorMessage(validationError); 
-      return; 
+      setErrorMessage(validationError);
+      return;
     }
-    console.log("프로필:", profileData);
-    console.log("학력:", educationData);
-    console.log("스킬:", selectedSkills);
-    console.log("역할:", selectedRoles);
-    console.log("경험 및 활동 이력:", activityData);
-    console.log("경력:", personalHistoryData);
-    console.log("자격 및 수상:", qualificationData);
-    console.log("포트폴리오", portfolioData);
-    console.log("자기소개", selfIntroduction);
-    navigate('/signup3')
+  
+    const formattedSkills = selectedSkills.map(skill =>
+      skill.toUpperCase().replace(/[\s/-]/g, "_")
+    );
+  
+    const formattedRoles = selectedRoles.map(role =>
+      role.toUpperCase().replace(/[\s/-]/g, "_")
+    );
+  
+    // 날짜 변환 함수 (00 → 2000 변환)
+    const formatDate = (dateArray: [string, string, string]) => {
+      if (!dateArray || dateArray.length !== 3 || dateArray.every(date => date.trim() === "")) {
+        return null;
+      }
+    
+      let year = dateArray[0].trim();
+      const month = dateArray[1].trim().padStart(2, "0");
+      const day = dateArray[2].trim().padStart(2, "0");
+    
+      if (year.length === 2) {
+        year = `20${year}`;
+      }
+    
+      if (!year || !month || !day) return null;
+    
+      return `${year}-${month}-${day}`;
+    };
+    
+      
+  const convertActivity = (type: string) => {
+    switch (type) {
+      case "대외활동":
+        return "EXTERNAL_ACTIVITY";
+      case "교육":
+        return "EDUCATION";
+      case "봉사":
+        return "VOLUNTEER";
+      case "동아리":
+        return "CLUB";
+      case "기타":
+        return "ETC";
+      default:
+        return type; 
+    }
   };
 
+    const filteredExperience = activityData
+    .filter(activity => activity.experienceType.trim() !== "유형 선택")
+    .map(activity => ({
+      ...activity,
+      startDate: formatDate(activity.startDate),
+      endDate: formatDate(activity.endDate),
+      experienceType: convertActivity(activity.experienceType)
+    }));
+  
+    const filteredCareers = personalHistoryData
+    .filter(career => career.companyName.trim() !== "")
+    .map(career => ({
+      ...career,
+      startDate: formatDate(career.startDate), 
+      endDate: formatDate(career.endDate),
+    }));
+  
+    //---------- 수상 내역 ---------//
+    const convertAwardType = (type: string) => {
+      switch (type) {
+        case "자격증":
+          return "CERTIFICATE";
+        case "수상":
+          return "AWARD";
+        default:
+          return type; 
+      }
+    };
+    
+    const filteredAwards = qualificationData
+    .filter(award => award.awardType.trim() !== "유형 선택")
+    .map(award => ({
+      ...award,
+      awardType: convertAwardType(award.awardType),
+      awardDuration: formatDate(award.awardDuration),
+    }));
+    //--------------------------//
+  
+    const fullUserData = {
+      username: userData.userId,
+      password: userData.password,
+      name: userData.name,
+      nickname: profileData.nickname,
+      birth: userData.birthDate,
+      gender: userData.gender,
+      address: userData.address,
+      phone: userData.phone,
+      email: userData.email,
+      introduction: selfIntroduction,
+      portfolio: portfolioData,
+      schoolName: educationData.schoolName,
+      major: educationData.major,
+      grade: educationData.year,
+      entranceDate: educationData.startYear,
+      graduationDate: educationData.endYear,
+      degree: educationData.status,
+      skillCategory: formattedSkills,
+      desiredJob: formattedRoles,
+      experiences: filteredExperience,
+      careers: filteredCareers,
+      awards: filteredAwards,
+    };
+  
+    try {
+      const response = await signUpApi(fullUserData);
+      if (!response) {
+        setErrorMessage("서버 응답이 없습니다. 다시 시도해주세요.");
+        return;
+      }
+      if (response.status === 200) {
+        console.log("회원가입 성공:", response.data);
+        navigate("/signup3");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        setErrorMessage("입력한 값이 올바르지 않습니다. 다시 확인해주세요.");
+      } else {
+        setErrorMessage("서버와의 연결이 원활하지 않습니다. 다시 시도해주세요.");
+      }
+    }
+  };
+  
   const isValid =
     profileData.nickname.trim() !== "" &&
     profileData.imageUrl !== null &&

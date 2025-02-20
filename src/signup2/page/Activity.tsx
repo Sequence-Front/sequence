@@ -185,11 +185,11 @@ const ActivityBlock = styled.div`
 `
 
 interface ActivityData {
-  type: string;
-  name: string;
+  experienceType: string;
+  experienceName: string;
   startDate: [string, string, string];
   endDate: [string, string, string];
-  description: string;
+  experienceDescription: string;
 }
 
 interface ActivityProps {
@@ -198,7 +198,7 @@ interface ActivityProps {
 
 const Activity = ({ onDataChange }: ActivityProps) => {
   const [activities, setActivities] = useState<ActivityData[]>([
-    { type: "유형 선택", name: "", startDate: ["", "", ""], endDate: ["", "", ""], description: "" },
+    { experienceType: "유형 선택", experienceName: "", startDate: ["", "", ""], endDate: ["", "", ""], experienceDescription: "" },
   ]);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean[]>([false]);
 
@@ -215,7 +215,7 @@ const Activity = ({ onDataChange }: ActivityProps) => {
   const handleAddActivity = () => {
     setActivities((prev) => [
       ...prev,
-      { type: "유형 선택", name: "", startDate: ["", "", ""], endDate: ["", "", ""], description: "" },
+      { experienceType: "유형 선택", experienceName: "", startDate: ["", "", ""], endDate: ["", "", ""], experienceDescription: "" },
     ]);
     setTextAreasRows((prev) => [...prev, 1]);
     setIsDropdownOpen((prev) => [...prev, false]);
@@ -223,6 +223,11 @@ const Activity = ({ onDataChange }: ActivityProps) => {
     endRefs.current.push([React.createRef(), React.createRef(), React.createRef()]);
   };
 
+  const ActivityOptions = ["대외활동", "동아리", "봉사", "교육", "기타"];
+
+
+  //날짜 수정
+  
   const handleDateChange = (
     index: number,
     type: "startDate" | "endDate",
@@ -230,18 +235,45 @@ const Activity = ({ onDataChange }: ActivityProps) => {
     value: string
   ) => {
     const updatedActivities = [...activities];
-    let newValue = value.replace(/[^0-9]/g, "");
-
-    if (fieldIndex === 1 && parseInt(newValue, 10) > 12) {
-      newValue = "12";
+    let newValue = value.replace(/[^0-9]/g, ""); 
+  
+    if (fieldIndex === 1) { 
+      if (parseInt(newValue, 10) > 12) {
+        newValue = "12";
+      }
     }
-    if (fieldIndex === 2 && parseInt(newValue, 10) > 31) {
-      newValue = "31";
+  
+    if (fieldIndex === 2) {
+      const month = parseInt(updatedActivities[index][type][1], 10) || 0;
+      let maxDays = 31; 
+  
+      if ([4, 6, 9, 11].includes(month)) { 
+        maxDays = 30;
+      } else if (month === 2) { 
+        maxDays = 29;
+      }
+  
+      if (parseInt(newValue, 10) > maxDays) {
+        newValue = maxDays.toString();
+      }
+  
     }
-
+  
     updatedActivities[index][type][fieldIndex] = newValue.slice(0, 2);
     setActivities(updatedActivities);
   };
+  
+  const handleDateBlur = (index: number, type: "startDate" | "endDate", fieldIndex: number) => {
+    const updatedActivities = [...activities];
+    let value = updatedActivities[index][type][fieldIndex];
+  
+    if (value.length === 1) {
+      updatedActivities[index][type][fieldIndex] = `0${value}`; 
+    }
+  
+    setActivities(updatedActivities);
+  };
+
 
   const handleChange = (
     index: number,
@@ -253,7 +285,7 @@ const Activity = ({ onDataChange }: ActivityProps) => {
     updatedActivities[index][field] = value as never;
     setActivities(updatedActivities);
   
-    if (field === "description") {
+    if (field === "experienceDescription") {
       const lineCount = value.split("\n").length;
       setTextAreasRows((prev) =>
         prev.map((rows, idx) => (idx === index ? Math.min(lineCount, 5) : rows))
@@ -261,21 +293,23 @@ const Activity = ({ onDataChange }: ActivityProps) => {
     }
   };
   
-
   const handleDropdownToggle = (index: number) => {
     setIsDropdownOpen((prev) =>
       prev.map((open, idx) => (idx === index ? !open : false))
     );
   };
 
-  const handleDropdownSelect = (index: number, value: string) => {
-    const updatedActivities = [...activities];
-    updatedActivities[index].type = value;
-    setActivities(updatedActivities);
-    setIsDropdownOpen((prev) =>
-      prev.map((open, idx) => (idx === index ? false : open))
-    );
-  };
+const handleDropdownSelect = (index: number, value: string) => {
+  const updatedActivities = [...activities];
+
+  const mappedValue = value;
+
+  updatedActivities[index].experienceType = mappedValue;
+  setActivities(updatedActivities);
+  setIsDropdownOpen((prev) =>
+    prev.map((open, idx) => (idx === index ? false : open))
+  );
+};
 
   return (
     <Container>
@@ -285,12 +319,12 @@ const Activity = ({ onDataChange }: ActivityProps) => {
             <ActivityContainer focused={focusedIndex === index}>
               <Dropdown>
                 <DropdownButton onClick={() => handleDropdownToggle(index)}>
-                  {activity.type}
+                  {activity.experienceType}
                   <SlArrowDown style={{ marginLeft: "8px" }} />
                 </DropdownButton>
                 {isDropdownOpen[index] && (
                   <DropdownList>
-                    {["대외활동", "동아리", "봉사", "아르바이트", "해외연수", "교육이수"].map((option) => (
+                    {ActivityOptions.map((option) => (
                       <li key={option} onClick={() => handleDropdownSelect(index, option)}>
                         {option}
                       </li>
@@ -300,8 +334,8 @@ const Activity = ({ onDataChange }: ActivityProps) => {
               </Dropdown>
               <Input
                 placeholder="활동명을 적어주세요."
-                value={activity.name}
-                onChange={(e) => handleChange(index, "name", e.target.value)}
+                value={activity.experienceName}
+                onChange={(e) => handleChange(index, "experienceName", e.target.value)}
                 onFocus={() => setFocusedIndex(index)}
                 onBlur={() => setFocusedIndex(null)}
               />
@@ -318,7 +352,10 @@ const Activity = ({ onDataChange }: ActivityProps) => {
                     ref={startRefs.current[index]?.[fieldIndex]}
                     onChange={(e) => handleDateChange(index, "startDate", fieldIndex, e.target.value)}
                     onFocus={() => setFocusedDateIndex(index)}
-                    onBlur={() => setFocusedDateIndex(null)}
+                    onBlur={() => {
+                      setFocusedDateIndex(null);
+                      handleDateBlur(index, "startDate", fieldIndex);
+                    }}
                   />
                   {fieldIndex < 2 && <Dash>.</Dash>}
                 </React.Fragment>
@@ -333,7 +370,10 @@ const Activity = ({ onDataChange }: ActivityProps) => {
                     ref={endRefs.current[index]?.[fieldIndex]}
                     onChange={(e) => handleDateChange(index, "endDate", fieldIndex, e.target.value)}
                     onFocus={() => setFocusedDateIndex(index)}
-                    onBlur={() => setFocusedDateIndex(null)}
+                    onBlur={() => {
+                      setFocusedDateIndex(null);
+                      handleDateBlur(index, "endDate", fieldIndex);
+                    }}
                   />
                   {fieldIndex < 2 && <Dash>.</Dash>}
                 </React.Fragment>
@@ -344,8 +384,8 @@ const Activity = ({ onDataChange }: ActivityProps) => {
           <TextArea
             placeholder="활동에서 경험한 것을 적어주세요!"
             rows={textAreasRows[index]}
-            value={activity.description}
-            onChange={(e) => handleChange(index, "description", e.target.value)}
+            value={activity.experienceDescription}
+            onChange={(e) => handleChange(index, "experienceDescription", e.target.value)}
           />
         </ActivityBlock>
       ))}
