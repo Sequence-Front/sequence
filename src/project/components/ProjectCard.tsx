@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Project } from '../data/dummyProjects';
+import { useNavigate } from 'react-router-dom';
+
 const TypeTag = styled.span`
   background: transparent;
   border: 1px solid #FFFFFF;
@@ -85,6 +87,7 @@ const HighlightedText = styled.span`
 `;
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, searchTerm }) => {
+  const navigate = useNavigate();
   const highlightText = (text: string) => {
     if (!searchTerm) return text;
     
@@ -96,7 +99,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, searchTerm }) => {
   };
 
   return (
-    <Card>
+    <Card onClick={() => {navigate(`/projectdetail/${project.id}`)}}>
       <TypeTagsContainer>
         {project.type.map((t, index) => (
           <TypeTag key={index}>{t}</TypeTag>
