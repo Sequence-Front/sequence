@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Archive } from '../types/archive';
 
 const ItemWrapper = styled.div`
     cursor: pointer;
@@ -95,29 +96,25 @@ const StatText = styled.div`
 
 interface ArchiveItemProps {
     id: number;
-    item: {
-        imageUrl: string;
-        title: string;
-        date: string;
-        userImage: string;
-        username: string;
-        comment: number;
-        view: number;
-        bookmark: number;
-    }
+    item: Archive;
 }
 
 const ArchiveItem = ({ id, item }: ArchiveItemProps) => {
+    // 날짜 포맷팅 함수
+    const formatDate = (dateString: string) => {
+        // const date = new Date(dateString) as unknown as Date;
+        // return date.toLocaleDateString('ko-KR');
+    };
     return (
         <ItemWrapper>
             <ImageContainer>
-                <ArchiveImage src={item.imageUrl} alt={`Archive ${id}`} />
+                <ArchiveImage src={item.thumbnail} alt={`Archive ${id}`} />
                 <HoverOverlay className="hover-overlay">
                     <OverlayTitle>{item.title}</OverlayTitle>
                     <StatusContainer>
                         <StatItem>
-                            <StatText>comment</StatText>
-                            <StatText>{item.comment}</StatText>
+                            <StatText>상태</StatText>
+                            <StatText>{item.status}</StatText>
                         </StatItem>
                         <StatItem>
                             <StatText>북마크</StatText>
@@ -133,9 +130,9 @@ const ArchiveItem = ({ id, item }: ArchiveItemProps) => {
             <ItemInfo>
                 <UserInfo>
                     <UserTempImage />
-                    <Title>{item.username}</Title>
+                    <Title>{item.title}</Title>
                 </UserInfo>
-                <Date>{item.date}</Date>
+                {/* <Date>{formatDate(item.createdDateTime)}</Date> */}
             </ItemInfo>
         </ItemWrapper>
     );
