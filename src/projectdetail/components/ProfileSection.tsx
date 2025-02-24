@@ -6,7 +6,10 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 interface ProfileSectionProps {
-  profileData: any;
+  profileData: Array<{
+    profileImgUrl: string | null;
+    nickname: string;
+  }>;
 }
 
 const SliderWrapper = styled.div`
@@ -111,12 +114,14 @@ const ProfileSection = ({profileData}: ProfileSectionProps) => {
       <DescriptionWrapper>소속 팀원들의 프로필을 확인해보세요.</DescriptionWrapper>
       <SliderWrapper>
         <Slider {...settings}>
-          {profileData.name.map((name: string, index: number) => (
+          {profileData.map((member, index) => (
             <ProfileCard key={index}>
-              <ProfileImage src={profileData.userImage[index]} alt={name} />
+              <ProfileImage 
+                src={member.profileImgUrl || '/default-profile-image.png'} 
+                alt={member.nickname} 
+              />
               <ProfileInfo>
-                <h3>{profileData.name[index]}</h3>
-                <p>{profileData.role[index]}</p>
+                <h3>{member.nickname}</h3>
               </ProfileInfo>
             </ProfileCard>
           ))}

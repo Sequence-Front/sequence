@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { projectData } from './data/projectData';
 import Header from '../asset/component/Header';
 import { LuPen } from "react-icons/lu";
 import { FaRegBookmark } from "react-icons/fa";
@@ -10,6 +10,7 @@ import RecruitmentSection from './components/RecruitmentSection';
 import ProgressSection from './components/ProgressSection';
 import ProfileSection from './components/ProfileSection';
 import CommentSection from './components/CommentSection';
+import { getProjectDetail } from '../api/projectdetail';
 
 const Wrapper = styled.div`
 `
@@ -61,10 +62,64 @@ const TempImage = styled.div`
   margin-bottom: 3rem;
  `
 
+interface ProjectDetail {
+  id: number;
+  title: string;
+  writer: string;
+  createdDate: string;
+  projectName: string;
+  period: string;
+  category: string;
+  personnel: number;
+  roles: string[];
+  skills: string[];
+  meetingOption: string;
+  step: string;
+  introduce: string;
+  article: string;
+  link: string;
+  members: Array<{
+    profileImgUrl: string | null;
+    nickname: string;
+  }>;
+  comments: Array<{
+    parentComment: {
+      id: number;
+      writer: string;
+      content: string;
+      createdLocalDateTime: string;
+    };
+    childComments: Array<{
+      id: number;
+      writer: string;
+      content: string;
+      createdLocalDateTime: string;
+    }>;
+  }>;
+}
+
 const ProjectDetailPage = () => {
+  const { id } = useParams();
+  const [projectData, setProjectData] = useState<ProjectDetail | null>(null);
+
+  useEffect(() => {
+    const fetchProjectDetail = async () => {
+      try {
+        const response = await getProjectDetail(id);
+        setProjectData(response.data);
+      } catch (error) {
+        console.error('프로젝트 상세 정보 조회 실패:', error);
+      }
+    };
+
+    fetchProjectDetail();
+  }, [id]);
+
+  if (!projectData) return <div>로딩 중...</div>;
+
   return (
     <Wrapper>
-      <Header headerName = "" isMain = {false}/>
+      <Header headerName="" isMain={false}/>
       <TitleSection>
         <IconContainer>
           <FaRegBookmark size={30} style={{color: "#E32929"}}/>
@@ -72,27 +127,44 @@ const ProjectDetailPage = () => {
           <LuPen size={30} style={{color: "#E32929"}}/>
         </IconContainer>
         <Title>
-          프로젝트 디자이너 구합니다
+          {projectData.title}
         </Title>
         <Detail>
           <DetailBox>
             <TempImage/>
-            <div>홍길동</div>
-            <div>24.08.08</div>
+            <div>{projectData.writer}</div>
+            <div>{projectData.createdDate}</div>
           </DetailBox>
           <DetailBox>
-            <div>Comment 2</div>
+            <div>Comment {projectData.comments.length}</div>
             <div>북마크 4</div>
             <div>조회 10</div>
           </DetailBox>
         </Detail>
       </TitleSection>
       <Container>
-        <ProjectSection projectData={projectData.project} />
-        <RecruitmentSection recruitmentData={projectData.recruitment} />
-        <ProgressSection progressData={projectData.progress} />
-        <ProfileSection profileData={projectData.profile}/>
-        <CommentSection />
+        <ProjectSection 
+          projectData={{
+            projectName: projectData.projectName,
+            category: projectData.category,
+            period: projectData.period,
+            personnel: projectData.personnel,
+            meetingOption: projectData.meetingOption,
+            step: projectData.step,
+            introduce: projectData.introduce,
+            link: projectData.link
+          }} 
+        />
+        <RecruitmentSection 
+          recruitmentData={{
+            roles: projectData.roles,
+            skills: projectData.skills,
+            article: projectData.article
+          }}
+        />
+        <ProgressSection progressData={projectData.step} />
+        <ProfileSection profileData={projectData.members}/>
+        {/* <CommentSection comments={projectData.comments} /> */}
       </Container>
     </Wrapper>
   );

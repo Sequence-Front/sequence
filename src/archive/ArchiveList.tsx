@@ -5,10 +5,10 @@ import Pagination from '../asset/component/Pagination';
 import { useNavigate } from 'react-router-dom';
 import ScrollToTopButton from '../asset/component/ScrollToTopButton';
 import ArchiveItem from './component/ArchiveItem';
-
 import { FaSearch } from 'react-icons/fa';
 import { AiOutlinePlus } from "react-icons/ai";
-import { archiveDummyData } from './data/archiveDummyData';
+import { getArchives, searchArchives } from '../api/archive';
+import { Archive } from './types/archive';
 
 
 const SearchBar = styled.div`
@@ -86,28 +86,38 @@ const ArchiveList = () => {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
-    
+    const [archives, setArchives] = useState<Archive[]>([]);
+    const [totalPages, setTotalPages] = useState(1);
+    const [isLoading, setIsLoading] = useState(true);
+
     useEffect(() => {
+        const fetchArchives = async () => {
+            setIsLoading(true);
+            try {
+                if (searchTerm) {
+                    const response = await searchArchives(searchTerm, currentPage);
+                    setArchives(response.data.archives);
+                    setTotalPages(response.data.totalPages);
+                } else {
+                    const response = await getArchives(currentPage);
+                    setArchives(response.data.archives);
+                    setTotalPages(response.data.totalPages);
+                }
+            } catch (error) {
+                console.error('데이터 조회 실패:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchArchives();
+    }, [currentPage, searchTerm]);
+
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(e.target.value);
         setCurrentPage(1);
-    }, [searchTerm]);
-
-    const filteredArchives = archiveDummyData.filter(archive => {
-        const matchesSearch = searchTerm
-            .split('')
-            .every(char => archive.title.toLowerCase().includes(char.toLowerCase()));
-        return matchesSearch;
-    });
-    
-    const itemsPerPage = 18;
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = filteredArchives.slice(indexOfFirstItem, indexOfLastItem);
-    const totalPages = Math.ceil(filteredArchives.length / itemsPerPage);
-
-    const handleArchiveClick = (id: number) => {
-        navigate(`/archive/${id}`);
     };
-    
+
     return (
         <>
             <Header headerName="archive"/>
@@ -117,7 +127,7 @@ const ArchiveList = () => {
                     <SearchInput 
                         placeholder="프로젝트 제목을 검색해보세요!" 
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange={handleSearch}
                     />
                     <SearchIcon />
                     <AddProjectButton onClick={() => navigate('/archive/registration')}>
@@ -125,12 +135,14 @@ const ArchiveList = () => {
                     </AddProjectButton>
                 </SearchBar>
                 <div style={{width: '75%'}}>
-                    총 {filteredArchives.length}건의 게시글
+                    총 {archives.length}건의 게시글
                 </div>
                 
-                {filteredArchives.length > 0 ? (
+                {isLoading ? (
+                    <div>로딩 중...</div>
+                ) : archives.length > 0 ? (
                     <ArchiveGrid>
-                        {currentItems.map((item) => (
+                        {archives.map((item) => (
                             <ArchiveItem 
                                 key={item.id}
                                 id={item.id}
@@ -146,13 +158,11 @@ const ArchiveList = () => {
                     </NoResults>
                 )}
                 
-                {filteredArchives.length > 0 && (
-                    <Pagination 
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        onPageChange={setCurrentPage}
-                    />
-                )}
+                <Pagination 
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                />
             </Container>
             
             <ScrollToTopButton />

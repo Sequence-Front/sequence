@@ -42,8 +42,13 @@ const LoginPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    login(formData);
-    navigate('/project');
+    const loginSuccess = await login(formData);
+    
+    if (loginSuccess) {
+      navigate('/project');
+    } else {
+      alert('로그인에 실패했습니다. 아이디와 비밀번호를 다시 확인해주세요.');
+    }
   };
 
   return (

@@ -144,12 +144,30 @@ const TotalProjects = styled.div`
 type TagCategory = '분야' | '기간' | '역할' | '필요스킬' | '회의' | '프로젝트단계';
 
 const tagOptions: Record<TagCategory, string[]> = {
-  분야: ['대회', '창업', '대외활동', '경험', '스터디'],
-  기간: ['1개월 이하', '1개월 ~ 3개월', '3개월 ~ 6개월', '6개월 ~ 1년', '1년 이상'],
-  역할: ['Front-end', 'Back-end', 'UXUI Design', 'BX Design', 'PM'],
-  필요스킬: ['Figma', 'Adobe Illustration', 'Adobe Photoshop', 'MidJourney', 'Tool'],
+  분야: ['대회', '창업', '대외활동'],
+  기간: ['ONE_MONTH', 'ONE_TO_THREE_MONTH', 'THREE_TO_SIX_MONTH', 'SIX_TO_TWELVE_MONTH', 'MORE_THAN_YEAR'],
+  역할: ['백엔드', '프론트', '디자이너', 'PM'],
+  필요스킬: ['figma', 'spring', 'docker', 'adobe'],
   회의: ['오프라인', '온라인', '병행'],
-  프로젝트단계: ['시작 전', '기획 중', '디자인 중', '개발 중', '창업 중']
+  프로젝트단계: ['PLANNING', 'DESIGN', 'DEVELOPMENT', 'TESTING', 'DEPLOYMENT']
+};
+
+// 기간 표시를 위한 매핑 객체
+const periodMapping = {
+  'ONE_MONTH_LESS': '1개월 이하',
+  'ONE_TO_THREE_MONTH': '1개월 ~ 3개월',
+  'THREE_TO_SIX_MONTH': '3개월 ~ 6개월',
+  'SIX_TO_ONE_YEAR': '6개월 ~ 1년',
+  'OVER_ONE_YEAR': '1년 이상'
+};
+
+// 프로젝트 단계 매핑
+const stepMapping = {
+  'PLANNING': '기획 단계',
+  'DESIGN': '디자인 단계',
+  'DEVELOPMENT': '개발 단계',
+  'TESTING': '테스트 단계',
+  'DEPLOYMENT': '배포 단계'
 };
 
 const ProjectPage: React.FC = () => {
@@ -218,28 +236,39 @@ const ProjectPage: React.FC = () => {
   //키워드 필터링
   useEffect(() => {
     const fetchFilteredProjects = async () => {
-      if (selectedTags.length === 0) return;
-      
       setIsLoading(true);
       try {
-        const filters = {
-          category: selectedTags.find(tag => tagOptions.분야.includes(tag)),
-          periodKey: selectedTags.find(tag => tagOptions.기간.includes(tag)),
-          roles: selectedTags.find(tag => tagOptions.역할.includes(tag)),
-          skills: selectedTags.find(tag => tagOptions.필요스킬.includes(tag)),
-          meetingOption: selectedTags.find(tag => tagOptions.회의.includes(tag)),
-          step: selectedTags.find(tag => tagOptions.프로젝트단계.includes(tag))
-        };
-        const response = await filterProjects(filters);
-        const projectList = response.data.map((item: any) => new Project(
-          item.id,
-          item.title,
-          item.writer,
-          item.createdDate,
-          item.roles,
-          []
-        ));
-        setProjects(projectList);
+        if (selectedTags.length === 0) {
+          const response = await getProjects();
+          const projectList = response.data.map((item: any) => new Project(
+            item.id,
+            item.title,
+            item.writer,
+            item.createdDate,
+            item.roles,
+            []
+          ));
+          setProjects(projectList);
+        } else {
+          const filters = {
+            category: selectedTags.find(tag => tagOptions.분야.includes(tag)),
+            periodKey: selectedTags.find(tag => tagOptions.기간.includes(tag)),
+            roles: selectedTags.find(tag => tagOptions.역할.includes(tag)),
+            skills: selectedTags.find(tag => tagOptions.필요스킬.includes(tag)),
+            meetingOption: selectedTags.find(tag => tagOptions.회의.includes(tag)),
+            step: selectedTags.find(tag => tagOptions.프로젝트단계.includes(tag))
+          };
+          const response = await filterProjects(filters);
+          const projectList = response.data.map((item: any) => new Project(
+            item.id,
+            item.title,
+            item.writer,
+            item.createdDate,
+            item.roles,
+            []
+          ));
+          setProjects(projectList);
+        }
       } catch (error) {
         console.error('프로젝트 필터링 실패:', error);
       } finally {
@@ -271,6 +300,17 @@ const ProjectPage: React.FC = () => {
   const handleNavItemClick = (category: TagCategory) => {
     setActiveCategory(category);
     setTags(tagOptions[category]);
+  };
+
+  // 태그 표시 시 매핑된 값 사용
+  const getDisplayTag = (tag: string) => {
+    if (tag in periodMapping) {
+      return periodMapping[tag as keyof typeof periodMapping];
+    }
+    if (tag in stepMapping) {
+      return stepMapping[tag as keyof typeof stepMapping];
+    }
+    return tag;
   };
 
   return (
@@ -305,7 +345,7 @@ const ProjectPage: React.FC = () => {
               active={selectedTags.includes(tag)}
               onClick={() => handleTagClick(tag)}
             >
-              {tag}
+              {getDisplayTag(tag)}
             </Tag>
           ))}
         </TagWrapper>
