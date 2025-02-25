@@ -56,11 +56,11 @@ const TempImage = styled.div`
   height: 40px;
 `
 
- const IconContainer = styled.div`
+const IconContainer = styled.div`
   display: flex;
   gap: 3rem;
   margin-bottom: 3rem;
- `
+`
 
 interface ProjectDetail {
   id: number;
@@ -107,6 +107,7 @@ const ProjectDetailPage = () => {
       try {
         const response = await getProjectDetail(id);
         setProjectData(response.data);
+        console.log(response);
       } catch (error) {
         console.error('프로젝트 상세 정보 조회 실패:', error);
       }
@@ -164,7 +165,7 @@ const ProjectDetailPage = () => {
         />
         <ProgressSection progressData={projectData.step} />
         <ProfileSection profileData={projectData.members}/>
-        {/* <CommentSection comments={projectData.comments} /> */}
+        <CommentSection comments={projectData.comments} />
       </Container>
     </Wrapper>
   );

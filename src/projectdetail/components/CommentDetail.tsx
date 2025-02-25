@@ -118,49 +118,33 @@ const ReplyToContainer = styled.div`
   flex-direction: column;
 `
 
-interface Reply {
-  profile: string;
-  nickname: string;
-  role?: string;
-  timestamp: string;
-  commentText: string;
-}
-
 interface CommentDetailProps {
-  profile: string;
-  nickname: string;
-  role?: string;
-  timestamp: string;
-  commentText: string;
-  replies: Reply[];
-  onAddReply: (newReply: Reply) => void;
-  isReplyEnabled: boolean;
+  comment: {
+    id: number;
+    writer: string;
+    content: string;
+    createdLocalDateTime: string;
+  };
+  childComments: Array<{
+    id: number;
+    writer: string;
+    content: string;
+    createdLocalDateTime: string;
+  }>;
 }
 
 const CommentDetail = ({
-  profile,
-  nickname,
-  role,
-  timestamp,
-  commentText,
-  replies,
-  onAddReply,
-  isReplyEnabled,
+  comment,
+  childComments
 }: CommentDetailProps) => {
   const [showReplyInput, setShowReplyInput] = useState(false);
   const [reply, setReply] = useState("");
 
   const handleReplySubmit = () => {
     if (reply.trim() !== "") {
-      const newReply: Reply = {
-        profile: "https://buly.kr/GZwmWfY",
-        nickname: "현재 사용자",
-        role: "멤버",
-        timestamp: new Date().toLocaleString(),
-        commentText: reply,
-      };
-      onAddReply(newReply);
+      // TODO: API 호출로 답글 추가 로직 구현
       setReply("");
+      setShowReplyInput(false);
     }
   };
 
@@ -170,47 +154,43 @@ const CommentDetail = ({
         <PiSirenLight />
       </ReportIcon>
       <UserName>
-        <ProfileImage src={profile} alt={`${nickname}'s profile`} />
-        {nickname}
-        {role && <Role>{role}</Role>}
-        <TimeStamp>{timestamp}</TimeStamp>
+        <ProfileImage src="https://buly.kr/GZwmWfY" alt={`${comment.writer}'s profile`} />
+        {comment.writer}
+        <TimeStamp>{comment.createdLocalDateTime}</TimeStamp>
       </UserName>
-      <CommentText>{commentText}</CommentText>
-      {isReplyEnabled && (
-        <ReplyButton onClick={() => setShowReplyInput(!showReplyInput)}>
-          {showReplyInput ? "취소" : "답글"}
-        </ReplyButton>
-      )}
+      <CommentText>{comment.content}</CommentText>
+      <ReplyButton onClick={() => setShowReplyInput(!showReplyInput)}>
+        {showReplyInput ? "취소" : "답글"}
+      </ReplyButton>
       <ReplyContainer>
-        {replies.map((reply, index) => (
-          <ReplyItem key={index}>
+        {childComments.map((reply) => (
+          <ReplyItem key={reply.id}>
             <Replyimg style={{width:'3.5rem'}} />
             <ReplyContent>
-            <ReportIcon>
+              <ReportIcon>
                 <PiSirenLight />
-            </ReportIcon>
+              </ReportIcon>
               <UserName>
-                <ProfileImage src={reply.profile} alt={`${reply.nickname}'s profile`} />
-                {reply.nickname}
-                {reply.role && <Role>{reply.role}</Role>}
-                <TimeStamp>{reply.timestamp}</TimeStamp>
+                <ProfileImage src="https://buly.kr/GZwmWfY" alt={`${reply.writer}'s profile`} />
+                {reply.writer}
+                <TimeStamp>{reply.createdLocalDateTime}</TimeStamp>
               </UserName>
-              <ReplyText>{reply.commentText}</ReplyText>
+              <ReplyText>{reply.content}</ReplyText>
             </ReplyContent>
           </ReplyItem>
         ))}
-        {isReplyEnabled && showReplyInput && (
+        {showReplyInput && (
           <ReplyInputWrapper>
             <Replyimg style={{width:'3.5rem'}} />
             <ReplyToContainer>
-            <ReplyToText>'{nickname}'님에게 답글</ReplyToText>
-            <CommentInput
-              comment={reply}
-              setComment={setReply}
-              handleSubmit={handleReplySubmit}
-              maxLength={300}
+              <ReplyToText>'{comment.writer}'님에게 답글</ReplyToText>
+              <CommentInput
+                comment={reply}
+                setComment={setReply}
+                handleSubmit={handleReplySubmit}
+                maxLength={300}
               />
-              </ReplyToContainer>
+            </ReplyToContainer>
           </ReplyInputWrapper>
         )}
       </ReplyContainer>
