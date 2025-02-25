@@ -206,7 +206,7 @@ const Education = ({ onDataChange }: EducationProps) => {
       year,
       startYear,
       endYear,
-      status,
+      status: statusMapping[status] || status,
       ...updates,
     });
   };

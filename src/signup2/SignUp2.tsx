@@ -477,7 +477,6 @@ const SignUp = () => {
       endDate: formatDate(career.endDate),
     }));
   
-    //---------- 수상 내역 ---------//
     const convertAwardType = (type: string) => {
       switch (type) {
         case "자격증":
@@ -499,7 +498,7 @@ const SignUp = () => {
     //--------------------------//
   
     const fullUserData = {
-      username: userData.userId,
+      username: userData.username,
       password: userData.password,
       name: userData.name,
       nickname: profileData.nickname,

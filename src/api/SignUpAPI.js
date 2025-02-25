@@ -36,12 +36,15 @@ export const nickNameDupCheck = async (nickname) => {
         const response = await axiosInstance.get(`/api/users/check_nickname?nickname=${nickname}`);
 
         if (response.status === 200) {
+            console.log("사용가능한 닉네임.");
             return { isDuplicate: false, message: '사용 가능한 닉네임입니다.' };
         }
     } catch (error) {
         if (error.response && error.response.status === 400) {
+            console.log("이미 사용 중인 닉네임입니다.");
             return { isDuplicate: true, message: '이미 사용 중인 닉네임입니다.' };
         }
+        console.log("오류");
         return { isDuplicate: true, message: '닉네임 확인 중 오류가 발생했습니다.' };
     }
 };
