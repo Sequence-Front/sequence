@@ -38,7 +38,7 @@ const filterProjects = async (filters) => {
 const postProject = async(project) => {
   try{
     const accessToken = localStorage.getItem('accessToken');
-    const response = await axiosInstance.post('/api/projects', project, {
+    const response = await tokenAxios.post('/api/projects', project, {
       headers: {
         access: accessToken ? accessToken : "",
     },
