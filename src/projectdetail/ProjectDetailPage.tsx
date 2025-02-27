@@ -102,17 +102,16 @@ const ProjectDetailPage = () => {
   const { id } = useParams();
   const [projectData, setProjectData] = useState<ProjectDetail | null>(null);
 
-  useEffect(() => {
-    const fetchProjectDetail = async () => {
-      try {
-        const response = await getProjectDetail(id);
-        setProjectData(response.data);
-        console.log(response);
-      } catch (error) {
-        console.error('프로젝트 상세 정보 조회 실패:', error);
-      }
-    };
+  const fetchProjectDetail = async () => {
+    try {
+      const response = await getProjectDetail(id);
+      setProjectData(response.data);
+    } catch (error) {
+      console.error('프로젝트 상세 정보 조회 실패:', error);
+    }
+  };
 
+  useEffect(() => {
     fetchProjectDetail();
   }, [id]);
 
@@ -165,7 +164,10 @@ const ProjectDetailPage = () => {
         />
         <ProgressSection progressData={projectData.step} />
         <ProfileSection profileData={projectData.members}/>
-        <CommentSection comments={projectData.comments} />
+        <CommentSection 
+          comments={projectData.comments} 
+          onCommentAdd={fetchProjectDetail}
+        />
       </Container>
     </Wrapper>
   );

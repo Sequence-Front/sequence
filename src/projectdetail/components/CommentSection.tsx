@@ -81,9 +81,10 @@ interface Comment {
       createdLocalDateTime: string;
     }>;
   }>;
+  onCommentAdd: () => void;
 }
 
-const CommentSection = ({ comments }: Comment) => {
+const CommentSection = ({ comments, onCommentAdd }: Comment) => {
   const [comment, setComment] = useState('');
   const maxLength = 300;
   const { id } = useParams();
@@ -92,10 +93,15 @@ const CommentSection = ({ comments }: Comment) => {
   const totalCommentsCount = comments.reduce((total, comment) => 
     total + 1 + comment.childComments.length, 0);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (comment.trim() !== '') {
-      CommentPost(id, comment);
-      setComment('');
+      try {
+        await CommentPost(id, comment);
+        setComment('');
+        onCommentAdd();
+      } catch (error) {
+        console.error('댓글 등록 실패:', error);
+      }
     }
   };
 
@@ -119,6 +125,7 @@ const CommentSection = ({ comments }: Comment) => {
           key={commentData.parentComment.id}
           comment={commentData.parentComment}
           childComments={commentData.childComments}
+          onCommentAdd={onCommentAdd}
         />
       ))}
     </CommentContainer>

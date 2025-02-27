@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { PiSirenLight } from "react-icons/pi";
 import { ReactComponent as Replyimg } from "../../asset/image/ReplyImg.svg";
 import CommentInput from "./CommentInput";
+import { useParams } from "react-router-dom";
+import { CommentPost } from "../../api/projectComment";
 
 const CommentContainer = styled.div`
   position: relative;
@@ -131,20 +133,28 @@ interface CommentDetailProps {
     content: string;
     createdLocalDateTime: string;
   }>;
+  onCommentAdd: () => void;
 }
 
 const CommentDetail = ({
   comment,
-  childComments
+  childComments,
+  onCommentAdd
 }: CommentDetailProps) => {
   const [showReplyInput, setShowReplyInput] = useState(false);
   const [reply, setReply] = useState("");
+  const { id } = useParams();
 
-  const handleReplySubmit = () => {
+  const handleReplySubmit = async () => {
     if (reply.trim() !== "") {
-      // TODO: API 호출로 답글 추가 로직 구현
-      setReply("");
-      setShowReplyInput(false);
+      try {
+        await CommentPost(id, reply, comment.id);
+        setReply("");
+        setShowReplyInput(false);
+        onCommentAdd();
+      } catch (error) {
+        console.error('답글 등록 실패:', error);
+      }
     }
   };
 
