@@ -80,12 +80,14 @@ const UserProfile = styled.img`
   width: clamp(1.3rem, 2.6vw, 2.6rem);
   height: clamp(1.3rem, 2.6vw, 2.6rem);
   border-radius: 50%;
+  cursor: pointer;
 `
 
 const AlertImg = styled.img`
   display : flex;
   width: clamp(1.3rem, 2.6vw, 2.6rem);
   height: clamp(1.3rem, 2.6vw, 2.6rem);
+  cursor: pointer;
 `
 
 function Header({ headerName, isMain = false }: { headerName: string; isMain?: boolean } ) {
@@ -143,7 +145,7 @@ function Header({ headerName, isMain = false }: { headerName: string; isMain?: b
       ) : (
           <UserContainer>
             <AlertImg src={alert}/>
-            <UserProfile src= {"https://search.pstatic.net/sunny/?src=https%3A%2F%2Fst.depositphotos.com%2F1177973%2F3836%2Fi%2F450%2Fdepositphotos_38368579-stock-photo-little-kitten-isolated-on-white.jpg&type=a340"} />
+            <UserProfile  onClick={() => navigate(`/mypage?nickname=undefined`)} src= {"https://search.pstatic.net/sunny/?src=https%3A%2F%2Fst.depositphotos.com%2F1177973%2F3836%2Fi%2F450%2Fdepositphotos_38368579-stock-photo-little-kitten-isolated-on-white.jpg&type=a340"} />
           </UserContainer>
       )}
       </LoginContainer>

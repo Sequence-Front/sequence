@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import {SectionTitle, Section, DescriptionWrapper} from '../style/styles';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useNavigate } from 'react-router-dom';
 
 interface ProfileSectionProps {
   profileData: Array<{
@@ -85,6 +86,8 @@ const ProfileInfo = styled.div`
 `;
 
 const ProfileSection = ({profileData}: ProfileSectionProps) => {
+  const navigate = useNavigate();
+
   const settings = {
     dots: false,
     arrows: false,
@@ -115,7 +118,7 @@ const ProfileSection = ({profileData}: ProfileSectionProps) => {
       <SliderWrapper>
         <Slider {...settings}>
           {profileData.map((member, index) => (
-            <ProfileCard key={index}>
+            <ProfileCard key={index} onClick={() => {navigate(`/mypage?nickname=${member.nickname}`)}}>
               <ProfileImage 
                 src={member.profileImgUrl || '/default-profile-image.png'} 
                 alt={member.nickname} 
