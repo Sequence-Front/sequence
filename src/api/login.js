@@ -11,8 +11,10 @@ const login = async (data) => {
     });
     
     const accessToken = response.headers['access'];
+    const nickname = response.data.nickname;
     if (accessToken) {
       localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('nickname', nickname);
       return true;
     }
     return false; 
