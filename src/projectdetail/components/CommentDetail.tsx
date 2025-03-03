@@ -4,7 +4,7 @@ import { PiSirenLight } from "react-icons/pi";
 import { ReactComponent as Replyimg } from "../../asset/image/ReplyImg.svg";
 import CommentInput from "./CommentInput";
 import { useParams } from "react-router-dom";
-import { CommentPost } from "../../api/projectComment";
+import { CommentPost, CommentPut, CommentDelete } from "../../api/projectComment";
 
 const CommentContainer = styled.div`
   position: relative;
@@ -120,6 +120,23 @@ const ReplyToContainer = styled.div`
   flex-direction: column;
 `
 
+const ActionButtons = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+`;
+
+const ActionButton = styled.button`
+  background-color: transparent;
+  color: #bdbdbd;
+  border: none;
+  cursor: pointer;
+  font-size: clamp(0.5rem, 1vw, 1rem);
+  &:hover {
+    color: #e32929;
+  }
+`;
+
 interface CommentDetailProps {
   comment: {
     id: number;
@@ -143,7 +160,10 @@ const CommentDetail = ({
 }: CommentDetailProps) => {
   const [showReplyInput, setShowReplyInput] = useState(false);
   const [reply, setReply] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [editContent, setEditContent] = useState(comment.content);
   const { id } = useParams();
+  const nickname = localStorage.getItem('nickname');
 
   const handleReplySubmit = async () => {
     if (reply.trim() !== "") {
@@ -158,6 +178,27 @@ const CommentDetail = ({
     }
   };
 
+  const handleEdit = async () => {
+    try {
+      await CommentPut(id, editContent, comment.id);
+      setIsEditing(false);
+      onCommentAdd(); // 댓글 목록 새로고침
+    } catch (error) {
+      console.error('댓글 수정 실패:', error);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (window.confirm('댓글을 삭제하시겠습니까?')) {
+      try {
+        await CommentDelete(id, comment.id);
+        onCommentAdd(); // 댓글 목록 새로고침
+      } catch (error) {
+        console.error('댓글 삭제 실패:', error);
+      }
+    }
+  };
+
   return (
     <CommentContainer>
       <ReportIcon>
@@ -168,10 +209,38 @@ const CommentDetail = ({
         {comment.writer}
         <TimeStamp>{comment.createdLocalDateTime}</TimeStamp>
       </UserName>
-      <CommentText>{comment.content}</CommentText>
-      <ReplyButton onClick={() => setShowReplyInput(!showReplyInput)}>
-        {showReplyInput ? "취소" : "답글"}
-      </ReplyButton>
+      
+      {isEditing ? (
+        <CommentInput
+          comment={editContent}
+          setComment={setEditContent}
+          handleSubmit={handleEdit}
+          maxLength={300}
+        />
+      ) : (
+        <CommentText>{comment.content}</CommentText>
+      )}
+
+      <div style={{ display: 'flex', gap: '1rem' }}>
+        <ReplyButton onClick={() => setShowReplyInput(!showReplyInput)}>
+          {showReplyInput ? "취소" : "답글"}
+        </ReplyButton>
+        
+        {nickname === comment.writer && (
+          <ActionButtons>
+            {!isEditing && (
+              <>
+                <ActionButton onClick={() => setIsEditing(true)}>수정</ActionButton>
+                <ActionButton onClick={handleDelete}>삭제</ActionButton>
+              </>
+            )}
+            {isEditing && (
+              <ActionButton onClick={() => setIsEditing(false)}>취소</ActionButton>
+            )}
+          </ActionButtons>
+        )}
+      </div>
+
       <ReplyContainer>
         {childComments.map((reply) => (
           <ReplyItem key={reply.id}>

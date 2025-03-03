@@ -163,11 +163,11 @@ const periodMapping = {
 
 // 프로젝트 단계 매핑
 const stepMapping = {
+  'BEFORE_START' : '개발 전',
   'PLANNING': '기획 단계',
-  'DESIGN': '디자인 단계',
-  'DEVELOPMENT': '개발 단계',
-  'TESTING': '테스트 단계',
-  'DEPLOYMENT': '배포 단계'
+  'DESIGNING': '디자인 단계',
+  'DEVELOPING': '개발 단계',
+  'IN_BUSINESS': '뭐임 사업중?'
 };
 
 const ProjectPage: React.FC = () => {

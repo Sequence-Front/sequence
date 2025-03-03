@@ -1,6 +1,6 @@
 // 2024-11-18 18:09 승균 작성
 // 2024-11-19 18:47 준용 작성
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import Header from '../asset/component/Header';
 import Profile from './component/ProfileHeader';
@@ -8,6 +8,7 @@ import PersonalHistory from './page/PersonalHistory';
 import Portfolio from './page/Portfolio';
 import MemberEvaluation from './page/MemberEvaluation';
 import MyActivity from './page/MyActivity';
+import { getMyInfo } from '../api/myInfo';
 
 const Container = styled.div`
   width: 100%;
@@ -56,8 +57,17 @@ const ContentContainer = styled.div<{ isPortfolio: boolean }>`
 `
 
 const MyPage = () => {
-
   const [activeTab, setActiveTab] = useState<Tab>('PersonalHistory');
+  const [profileData, setProfileData] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getMyInfo();
+      console.log("response : ", response);
+      setProfileData(response);
+    };
+    fetchData();
+  }, []);
 
   const renderContent = () => {
     switch (activeTab) {
@@ -78,7 +88,12 @@ const MyPage = () => {
     <>
       <Header headerName="MyPage" />
       <Container>
-        <Profile />
+        <Profile 
+          name={profileData?.nickname} 
+          birth={profileData?.birth}
+          skills={profileData?.skillCategory || []}
+          desiredJobs={profileData?.desiredJob || []}
+        />
         <TabContainer>
           <TabButton isActive={activeTab === 'PersonalHistory'} onClick={() => setActiveTab('PersonalHistory')}>
             경력 및 활동이력
