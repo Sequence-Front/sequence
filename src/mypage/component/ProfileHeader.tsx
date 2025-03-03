@@ -209,36 +209,26 @@ const HopeContainer = styled.div`
   
 `;
 
-const dummyData = {
-  name: "박소현 님",
-  introduction: "홍익대학교 (세종) 디자인컨버전스학부 4학년 휴학",
-  birth: "2002.01.07.",
-  skills: ["React", "Node.js", "Next.js", "Nest.js", "Flutter", "React-native", "JavaScript", "TypeScript"],
-  badges: [1, 2, 3, 4, 5, 6, 7], // 7개의 뱃지를 위한 더미 데이터
-  hope: ["UX/UI 디자이너","기획","Branding 디자이너"]
-};
-
 type UserDataType = {
     name: string;
-    introduction: string;
     birth: string;
     skills: string[];
-    badges: number[];
-    hope: string[];
+    desiredJobs: string[];
 }
 
-const Profile = () => {
-  const [userData, setUserData] = useState<UserDataType>(dummyData);
+interface ProfileProps {
+  name?: string;
+  birth?: string;
+  skills?: string[];
+  desiredJobs?: string[];
+}
 
-//   useEffect(() => {
-//     const fetchUserData = async () => {
-    // 프로필 정보 가져오기
-      
-//       setUserData(data);
-//     };
-
-    //fetchUserData();
-//   }, []);
+const Profile: React.FC<ProfileProps> = ({ name, birth, skills, desiredJobs }) => {
+  const formatBirth = (birth?: string) => {
+    if (!birth) return "";
+    const date = new Date(birth);
+    return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}.`;
+  };
 
   return (
     <ProfileContainer>
@@ -247,10 +237,10 @@ const Profile = () => {
         <TopInfo>
           <div>
             <div style={{display: "flex", gap: "20px", alignItems: "center"}}>
-              <Name>{userData.name}</Name>
-              <Birth>{userData.birth}</Birth>
+              <Name>{name ? `${name} 님` : "로딩중..."}</Name>
+              <Birth>{formatBirth(birth)}</Birth>
             </div>
-            <Introduction>{userData.introduction}</Introduction>
+            <Introduction>{/* introduction은 필요한 경우 props로 추가 */}</Introduction>
           </div>
           <IconContainer>
             <CiBookmark size={40} />
@@ -263,7 +253,7 @@ const Profile = () => {
             <SectionTitle>보유스킬</SectionTitle>
             <ContentWrapper>
               <SkillsContainer>
-                {userData.skills.map((skill, index) => (
+                {skills?.map((skill, index) => (
                   <SkillTag key={index}>{skill}</SkillTag>
                 ))}
               </SkillsContainer>
@@ -274,19 +264,17 @@ const Profile = () => {
             <SectionTitle>획득뱃지</SectionTitle>
             <ContentWrapper>
               <BadgesContainer>
-                {userData.badges.map((_, index) => (
-                  <Badge key={index}>🏆</Badge>
-                ))}
+                {/* ... badges section ... */}
               </BadgesContainer>
             </ContentWrapper>
           </SectionContent>
 
           <SectionContent>
             <HopeContainer>
-            {userData.hope.map((_, index) => (
-                  <Hope key={index}>{_}</Hope>
-                ))}
-            를 희망해요!
+              {desiredJobs?.map((job, index) => (
+                <Hope key={index}>{job}</Hope>
+              ))}
+              {desiredJobs && desiredJobs.length > 0 && "를 희망해요!"}
             </HopeContainer>
           </SectionContent>
         </Section>

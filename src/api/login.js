@@ -9,10 +9,11 @@ const login = async (data) => {
         'Content-Type': 'application/json',
       }
     });
-    
     const accessToken = response.headers['access'];
+    const nickname = response.data.data.nickname;
     if (accessToken) {
       localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('nickname', nickname);
       return true;
     }
     return false; 

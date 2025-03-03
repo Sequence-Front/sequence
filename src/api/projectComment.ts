@@ -18,15 +18,11 @@ const CommentPost = async (id: string | undefined, comment: string, parentCommen
   }
 }
 
-const CommentPut = async (id: string | undefined, comment: string, commentId: number) => {
+const CommentPut = async (id: string | undefined, content: string, commentId: number) => {
   try {
-    const requestBody = {
-      content: comment,
-    };
-
-    const response = await tokenAxios.post(
+    const response = await tokenAxios.put(
       `/api/projects/${id}/comments/${commentId}`,
-      requestBody
+      { content }
     );
     return response.data;
   } catch (error) {
@@ -37,9 +33,12 @@ const CommentPut = async (id: string | undefined, comment: string, commentId: nu
 
 const CommentDelete = async (id: string | undefined, commentId: number) => {
   try {
-    await tokenAxios.delete(`/api/projects/${id}/comments/${commentId}`);
+    const response = await tokenAxios.delete(
+      `/api/projects/${id}/comments/${commentId}`
+    );
+    return response.data;
   } catch (error) {
-    console.error('댓글 수정 에러:', error);
+    console.error('댓글 삭제 에러:', error);
     throw error;
   }
 }
