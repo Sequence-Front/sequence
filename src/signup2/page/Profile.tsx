@@ -134,26 +134,23 @@ const ErrorMessage = styled.div`
 `;
 
 interface ProfileProps {
-  onDataChange: (data: { nickname: string; imageUrl: string | null; duplicateCheck: boolean }) => void;
+  onDataChange: (data: { nickname: string; imageFile: File | null; duplicateCheck: boolean }) => void;
 }
 
 const Profile = ({ onDataChange }: ProfileProps) => {
   const [nickname, setNickname] = useState("");
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File| null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [duplicateCheck, setDuplicateCheck] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (reader.result) {
-          setImageUrl(reader.result as string);
-          onDataChange({ nickname, imageUrl: reader.result as string, duplicateCheck });
-        }
-      };
-      reader.readAsDataURL(file);
+      setImageFile(file);
+      const preview = URL.createObjectURL(file);
+      setPreviewUrl(preview);
+      onDataChange({nickname, imageFile: file, duplicateCheck});
     }
   };
 
@@ -161,7 +158,7 @@ const Profile = ({ onDataChange }: ProfileProps) => {
     setNickname(e.target.value);
     setDuplicateCheck(false); 
     setErrorMessage(""); 
-    onDataChange({ nickname: e.target.value, imageUrl, duplicateCheck: false });
+    onDataChange({ nickname: e.target.value, imageFile, duplicateCheck: false });
   };
 
   const handleConfirmClick = async () => {
@@ -184,7 +181,7 @@ const Profile = ({ onDataChange }: ProfileProps) => {
         setErrorMessage("");
       }
 
-      onDataChange({ nickname, imageUrl, duplicateCheck: !result.isDuplicate });
+      onDataChange({ nickname, imageFile, duplicateCheck: !result.isDuplicate });
     } catch (error) {
       setErrorMessage("닉네임 확인 중 오류가 발생했습니다.");
     }
@@ -194,9 +191,9 @@ const Profile = ({ onDataChange }: ProfileProps) => {
     <Container>
       <PhotoContainer>
         <Title>프로필 사진</Title>
-        <PhotoPreview imageUrl={imageUrl}>
+        <PhotoPreview imageUrl={previewUrl}>
           <input type="file" accept="image/*" onChange={handleFileChange} />
-          {!imageUrl && (
+          {!imageFile && (
             <DefaultPhotoComponent>
               <AiOutlinePlus strokeWidth={0.1} />
             </DefaultPhotoComponent>

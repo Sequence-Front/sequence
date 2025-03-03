@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { FiSearch } from "react-icons/fi";
 import { HiXMark } from "react-icons/hi2";
+import { memberSearch } from "../../api/member";
 
 const Container = styled.div`
   display: flex;
@@ -160,12 +161,12 @@ const MemberInfo = styled.div`
   display: flex;
   align-items: center;
 `;
-const ProjectMember = ({  results,  onMemberSelect}: {  results: { name: string; role: string; profile: string }[]; onMemberSelect: (members: { id: number; name: string; role: string; profile: string }[]) => void;}) => {
+const ProjectMember  = ({ onMemberSelect }: { onMemberSelect: (members: { id: number; name: string; role: string; profile: string }[]) => void }) => {
   const [userList, setUserList] = useState<
     { id: number; name: string; role: string; profile: string }[]
   >([]);
-
-
+  const [results, setResults] = useState<{ name: string; role: string; profile: string }[]>([]);
+    
   const [query, setQuery] = useState("");
   const [isResultsVisible, setIsResultsVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -181,6 +182,29 @@ const ProjectMember = ({  results,  onMemberSelect}: {  results: { name: string;
       setIsResultsVisible(false);
     }
   };
+
+    useEffect(() => {
+      const fetchMembers = async () => {
+        if (query.trim() !== "") {
+          const res = await memberSearch(query);
+  
+          if (!res.isDuplicate && res.message && res.message.data) {
+            const formattedResults = res.message.data.map((nickname: string) => ({
+              name: nickname,
+              role: "Front-End", 
+              profile: "", 
+            }));
+            setResults(formattedResults);
+          } else {
+            setResults([]);
+          }
+        } else {
+          setResults([]);
+        }
+      };
+  
+      fetchMembers();
+    }, [query]);
 
   const handleDeleteUser = (id: number) => {
     const updatedList = userList.filter((user) => user.id !== id);

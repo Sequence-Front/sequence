@@ -8,6 +8,8 @@ import SkillSearch from "./page/SkillSearch";
 import Thumbnail from "./page/Thumbnail";
 import ProjectImg from "./page/ProjectImg";
 import { AiOutlineArrowRight, AiOutlineArrowLeft } from "react-icons/ai";
+import { postArchive } from "../api/archive";
+import { duration } from "@mui/material";
 
 const Container = styled.div`
   display: flex;
@@ -293,9 +295,7 @@ const ArchiveRegistration = () => {
     description: "",
   });
 
-  const [ProgressData, setProgressData] = useState({
-    link:""
-  });
+  const [link, setLink] = useState("");
 
   const [fields] = useState<string[]>([
     "대회",
@@ -339,9 +339,9 @@ const ArchiveRegistration = () => {
   
   const handleFieldClick = (field: string) => {
     if (selectedFields.includes(field)) {
-      setSelectedFields(selectedFields.filter((s) => s !== field));
+      setSelectedFields([]);
     } else {
-      setSelectedFields([...selectedFields, field]);
+      setSelectedFields([field]);
     }
   };
 
@@ -378,15 +378,35 @@ const ArchiveRegistration = () => {
     setErrorMessage(validationError);
   }, [validateInputs]);
 
-  const handleRegisterClick = () => {
+  const handleRegisterClick = async() => {
     const validationError = validateInputs();
     if (validationError) {
       setErrorMessage(validationError);
-      return;
     }
 
+    const archive = {
+      title: projectData.title,
+      description : projectData.description,
+      duration : projectData.period,
+      category:selectedFields[0],
+      period: "1",
+      status: "1",
+      thumbnail: "1",
+      link: link,
+      skills: selectedSkills
+    }
+
+    try{
+      const response = await postArchive(archive);
+      console.log("서버 응답 상태:", response.status);
+      console.log("전송된 아카이브 데이터: ", archive);
+      navigate('/teamevaluation');
+    } catch(error){
+      console.log("전송된 프로젝트 데이터: " , archive);
+      setErrorMessage("아카이브 등록중 오류가 발생했습니다. ");
+    }
     console.log("프로젝트 데이터:", projectData);
-    console.log("프로세스 데이터:", ProgressData);
+    console.log("프로세스 데이터:", link);
     console.log("선택된 분야:", selectedFields);
     console.log("선택된 스킬:", selectedSkills);
     console.log("선택된 멤버: ", selectedMembers)
@@ -462,7 +482,6 @@ const ArchiveRegistration = () => {
         </TextAreaContainer>
         <Title>함께한 멤버</Title>
         <ProjectMember
-         results={users} 
          onMemberSelect={setSelectedMembers}
          />
         <Title>사용 스킬</Title>
@@ -473,13 +492,8 @@ const ArchiveRegistration = () => {
         <Title>링크</Title>
         <TextAreaContainer>
           <InputLink
-            value={ProgressData.link}
-            onChange={(e) =>
-              setProgressData((prev) => ({
-                ...prev,
-                link: e.target.value,
-              }))
-            }
+            value={link}
+            onChange={(e) => setLink(e.target.value) }
             placeholder="프로젝트가 올라간 페이지의 링크를 입력해 주세요!"
           />
         </TextAreaContainer>

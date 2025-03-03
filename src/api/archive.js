@@ -30,4 +30,30 @@ const searchArchives = async (keyword, page = 1) => {
   }
 }
 
-export { getArchives, searchArchives };
+const postArchive = async(archive) => {
+  try{
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await axiosInstance.post('/api/archive', archive, {
+      headers: {
+        access: accessToken ? accessToken : "",
+    },
+    });
+
+    console.log(response.status);
+    console.log("아카이브 데이터: ",archive);
+    if(response.status === 200){
+      return response;
+    }
+    throw response.status.error;
+  } catch(error){
+    if(error.response && error.response.status === 100){
+      console.log("카테고리 입력");
+    }
+    else if(error.response && error.response.status === 40000){
+      console.log("값을 잘못입력");
+    }
+    throw error;
+  }
+}
+
+export { getArchives, searchArchives, postArchive};
