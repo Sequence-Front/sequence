@@ -32,10 +32,22 @@ export const formatPeriod = (value: string): string => {
     let month2 = onlyNumbers.slice(12, 14);
     let day2 = onlyNumbers.slice(14, 16);
   
-    if (month1 && parseInt(month1, 10) > 12) month1 = "12";
-    if (day1 && parseInt(day1, 10) > 31) day1 = "31";
-    if (month2 && parseInt(month2, 10) > 12) month2 = "12";
-    if (day2 && parseInt(day2, 10) > 31) day2 = "31";
+    if (month1.length === 2) {
+      if (parseInt(month1, 10) > 12) month1 = "12";
+      if (parseInt(month1, 10) === 0) month1 = "01";
+    }
+    if (day1.length === 2) {
+      if (parseInt(day1, 10) > 31) day1 = "31";
+      if (parseInt(day1, 10) === 0) day1 = "01";
+    }
+    if (month2.length === 2) {
+      if (parseInt(month2, 10) > 12) month2 = "12";
+      if (parseInt(month2, 10) === 0) month2 = "01";
+    }
+    if (day2.length === 2) {
+      if (parseInt(day2, 10) > 31) day2 = "31";
+      if (parseInt(day2, 10) === 0) day2 = "01";
+    }
   
     return `${year1}${month1 || ""}${day1 || ""}${year2 || ""}${month2 || ""}${day2 || ""}`;
   };

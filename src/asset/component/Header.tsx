@@ -73,7 +73,7 @@ const UserContainer = styled.div`
   display: flex;
   margin-right: clamp(2.6rem, 5vw, 5rem);
   width: 30%;
-  justify-content: space-between;
+  gap: 30%;
 `
 const UserProfile = styled.img`
   display: flex;

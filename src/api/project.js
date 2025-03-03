@@ -35,4 +35,30 @@ const filterProjects = async (filters) => {
   }
 }
 
-export { getProjects, searchProjects, filterProjects };
+const postProject = async(project) => {
+  try{
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await tokenAxios.post('/api/projects', project, {
+      headers: {
+        access: accessToken ? accessToken : "",
+    },
+    });
+
+    console.log(response.status);
+    console.log("프로젝트 데이터: ",project);
+    if(response.status === 200){
+      return response;
+    }
+    throw response.status.error;
+  } catch(error){
+    if(error.response && error.response.status === 100){
+      console.log("카테고리 입력");
+    }
+    else if(error.response && error.response.status === 40000){
+      console.log("값을 잘못입력");
+    }
+    throw error;
+  }
+}
+
+export { getProjects, searchProjects, filterProjects, postProject };

@@ -123,20 +123,24 @@ const SignUpPage: React.FC = () => {
   
       if (!result) {
         setIdErrorMessage('아이디 중복 확인 중 오류가 발생했습니다.');
+        console.log("아이디 중복확인 오류");
         return;
       }
   
       if (result.isDuplicate) {
-        setDuplicateChecks(prev => ({ ...prev, userId: false }));
+        console.log("중복");
+        setDuplicateChecks(prev => ({ ...prev, username: false }));
         setIdErrorMessage(result.message);
-        setFieldErrors(prev => ({ ...prev, userId: true }));
+        setFieldErrors(prev => ({ ...prev, username: true }));
       } else {
-        setDuplicateChecks(prev => ({ ...prev, userId: true }));
+        console.log("사용가능");
+        setDuplicateChecks(prev => ({ ...prev, username: true }));
         setIdErrorMessage(''); 
-        setFieldErrors(prev => ({ ...prev, userId: false }));
+        setFieldErrors(prev => ({ ...prev, username: false }));
       }
     } catch (error) {
       setIdErrorMessage('아이디 중복 확인 중 오류가 발생했습니다.');
+      console.log("서버오류");
     }
   };
   

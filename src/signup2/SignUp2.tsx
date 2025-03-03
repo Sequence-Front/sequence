@@ -157,10 +157,10 @@ const SignUp = () => {
     "PM",
   ]);
 
-  const [profileData, setProfileData] = useState<{ nickname: string; imageUrl: string | null; duplicateCheck: boolean }>({
+  const [profileData, setProfileData] = useState<{ nickname: string; imageFile: File | null; duplicateCheck: boolean }>({
     nickname: "",
     duplicateCheck: false,
-    imageUrl: null,
+    imageFile: null,
   });
 
   const [educationData, setEducationData] = useState({
@@ -226,7 +226,7 @@ const SignUp = () => {
     }
   };
 
-  const handleProfileDataChange = (data: { nickname: string; imageUrl: string | null; duplicateCheck: boolean }) => {
+  const handleProfileDataChange = (data: { nickname: string; imageFile: File | null; duplicateCheck: boolean }) => {
     setProfileData(data);
   };
 
@@ -285,6 +285,7 @@ const SignUp = () => {
     setSelfIntroduction(data);
   };
 
+  // 유효성 검사
   const validateInputs = useCallback(() => {
     if (profileData.nickname.trim() === "") {
       return "별명을 입력해주세요.";
@@ -292,7 +293,7 @@ const SignUp = () => {
     if (!profileData.duplicateCheck) {
       return "별명 중복확인이 필요합니다.";
     }
-    if (profileData.imageUrl === null) {
+    if (profileData.imageFile === null) {
       return "프로필 사진을 업로드해주세요.";
     }
     if (educationData.schoolName.trim() === "") {
@@ -477,7 +478,6 @@ const SignUp = () => {
       endDate: formatDate(career.endDate),
     }));
   
-    //---------- 수상 내역 ---------//
     const convertAwardType = (type: string) => {
       switch (type) {
         case "자격증":
@@ -499,7 +499,7 @@ const SignUp = () => {
     //--------------------------//
   
     const fullUserData = {
-      username: userData.userId,
+      username: userData.username,
       password: userData.password,
       name: userData.name,
       nickname: profileData.nickname,
@@ -522,9 +522,11 @@ const SignUp = () => {
       careers: filteredCareers,
       awards: filteredAwards,
     };
+    const authImgFile = profileData.imageFile;
   
     try {
-      const response = await signUpApi(fullUserData);
+      const response = await signUpApi(fullUserData, authImgFile);
+      console.log(response);
       if (!response) {
         setErrorMessage("서버 응답이 없습니다. 다시 시도해주세요.");
         return;
@@ -534,6 +536,7 @@ const SignUp = () => {
         navigate("/signup3");
       }
     } catch (error: any) {
+      console.log(error.response);
       if (error.response && error.response.status === 400) {
         setErrorMessage("입력한 값이 올바르지 않습니다. 다시 확인해주세요.");
       } else {
@@ -544,7 +547,7 @@ const SignUp = () => {
   
   const isValid =
     profileData.nickname.trim() !== "" &&
-    profileData.imageUrl !== null &&
+    profileData.imageFile !== null &&
     educationData.schoolName.trim() !== "" &&
     educationData.major.trim() !== "" &&
     selectedSkills.length > 0 &&

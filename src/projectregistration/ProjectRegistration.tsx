@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { formatPeriod, validatePeriodInput } from "./utils/func";
 import ProjectMember from "./page/ProjectMember";
 import { AiOutlineArrowRight } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
+import { postProject } from "../api/project";
 
 const Container = styled.div`
   display: flex;
@@ -22,12 +24,23 @@ const HeaderContainer = styled.div`
 
   margin: clamp(4rem, 8vw, 8rem) 0;
 `
-const ProjectTitle = styled.div`
+const ProjectTitle = styled.input`
   display :flex;
   font-size:clamp(1.9rem, 3.8vw, 3.8rem);
   color: white;
   margin-bottom: clamp(2rem, 3vw, 3.5rem);
   font-weight: bold;
+  background-color: #151515;
+  border: none;
+
+  &::placeholder{
+    color : #757575;
+  }
+
+  &:focus{
+    outline: none;
+    border: none;
+  }
 `
 
 const User = styled.div`
@@ -258,6 +271,7 @@ const ErrorMessage = styled.div`
 `
 
 const ProjectRegistration = () => {
+  const [postTitle, setPostTitle] = useState("");
   const [projectData, setProjectData] = useState({
     title: "",
     period: "",
@@ -316,9 +330,28 @@ const ProjectRegistration = () => {
     "시작 전",
     "기획 중",
     "디자인 중",
-    "개발중",
-    "창업중",
+    "개발 중",
+    "창업 중",
   ]);
+
+  const convertStepType = (type: string) =>{
+    switch(type){
+      case "시작 전":
+        return "BEFORE_START";
+      case "기획 중":
+        return "PLANNING";
+      case "디자인 중":
+        return "DESIGNING";
+      case "개발 중":
+        return "DEVELOPING";
+      case "창업 중":
+        return "IN_BUSINESS";
+      default:
+        return type;
+    }
+  };
+
+  const navigate = useNavigate();
 
 
   const [selectedFields, setSelectedFields] = useState<string[]>([]);
@@ -331,11 +364,14 @@ const ProjectRegistration = () => {
   >([]);
   const [errorMessage, setErrorMessage] = useState<string>("");
   
+  const handlePostTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPostTitle(e.target.value);
+  }
   const handleFieldClick = (field: string) => {
     if (selectedFields.includes(field)) {
-      setSelectedFields(selectedFields.filter((s) => s !== field));
+      setSelectedFields([]);
     } else {
-      setSelectedFields([...selectedFields, field]);
+      setSelectedFields([field]);
     }
   };
 
@@ -357,17 +393,17 @@ const ProjectRegistration = () => {
 
   const handleMeetingClick = (meeting: string) => {
     if (selectedMeetings.includes(meeting)) {
-      setSelectedMeetings(selectedMeetings.filter((s) => s !== meeting));
+      setSelectedMeetings([]);
     } else {
-      setSelectedMeetings([...selectedMeetings, meeting]);
+      setSelectedMeetings([meeting]);
     }
   };
 
   const handleStepClick = (step: string) => {
     if (selectedSteps.includes(step)) {
-      setSelectedSteps(selectedSteps.filter((s) => s !== step));
+      setSelectedSteps([]);
     } else {
-      setSelectedSteps([...selectedSteps, step]);
+      setSelectedSteps([step]);
     }
   };
 
@@ -389,6 +425,9 @@ const ProjectRegistration = () => {
 
 
   const validateInputs = useCallback(() => {
+    if(!postTitle.trim()){
+      return "게시글 제목을 입력해주세요."
+    }
     if (!projectData.title.trim()) {
       return "프로젝트 제목을 입력해주세요.";
     }
@@ -416,6 +455,7 @@ const ProjectRegistration = () => {
 
     return "";
   }, [
+    postTitle,
     projectData.title,
     projectData.period,
     recruitmentData.person,
@@ -431,28 +471,49 @@ const ProjectRegistration = () => {
     setErrorMessage(validationError);
   }, [validateInputs]);
 
-  const handleRegisterClick = () => {
+  const handleRegisterClick = async() => {
     const validationError = validateInputs();
     if (validationError) {
       setErrorMessage(validationError);
       return;
     }
 
-    console.log("프로젝트 데이터:", projectData);
-    console.log("모집 데이터:", recruitmentData);
-    console.log("프로세스 데이터:", ProgressData);
-    console.log("선택된 분야:", selectedFields);
-    console.log("선택된 역할:", selectedRoles);
-    console.log("선택된 스킬:", selectedSkills);
-    console.log("선택된 회의 방식:", selectedMeetings);
-    console.log("선택된 단계:", selectedSteps);
-    console.log("선택된 멤버: ", selectedMembers)
+    const project = {
+      title: postTitle, 
+      projectName: projectData.title, 
+      period: "THREE_TO_SIX_MONTH", 
+      category: projectData.field,
+      introduce: projectData.description,
+      personnel : recruitmentData.person,
+      roles: selectedRoles,
+      skills: selectedSkills,
+      meetingOption: selectedMeetings[0],
+      step: selectedSteps.length > 0 ? convertStepType(selectedSteps[0]) : "",
+      invitedMembersNicknames: selectedMembers.map(member => member.name),
+      article: recruitmentData.recruitmentComment,
+      link : ProgressData.link
+    };
+    
+    try {
+      const response = await postProject(project);
+      console.log("서버 응답 상태:", response.status);
+      console.log("전송된 프로젝트 데이터:", project);
+      navigate('/project');
+    } catch (error) {
+      console.log("전송된 프로젝트 데이터:", project);
+      console.error("프로젝트 등록 에러:", error);
+      setErrorMessage("프로젝트 등록 중 오류가 발생했습니다.");
+    }
   };
 
   return (
     <Container>
       <HeaderContainer>
-        <ProjectTitle>프로젝트 제목을 입력해주세요!</ProjectTitle>
+        <ProjectTitle 
+         placeholder="게시글 제목을 입력해주세요!"
+         value = {postTitle}
+         onChange={handlePostTitle}
+        />
         <User>
           <ProfileImage src = ""/>
           <UserName>홍길동</UserName>
@@ -530,7 +591,7 @@ const ProjectRegistration = () => {
             placeholder="모집하는 인원 숫자를 입력해주세요"
             value={recruitmentData.person}
             onChange={(e) =>
-              setRecruitmentData((prev) => ({ ...prev, person: e.target.value }))
+              setRecruitmentData((prev) => ({ ...prev, person: e.target.value.replace(/[^0-9]/g, ""), }))
             }
           />
         </InputContainer>
