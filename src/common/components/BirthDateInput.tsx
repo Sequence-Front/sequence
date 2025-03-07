@@ -1,5 +1,5 @@
 import React from 'react';
-import { SignUpInput } from '../../signup/component/SignUpInput';
+import { SignUpInput } from '../../signup/signup1/component/SignUpInput';
 
 interface BirthDateInputProps {
   value: string;

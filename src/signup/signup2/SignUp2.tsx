@@ -1,7 +1,7 @@
 //2024-11-28 02:20 정준용완성
 import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
-import Header from '../asset/component/Header';
+import Header from '../../asset/component/Header';
 import Profile from "./page/Profile";
 import Education from "./page/Education";
 import Activity from "./page/Activity";
@@ -9,11 +9,11 @@ import PersonalHistory from "./page/PersonalHistory";
 import Qualification from "./page/Qualification";
 import Portfolio from "./page/Portfolio";
 import SelfIntroduction from "./page/SelfIntroduction";
-import { PageNumber } from "../signup/SignUpPage";
-import { Title as STitle } from "../signup/style/SignUpPageStyle";
+import { PageNumber } from '../signup1/SignUp1';
+import { Title as STitle } from '../signup1/style/SignUpPageStyle';
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { useNavigate, useLocation } from 'react-router-dom';
-import { signUpApi } from '../api/SignUpAPI';
+import { signUpApi } from '../../api/SignUpAPI';
 
 
 const Container = styled.div`
@@ -117,6 +117,23 @@ const Tag = styled.button<{ selected: boolean }>`
   }
 `
 
+const TagNumber = styled.span`
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  color: black;
+  font-size: 0.8rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+`;
+
 const ErrorMessage = styled.div`
   color: red;
   font-size: clamp(0.8rem, 1.5vw, 1.2rem);
@@ -124,10 +141,9 @@ const ErrorMessage = styled.div`
   margin-bottom: 20px;
 `
 
-const SignUp = () => {
+const SignUp2: React.FC<{ userData: any; onNext: () => void }> = ({ userData, onNext }) => {
 
   const location = useLocation();
-  const userData = location.state;
 
   useEffect(() => {
     console.log("1단계데이터:", userData);
@@ -219,11 +235,12 @@ const SignUp = () => {
   };
 
   const handleRoleClick = (role: string) => {
-    if (selectedRoles.includes(role)) {
-      setSelectedRoles(selectedRoles.filter((r) => r !== role));
-    } else {
-      setSelectedRoles([...selectedRoles, role]);
-    }
+    setSelectedRoles((prevRoles) => {
+      if (prevRoles.includes(role)) {
+        return prevRoles.filter((r) => r !== role);
+      }
+      return [...prevRoles, role];
+    });
   };
 
   const handleProfileDataChange = (data: { nickname: string; imageFile: File | null; duplicateCheck: boolean }) => {
@@ -533,7 +550,7 @@ const SignUp = () => {
       }
       if (response.status === 200) {
         console.log("회원가입 성공:", response.data);
-        navigate("/signup3");
+        onNext();
       }
     } catch (error: any) {
       console.log(error.response);
@@ -609,18 +626,19 @@ const SignUp = () => {
             <Title>
             희망 역할<span>*</span>
             </Title>
-            <Description>복수 선택</Description>
+            <Description>복수 선택(우선 순위 반영)</Description>
           </Label>
           <Content>
-            {roles.map((role) => (
-              <Tag
-                key={role}
-                selected={selectedRoles.includes(role)}
-                onClick={() => handleRoleClick(role)}
-              >
-                {role}
-              </Tag>
-            ))}
+            {roles.map((role) => {
+              const selectedIndex = selectedRoles.indexOf(role);
+              const isSelected = selectedIndex !== -1;
+              return (
+                <Tag key={role} selected={isSelected} onClick={() => handleRoleClick(role)} style={{position: 'relative'}}>
+                  {isSelected && <TagNumber>{selectedIndex + 1}</TagNumber>}
+                  {role}
+                </Tag>
+              );
+            })}
           </Content>
         </ContentContainer>
         <ContentContainer>
@@ -662,4 +680,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignUp2;
