@@ -88,7 +88,7 @@ const LoginPage: React.FC = () => {
             </Link>
           </LinkWrapper>
           <LoginButton type="submit">로그인</LoginButton>
-          <SignUpButton type="button" onClick={() => navigate('/signup1')}>
+          <SignUpButton type="button" onClick={() => navigate('/signup')}>
             회원가입하기 <FaArrowRight />
           </SignUpButton>
         </LoginForm>

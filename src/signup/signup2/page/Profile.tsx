@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { AiOutlinePlus } from "react-icons/ai";
 import { IoCheckmark } from "react-icons/io5";
-import { nickNameDupCheck } from "../../api/SignUpAPI";
+import { nickNameDupCheck } from "../../../api/SignUpAPI";
 
 const Container = styled.div`
   background-color: #151515;

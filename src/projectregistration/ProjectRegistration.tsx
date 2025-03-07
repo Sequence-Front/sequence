@@ -6,6 +6,7 @@ import ProjectMember from "./page/ProjectMember";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { postProject } from "../api/project";
+import Header from "../asset/component/Header";
 
 const Container = styled.div`
   display: flex;
@@ -507,6 +508,8 @@ const ProjectRegistration = () => {
   };
 
   return (
+  <>
+  <Header headerName="Project"/>
     <Container>
       <HeaderContainer>
         <ProjectTitle 
@@ -705,6 +708,7 @@ const ProjectRegistration = () => {
         <AiOutlineArrowRight style={{ fontSize: "30px", strokeWidth: "0.5px" }} />
       </ButtonContainer>
     </Container>
+    </>
   );
 };
 

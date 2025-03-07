@@ -10,11 +10,9 @@ import ArchiveRegistration from './archiveregistration/ArchiveRegistration';
 import ProjectRegistration from './projectregistration/ProjectRegistration';
 import MyPage from './mypage/MyPage';
 import Register from './register/Register';
-import SignUp2 from './signup2/SignUp2';
 import FindIdPage from './login/page/FindIdPage';
 import FindPasswordPage from './login/page/FindPasswordPage';
 import SignUpPage from './signup/SignUpPage';
-import SignUpComplete from './signup2/SignUpComplete';
 import ProjectPage from './project/ProjectPage';
 import ArchiveDetail from './archivedetail/ArchiveDetail'
 import WithdrawPage from './withdraw/WithdrawPage';
@@ -30,9 +28,7 @@ const AppRouter = () => {
         <Route path="/login" element={<LoginPage />} />    
         <Route path="/findId" element={<FindIdPage />} />
         <Route path="/findPassword" element={<FindPasswordPage />} />
-        <Route path="/signup1" element={<SignUpPage />} />
-        <Route path="/signup2" element={<SignUp2 />} />
-        <Route path="/signup3" element={<SignUpComplete />} />
+        <Route path="/signup" element={<SignUpPage />} />
         <Route path="/announcement" element={<AnnouncementList />} />
         <Route path="/announcement/1" element={<AnnouncementDetail />} />
         <Route path="/archive" element={<Archivelist />} />

@@ -1,8 +1,8 @@
 //2024-11-28 02:20 정준용완성
 import React from 'react';
 import styled from 'styled-components';
-import SequnceImg from '../asset/image/Sequence.svg'
-import Header from '../asset/component/Header';
+import SequnceImg from '../../asset/image/Sequence.svg'
+import Header from '../../asset/component/Header';
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
 

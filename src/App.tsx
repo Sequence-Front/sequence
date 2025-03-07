@@ -1,17 +1,12 @@
 import React from 'react';
 import { RecoilRoot } from 'recoil';
 import AppRouter from './Router';
-import { GlobalStyles } from '@mui/material';
+import GlobalStyle from './asset/style/GlobalStyle';
 
 function App() {
   return (
     <RecoilRoot>
-      <GlobalStyles styles={{
-        body: {
-          backgroundColor: '#151515',
-          color: '#ffffff'
-        },
-      }} />
+      <GlobalStyle />
       <AppRouter />
     </RecoilRoot>
   );
