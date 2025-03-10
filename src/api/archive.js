@@ -5,7 +5,7 @@ const getArchives = async (page = 1) => {
     const response = await axiosInstance.get('/api/archive/projects', {
       params: { page },
       headers: {
-        'access': localStorage.getItem("access"),
+        'access': localStorage.getItem("accessToken"),
       }
     });
     return response.data;
@@ -20,7 +20,7 @@ const searchArchives = async (keyword, page = 1) => {
     const response = await axiosInstance.get('/api/archive/projects/search', {
       params: { keyword, page },
       headers: {
-        'access': localStorage.getItem("access"),
+        'access': localStorage.getItem("accessToken"),
       }
     });
     return response.data;
@@ -39,8 +39,6 @@ const postArchive = async(archive) => {
     },
     });
 
-    console.log(response.status);
-    console.log("아카이브 데이터: ",archive);
     if(response.status === 200){
       return response;
     }

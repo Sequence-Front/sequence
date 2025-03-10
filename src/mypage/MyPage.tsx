@@ -59,15 +59,17 @@ const ContentContainer = styled.div<{ isPortfolio: boolean }>`
 const MyPage = () => {
   const [activeTab, setActiveTab] = useState<Tab>('PersonalHistory');
   const [profileData, setProfileData] = useState<any>(null);
+  const nickname = localStorage.getItem('nickname');
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await getMyInfo();
-      console.log("response : ", response);
       setProfileData(response);
     };
     fetchData();
   }, []);
+
+  const isOwnProfile = nickname === profileData?.nickname;
 
   const renderContent = () => {
     switch (activeTab) {
@@ -95,18 +97,32 @@ const MyPage = () => {
           desiredJobs={profileData?.desiredJob || []}
         />
         <TabContainer>
-          <TabButton isActive={activeTab === 'PersonalHistory'} onClick={() => setActiveTab('PersonalHistory')}>
+          <TabButton 
+            isActive={activeTab === 'PersonalHistory'} 
+            onClick={() => setActiveTab('PersonalHistory')}
+          >
             경력 및 활동이력
           </TabButton>
-          <TabButton isActive={activeTab === 'Portfolio'} onClick={() => setActiveTab('Portfolio')}>
+          <TabButton 
+            isActive={activeTab === 'Portfolio'} 
+            onClick={() => setActiveTab('Portfolio')}
+          >
             포트폴리오
           </TabButton>
-          <TabButton isActive={activeTab === 'MemberEvaluation'} onClick={() => setActiveTab('MemberEvaluation')}>
+          <TabButton 
+            isActive={activeTab === 'MemberEvaluation'} 
+            onClick={() => setActiveTab('MemberEvaluation')}
+          >
             팀원 평가
           </TabButton>
-          <TabButton isActive={activeTab === 'MyActivity'} onClick={() => setActiveTab('MyActivity')}>
-            내 활동
-          </TabButton>
+          {isOwnProfile && (
+            <TabButton 
+              isActive={activeTab === 'MyActivity'} 
+              onClick={() => setActiveTab('MyActivity')}
+            >
+              내 활동
+            </TabButton>
+          )}
         </TabContainer>
         <ContentContainer isPortfolio={activeTab === 'Portfolio'}>
           {renderContent()}
