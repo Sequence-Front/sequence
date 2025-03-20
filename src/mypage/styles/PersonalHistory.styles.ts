@@ -26,9 +26,14 @@ export const PortfolioItem = styled.div`
   margin-bottom: 1rem;
 `;
 
-export const PortfolioLink = styled.div`
+export const PortfolioLink = styled.a`
   text-decoration: underline;
   color: white;
+  cursor: pointer;
+  
+  &:hover {
+    color: #E32929;
+  }
 `;
 
 export const HistorySection = styled.div`

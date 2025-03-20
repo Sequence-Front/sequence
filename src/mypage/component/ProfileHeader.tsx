@@ -52,14 +52,14 @@ const Name = styled.div`
   font-weight: bold;
 `;
 
-const Birth = styled.p`
+const Birth = styled.div`
   color: #ffffff;
   font-size: clamp(20px, 1.5vw, 22px);
   font-weight: bold;
 `;
 
-const Introduction = styled.p`
-  color: #ffffff;
+const School = styled.div`
+  color: #e0e0e0;
   margin: clamp(5px, 0.5vw, 0.5rem) 0;
   font-size: clamp(14px, 1.5vw, 18px);
   font-weight: bold;
@@ -221,9 +221,10 @@ interface ProfileProps {
   birth?: string;
   skills?: string[];
   desiredJobs?: string[];
+  schoolname?: string;
 }
 
-const Profile: React.FC<ProfileProps> = ({ name, birth, skills, desiredJobs }) => {
+const Profile: React.FC<ProfileProps> = ({ name, birth, skills, desiredJobs, schoolname }) => {
   const formatBirth = (birth?: string) => {
     if (!birth) return "";
     const date = new Date(birth);
@@ -237,10 +238,10 @@ const Profile: React.FC<ProfileProps> = ({ name, birth, skills, desiredJobs }) =
         <TopInfo>
           <div>
             <div style={{display: "flex", gap: "20px", alignItems: "center"}}>
-              <Name>{name ? `${name} 님` : "로딩중..."}</Name>
+              <Name>{name ? `${name}` : "로딩중..."}</Name>
               <Birth>{formatBirth(birth)}</Birth>
             </div>
-            <Introduction>{/* introduction은 필요한 경우 props로 추가 */}</Introduction>
+            <School>{schoolname}</School>
           </div>
           <IconContainer>
             <CiBookmark size={40} />
