@@ -50,6 +50,10 @@ interface PersonalHistoryProps {
 
 const PersonalHistory = ({ data }: PersonalHistoryProps) => {
   const navigate = useNavigate();
+  const nickname = localStorage.getItem('nickname');
+  const currentProfileNickname = new URLSearchParams(window.location.search).get('nickname');
+  
+  const isOwnProfile = !currentProfileNickname || nickname === currentProfileNickname;
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('ko-KR', {
@@ -98,8 +102,12 @@ const PersonalHistory = ({ data }: PersonalHistoryProps) => {
         ))}
       </HistorySection>
 
-      <EditButton>로그인 정보 수정 <FaArrowRight /> </EditButton>
-      <WithDrawButton onClick={() => navigate('/withdraw')}>회원탈퇴</WithDrawButton>
+      {!isOwnProfile && (
+        <>
+          <EditButton>로그인 정보 수정 <FaArrowRight /> </EditButton>
+          <WithDrawButton onClick={() => navigate('/withdraw')}>회원탈퇴</WithDrawButton>
+        </>
+      )}
     </HistoryContainer>
   );
 };
