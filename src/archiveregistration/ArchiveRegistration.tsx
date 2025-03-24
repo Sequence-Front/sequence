@@ -305,13 +305,9 @@ const ArchiveRegistration = () => {
     "스터디"
 ]);
 
-  const [thumbnailImage, setThumbnailImage] = useState<string | null>(null);
-  const [projectImages, setProjectImages] = useState<string[]>([]); 
-  const [users] = useState([
-    { name: "홍길동", role: "PM", profile: "" },
-    { name: "홍길동", role: "Front-end", profile: "" },
-    { name: "정준용", role: "Back-end", profile: "" },
-  ]);
+  const [thumbnailImage, setThumbnailImage] = useState<File | null>(null);
+  const [projectImages, setProjectImages] = useState<File[]>([]); 
+
 
   const [skills] = useState<string[]>([
     "Adobe Illustration",
@@ -378,42 +374,48 @@ const ArchiveRegistration = () => {
     setErrorMessage(validationError);
   }, [validateInputs]);
 
+  const formatDateForServer = (period: string) => {
+    const dateParts = period.split("~").map(date => date.trim().replace(/\./g, "-"));
+    return dateParts.length === 2 
+        ? { startDate: dateParts[0], endDate: dateParts[1] } 
+        : { startDate: "", endDate: "" };
+  };
+
+  const { startDate, endDate } = formatDateForServer(projectData.period);
+
   const handleRegisterClick = async() => {
     const validationError = validateInputs();
     if (validationError) {
       setErrorMessage(validationError);
     }
 
-    const archive = {
+    const archiveData = {
       title: projectData.title,
       description : projectData.description,
-      duration : projectData.period,
-      category:selectedFields[0],
-      period: "1",
-      status: "1",
-      thumbnail: "1",
+      startDate: startDate,
+      endDate: endDate,
+      category : selectedFields[0],
       link: link,
-      skills: selectedSkills
+      skills: selectedSkills,
+      archiveMembers: selectedMembers.map(member => ({ nickname: member.name }))
     }
+    
+    const images = projectImages;
+    const thumbnail = thumbnailImage;
 
     try{
-      const response = await postArchive(archive);
+      const response = await postArchive(archiveData, images, thumbnail);
       console.log("서버 응답 상태:", response.status);
-      console.log("전송된 아카이브 데이터: ", archive);
-      navigate('/teamevaluation');
+      console.log("전송된 아카이브 데이터: ", archiveData);
+      if(response.data && response.data.data){
+        const archiveId = response.data.data;
+        navigate(`/${archiveId}/teamevaluation`);
+      }
     } catch(error){
-      console.log("전송된 프로젝트 데이터: " , archive);
+      console.log("전송된 프로젝트 데이터: " , archiveData);
       setErrorMessage("아카이브 등록중 오류가 발생했습니다. ");
     }
-    console.log("프로젝트 데이터:", projectData);
-    console.log("프로세스 데이터:", link);
-    console.log("선택된 분야:", selectedFields);
-    console.log("선택된 스킬:", selectedSkills);
-    console.log("선택된 멤버: ", selectedMembers)
-    console.log("썸네일 이미지:", thumbnailImage);
-    console.log("프로젝트 이미지들:", projectImages);
     
-    navigate('/teamevaluation');
   };
 
   return (
@@ -499,9 +501,9 @@ const ArchiveRegistration = () => {
         </TextAreaContainer>
       </MetadataContainer>
       <ProjectContainer>
-        <Thumbnail onDataChange={({ imageUrl }) => setThumbnailImage(imageUrl)} />
+        <Thumbnail onDataChange={({ imageFile }) => setThumbnailImage(imageFile)} />
         <ProjectImg
-              onDataChange={({ imageUrls }) => setProjectImages(imageUrls)} 
+              onDataChange={({ imageFiles }) => setProjectImages(imageFiles)} 
             />
       </ProjectContainer>
       </ContentContainer>
