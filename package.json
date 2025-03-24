@@ -55,9 +55,9 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://seungyun-Park.github.io/sequence",
+  "homepage": "https://parkdu7.github.io/sequence",
   "devDependencies": {
     "@types/react": "^18.3.14"
   },
-  "proxy" : "https://sequence.agong.store/"
+  "proxy" : "https://sequence.agong.store"
 }
