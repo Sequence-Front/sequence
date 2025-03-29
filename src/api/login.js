@@ -18,8 +18,8 @@ const login = async (data) => {
       localStorage.setItem('nickname', nickname);
       localStorage.setItem('profile', profile);
       console.log(localStorage.getItem('accessToken')); // 액세스 토큰 출력
-console.log(localStorage.getItem('nickname')); // 닉네임 출력
-console.log(localStorage.getItem('profile')); // 프로필 이미지 URL 출력
+      console.log(localStorage.getItem('nickname')); // 닉네임 출력
+      console.log(localStorage.getItem('profile')); // 프로필 이미지 URL 출력
 
       return true;
     }

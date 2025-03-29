@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Archive } from '../types/archive';
+import { useNavigate } from 'react-router-dom';
 
 const ItemWrapper = styled.div`
     cursor: pointer;
@@ -100,25 +101,32 @@ interface ArchiveItemProps {
 }
 
 const ArchiveItem = ({ id, item }: ArchiveItemProps) => {
+    const navigate = useNavigate();
+
     // 날짜 포맷팅 함수
     const formatDate = (dateString: string) => {
         // const date = new Date(dateString) as unknown as Date;
         // return date.toLocaleDateString('ko-KR');
     };
+
+    const handleItemClick = (itemId: number) => {
+        navigate(`/archive/${itemId}`);
+    }
+
     return (
-        <ItemWrapper>
+        <ItemWrapper onClick={() => handleItemClick(item.id)}>
             <ImageContainer>
                 <ArchiveImage src={item.thumbnail} alt={`Archive ${id}`} />
                 <HoverOverlay className="hover-overlay">
                     <OverlayTitle>{item.title}</OverlayTitle>
                     <StatusContainer>
                         <StatItem>
-                            <StatText>상태</StatText>
-                            <StatText>{item.status}</StatText>
+                            <StatText>댓글</StatText>
+                            {/* <StatText>{item.comments}</StatText> */}
                         </StatItem>
                         <StatItem>
                             <StatText>북마크</StatText>
-                            <StatText>{item.bookmark}</StatText>
+                            <StatText>{item.bookmarkCount}</StatText>
                         </StatItem>
                         <StatItem>
                             <StatText>조회</StatText>

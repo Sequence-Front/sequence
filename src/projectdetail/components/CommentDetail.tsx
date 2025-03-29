@@ -162,6 +162,8 @@ const CommentDetail = ({
   const [reply, setReply] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
+  const [editingReplyId, setEditingReplyId] = useState<number | null>(null);
+  const [editReplyContent, setEditReplyContent] = useState("");
   const { id } = useParams();
   const nickname = localStorage.getItem('nickname');
 
@@ -195,6 +197,28 @@ const CommentDetail = ({
         onCommentAdd(); // 댓글 목록 새로고침
       } catch (error) {
         console.error('댓글 삭제 실패:', error);
+      }
+    }
+  };
+
+  const handleReplyEdit = async (commentId: number) => {
+    try {
+      await CommentPut(id, editReplyContent, commentId);
+      setEditingReplyId(null);
+      setEditReplyContent("");
+      onCommentAdd();
+    } catch (error) {
+      console.error('답글 수정 실패:', error);
+    }
+  };
+
+  const handleReplyDelete = async (commentId: number) => {
+    if (window.confirm('답글을 삭제하시겠습니까?')) {
+      try {
+        await CommentDelete(id, commentId);
+        onCommentAdd();
+      } catch (error) {
+        console.error('답글 삭제 실패:', error);
       }
     }
   };
@@ -254,7 +278,28 @@ const CommentDetail = ({
                 {reply.writer}
                 <TimeStamp>{reply.createdLocalDateTime}</TimeStamp>
               </UserName>
-              <ReplyText>{reply.content}</ReplyText>
+              
+              {editingReplyId === reply.id ? (
+                <CommentInput
+                  comment={editReplyContent}
+                  setComment={setEditReplyContent}
+                  handleSubmit={() => handleReplyEdit(reply.id)}
+                  maxLength={300}
+                />
+              ) : (
+                <>
+                  <ReplyText>{reply.content}</ReplyText>
+                  {nickname === reply.writer && (
+                    <ActionButtons>
+                      <ActionButton onClick={() => {
+                        setEditingReplyId(reply.id);
+                        setEditReplyContent(reply.content);
+                      }}>수정</ActionButton>
+                      <ActionButton onClick={() => handleReplyDelete(reply.id)}>삭제</ActionButton>
+                    </ActionButtons>
+                  )}
+                </>
+              )}
             </ReplyContent>
           </ReplyItem>
         ))}

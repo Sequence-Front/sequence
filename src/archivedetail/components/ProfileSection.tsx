@@ -4,9 +4,14 @@ import styled from 'styled-components';
 import {SectionTitle, Section, DescriptionWrapper} from '../style/styles';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useNavigate } from 'react-router-dom';
 
 interface ProfileSectionProps {
-  profileData: any;
+  profileData: Array<{
+    username: string;
+    nickname: string;
+    profileImg: string;
+  }>;
 }
 
 const SliderWrapper = styled.div`
@@ -82,6 +87,8 @@ const ProfileInfo = styled.div`
 `;
 
 const ProfileSection = ({profileData}: ProfileSectionProps) => {
+  const navigate = useNavigate();
+
   const settings = {
     dots: false,
     arrows: false,
@@ -111,12 +118,14 @@ const ProfileSection = ({profileData}: ProfileSectionProps) => {
       <DescriptionWrapper>소속 팀원들의 프로필을 확인해보세요.</DescriptionWrapper>
       <SliderWrapper>
         <Slider {...settings}>
-          {profileData.name.map((name: string, index: number) => (
-            <ProfileCard key={index}>
-              <ProfileImage src={profileData.userImage[index]} alt={name} />
+          {profileData.map((member, index) => (
+            <ProfileCard key={index} onClick={() => {navigate(`/mypage?nickname=${member.nickname}`)}}>
+              <ProfileImage 
+                src={member.profileImg || '/default-profile-image.png'} 
+                alt={member.nickname} 
+              />
               <ProfileInfo>
-                <h3>{profileData.name[index]}</h3>
-                <p>{profileData.role[index]}</p>
+                <h3>{member.nickname}</h3>
               </ProfileInfo>
             </ProfileCard>
           ))}
