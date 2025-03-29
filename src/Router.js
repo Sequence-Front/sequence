@@ -32,7 +32,7 @@ const AppRouter = () => {
         <Route path="/announcement" element={<AnnouncementList />} />
         <Route path="/announcement/1" element={<AnnouncementDetail />} />
         <Route path="/archive" element={<Archivelist />} />
-        <Route path="/archive/1" element={<ArchiveDetail />} />
+        <Route path="/archive/:id" element={<ArchiveDetail />} />
         <Route path="/archive/registration" element={<ArchiveRegistration />} />
         <Route path="/project/registration" element={<ProjectRegistration />} />
         <Route path="/mypage" element={<MyPage />} />

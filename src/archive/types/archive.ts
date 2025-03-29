@@ -5,12 +5,12 @@ export interface Archive {
     duration: string;
     category: string;
     period: string;
-    status: string;
+    comments: string;
     thumbnail: string;
     link: string;
     skills: string[];
     view: number;
-    bookmark: number;
+    bookmarkCount: number;
     createdDateTime: string;
     modifiedDateTime: string;
 }

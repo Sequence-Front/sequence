@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import { projectData } from './data/projectData';
 import Header from '../asset/component/Header';
@@ -7,6 +7,8 @@ import { FaRegBookmark } from "react-icons/fa";
 import { PiSirenLight } from "react-icons/pi";
 import ProfileSection from './components/ProfileSection';
 import CommentSection from './components/CommentSection';
+import { getArchiveDetail } from '../api/archivedetail';
+import { useParams } from 'react-router-dom';
 
 const Wrapper = styled.div`
 `
@@ -179,135 +181,160 @@ const RoleTag = styled.div`
   white-space: nowrap;
 `;
 
-const ProjectDetailPage = () => {
-    const [skills] = useState<string[]>([
-      "Adobe Illustration",
-      "Adobe Photoshop",
-    ]);
+interface ArchiveDetail {
+  id: number;
+  writerNickname: string;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  duration: string;
+  category: string;
+  thumbnail: string;
+  link: string;
+  skills: string[];
+  imgUrls: string[];
+  view: number;
+  bookmarkCount: number;
+  members: Array<{
+    username: string;
+    nickname: string;
+    profileImg: string;
+  }>;
+  comments: any[];
+  createdDateTime: string;
+  modifiedDateTime: string;
+  bookmarked: boolean;
+}
 
-    const [fields] = useState<string[]>([
-        "공모전"
-    ]);
+const ArchiveDetailPage = () => {
+    const { id } = useParams();
+    const [archiveData, setArchiveData] = useState<ArchiveDetail | null>(null);
     
-    const [userList] = useState([
-        { id: 1, name: "홍길동", role: "PM", profile: "" },
-        { id: 2, name: "홍길동", role: "Front-end", profile: "" },
-        { id: 3, name: "정준용", role: "Back-end", profile: "" },
-    ]);
+    const [images, setImages] = useState<string[]>([]);
+    
+    const fetchArchiveDetail = async () => {
+        try {
+            const response = await getArchiveDetail(Number(id));
+            console.log('Archive Detail Response:', response);
+            setArchiveData(response.data);
+            setImages(response.data.imgUrls || []); // imgUrls가 없을 경우 빈 배열
+        } catch (error) {
+            console.error('아카이브 상세 정보 조회 실패:', error);
+        }
+    };
 
-    const [images] = useState<string[]>([
-        "https://s-lol-web.op.gg/images/home/character-tft.png?v=1736426255",
-        "https://meta-static.op.gg/logo/image/60104d0e9375e4281c55ae98e22626e6.png?image=q_auto:good,f_webp,h_448&v=1736426255"
+    useEffect(() => {
+        fetchArchiveDetail();
+    }, [id]);
 
-    ])
-  return (
-    <Wrapper>
-      <Header headerName = "" isMain = {false}/>
-      <TitleSection>
-        <IconContainer>
-          <FaRegBookmark size={30} style={{color: "#E32929"}}/>
-          <PiSirenLight size={30} style={{color: "#E32929"}}/>
-          <LuPen size={30} style={{color: "#E32929"}}/>
-        </IconContainer>
-        <Title>
-          프로젝트 디자이너 구합니다
-        </Title>
-        <Detail>
-          <DetailBox>
-            <TempImage/>
-            <div>홍길동</div>
-            <div>24.08.08</div>
-          </DetailBox>
-          <DetailBox>
-            <div>Comment 2</div>
-            <div>북마크 4</div>
-            <div>조회 10</div>
-          </DetailBox>
-        </Detail>
-      </TitleSection>
-      <Container>
-        <ContentContainer>
-        <MetadataContainer>
-        <ComponentContainer>
-            <MetaTitle>기간</MetaTitle> 
-            <Text>
-                2024.03.00 ~ 2024.11.01
-            </Text>
-        </ComponentContainer>
-        <ComponentContainer>
-            <MetaTitle>분야</MetaTitle> 
-            <TagContainer>
-            {fields.map((field) => (
-              <SkillTag
-                key={field}
-              >
-                {field}
-              </SkillTag>
-            ))}
-            </TagContainer>
-        </ComponentContainer>
-        <ComponentContainer>
-            <MetaTitle>프로젝트 소개</MetaTitle> 
-            <Text>
-            ‘단잠 DANJAM’은 코리빙 이웃들과 지속적인 교류를 지원해 청년들의 외로움 해결과 사회적 유대감을 쌓아 서로가 ‘단잠’을 이룰 수 있도록 하는 모바일 앱 서비스입니다.
-            </Text>
-        </ComponentContainer>
-        <ComponentContainer>
-            <MetaTitle>멤버</MetaTitle> 
-            {userList.map((user) => (
-            <MemberRow key={user.id}>
-              <MemberInfo>
-                <ProfileImage src={user.profile} />
-                <UserName>{user.name}</UserName>
-                <RoleTag>{user.role}</RoleTag>
-              </MemberInfo>
-            </MemberRow>
-          ))}
-        </ComponentContainer>
-        <ComponentContainer>
-            <MetaTitle>활용 스킬</MetaTitle> 
-            <TagContainer>
-            {skills.map((skill) => (
-              <SkillTag
-                key={skill}
-              >
-                {skill}
-              </SkillTag>
-            ))}
-            </TagContainer>
-        </ComponentContainer>
-        <ComponentContainer>
-            <MetaTitle>링크</MetaTitle> 
-            <Text>
-                <a 
-                    href="https://www.behance.net/gallery/208114721/BuziTrip-Business-travel-UIUX-logo-UI?tracking_source=for_you_logged_in_feed_recommended" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    style={{ 
-                        color: "white", 
-                        textDecoration: "underline",
-                        display: "block", 
-                        wordBreak: "break-all"
-                    }}
-                >
-                    https://www.behance.net/gallery/208114721/BuziTrip-Business-travel-UIUX-logo-UI?tracking_source=for_you_logged_in_feed_recommended
-                </a>
-            </Text>
-        </ComponentContainer>
-        </MetadataContainer>
-        <ProjectContainer>
-        <PhotoContainer>
-          {images.map((image) => (
-            <Image key={image} src={image} alt="프로젝트 이미지" />
-          ))}
-            </PhotoContainer>
-        </ProjectContainer>
-        </ContentContainer>
-        <ProfileSection profileData={projectData.profile}/>
-        <CommentSection />
-      </Container>
-    </Wrapper>
-  );
+    if (!archiveData) return <div>로딩 중...</div>;
+
+    return (
+        <Wrapper>
+            <Header headerName = "" isMain = {false}/>
+            <TitleSection>
+                <IconContainer>
+                    <FaRegBookmark size={30} style={{color: "#E32929"}}/>
+                    <PiSirenLight size={30} style={{color: "#E32929"}}/>
+                    <LuPen size={30} style={{color: "#E32929"}}/>
+                </IconContainer>
+                <Title>
+                    {archiveData.title}
+                </Title>
+                <Detail>
+                    <DetailBox>
+                        <TempImage/>
+                        <div>{archiveData.writerNickname}</div>
+                        <div>{new Date(archiveData.createdDateTime).toLocaleDateString()}</div>
+                    </DetailBox>
+                    <DetailBox>
+                        <div>Comment {archiveData.comments?.length || 0}</div>
+                        <div>북마크 {archiveData.bookmarkCount}</div>
+                        <div>조회 {archiveData.view}</div>
+                    </DetailBox>
+                </Detail>
+            </TitleSection>
+            <Container>
+                <ContentContainer>
+                    <MetadataContainer>
+                        <ComponentContainer>
+                            <MetaTitle>기간</MetaTitle> 
+                            <Text>
+                                {archiveData.duration}
+                            </Text>
+                        </ComponentContainer>
+                        <ComponentContainer>
+                            <MetaTitle>분야</MetaTitle> 
+                            <TagContainer>
+                                {archiveData.category && (
+                                    <SkillTag key={archiveData.category}>
+                                        {archiveData.category}
+                                    </SkillTag>
+                                )}
+                            </TagContainer>
+                        </ComponentContainer>
+                        <ComponentContainer>
+                            <MetaTitle>프로젝트 소개</MetaTitle> 
+                            <Text>
+                                {archiveData.description}
+                            </Text>
+                        </ComponentContainer>
+                        <ComponentContainer>
+                            <MetaTitle>멤버</MetaTitle> 
+                            {archiveData.members?.map((member) => (
+                                <MemberRow key={member.username}>
+                                    <MemberInfo>
+                                        <ProfileImage src={member.profileImg} />
+                                        <UserName>{member.nickname}</UserName>
+                                    </MemberInfo>
+                                </MemberRow>
+                            ))}
+                        </ComponentContainer>
+                        <ComponentContainer>
+                            <MetaTitle>활용 스킬</MetaTitle> 
+                            <TagContainer>
+                                {archiveData.skills?.map((skill) => (
+                                    <SkillTag key={skill}>
+                                        {skill}
+                                    </SkillTag>
+                                ))}
+                            </TagContainer>
+                        </ComponentContainer>
+                        <ComponentContainer>
+                            <MetaTitle>링크</MetaTitle> 
+                            <Text>
+                                {archiveData.link && (
+                                    <a 
+                                        href={archiveData.link}
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        style={{ 
+                                            color: "white", 
+                                            textDecoration: "underline",
+                                            display: "block", 
+                                            wordBreak: "break-all"
+                                        }}
+                                    >
+                                        {archiveData.link}
+                                    </a>
+                                )}
+                            </Text>
+                        </ComponentContainer>
+                    </MetadataContainer>
+                    <ProjectContainer>
+                        <PhotoContainer>
+                            {images?.map((image) => (
+                                <Image key={image} src={image} alt="프로젝트 이미지" />
+                            ))}
+                        </PhotoContainer>
+                    </ProjectContainer>
+                </ContentContainer>
+                {archiveData.members && <ProfileSection profileData={archiveData.members}/>}
+                <CommentSection comments={archiveData.comments} onCommentAdd={fetchArchiveDetail}/>
+            </Container>
+        </Wrapper>
+    );
 };
 
-export default ProjectDetailPage;
+export default ArchiveDetailPage; 

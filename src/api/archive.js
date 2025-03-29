@@ -1,13 +1,14 @@
 import axiosInstance from "../utils/axiosConfig"
 
-const getArchives = async (page = 1) => {
+const getArchives = async (page = 0) => {
   try {
     const response = await axiosInstance.get('/api/archive/projects', {
-      params: { page },
+      params: { page: 0 },
       headers: {
         'access': localStorage.getItem("accessToken"),
       }
     });
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('프로젝트 조회 에러:', error);
@@ -15,7 +16,7 @@ const getArchives = async (page = 1) => {
   }
 }
 
-const searchArchives = async (keyword, page = 1) => {
+const searchArchives = async (keyword, page = 0) => {
   try {
     const response = await axiosInstance.get('/api/archive/projects/search', {
       params: { keyword, page },
