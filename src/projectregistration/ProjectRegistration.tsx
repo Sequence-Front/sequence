@@ -291,6 +291,9 @@ const ProjectRegistration = () => {
     link:""
   });
 
+  const [profile, ] = useState(localStorage.getItem('profile')|| "/default-profile.png");
+  const [nickname, ] = useState(localStorage.getItem('nickname'));
+
   const [fields] = useState<string[]>([
     "대회",
     "창업",
@@ -507,6 +510,14 @@ const ProjectRegistration = () => {
     }
   };
 
+  const [date, setDate] = useState("");
+  
+  useEffect(() => {
+    const today = new window.Date();
+    const formattedDate = `${today.getFullYear() % 100}.${String(today.getMonth() + 1).padStart(2, "0")}.${String(today.getDate()).padStart(2, "0")}`;
+    setDate(formattedDate);
+  }, []);
+
   return (
   <>
   <Header headerName="Project"/>
@@ -518,9 +529,9 @@ const ProjectRegistration = () => {
          onChange={handlePostTitle}
         />
         <User>
-          <ProfileImage src = ""/>
-          <UserName>홍길동</UserName>
-          <Date> 24.08.08</Date>
+          <ProfileImage src={profile}/>
+          <UserName>{nickname}</UserName>
+          <Date> {date}</Date>
         </User>
       </HeaderContainer>
       <ContentContainer>

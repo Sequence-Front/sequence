@@ -31,15 +31,49 @@ const searchArchives = async (keyword, page = 0) => {
   }
 }
 
-const postArchive = async(archive) => {
+const postArchive = async(archiveData, images, thumbnail) => {
   try{
     const accessToken = localStorage.getItem('accessToken');
-    const response = await axiosInstance.post('/api/archive', archive, {
+
+    const formData = new FormData();
+    
+    formData.append("archiveData", new Blob([JSON.stringify(archiveData)], {type: "application/json"}));
+
+    if (Array.isArray(images) && images.every(img => img instanceof File)) {
+      images.forEach((file) => {
+        formData.append("images", file);
+      });
+      console.log("프로젝트 이미지들");
+    } else {
+      console.log("프로젝트 이미지 형식이 잘못되었습니다.");
+    }
+
+    if(thumbnail instanceof File){
+      formData.append("thumbnail", thumbnail);
+      console.log("프로젝트이미지2는 파일형식")
+    }else{
+      console.log("프로젝트이미지2는 파일형식아님");
+    }
+
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+  }
+    const response = await axiosInstance.post('/api/archive', formData, {
       headers: {
-        access: accessToken ? accessToken : "",
+        "Content-Type": "multipart/form-data",
+        access: accessToken ? accessToken : ""
+
     },
     });
 
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+  }
+
+  console.log(response.status);
+  if (response.status === 200) {
+      return response;
+  }
     if(response.status === 200){
       return response;
     }

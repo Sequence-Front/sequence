@@ -34,7 +34,7 @@ const ProjectImgIntro = styled.div`
   font-size: clamp(16px, 1.5vw, 24px);
 `;
 
-const PhotoPreview = styled.label<{ imageUrl?: string }>`
+const PhotoPreview = styled.label<{ imageFile?: File }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -43,7 +43,7 @@ const PhotoPreview = styled.label<{ imageUrl?: string }>`
   cursor: pointer;
   overflow: hidden;
   ${(props) =>
-    props.imageUrl
+    props.imageFile
       ? `
         height: auto;
         aspect-ratio: auto;
@@ -110,45 +110,33 @@ const DefaultPhotoComponent = styled.div`
 `;
 
 interface ProjectImgProps {
-  onDataChange: (data: { imageUrls: string[] }) => void;
+  onDataChange: (data: { imageFiles: File[] }) => void;
 }
 
 const ProjectImg = ({ onDataChange }: ProjectImgProps) => {
-  const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const files = Array.from(e.target.files);
-      const newImageUrls: string[] = [];
-      files.forEach((file) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          if (reader.result) {
-            newImageUrls.push(reader.result as string);
-            if (newImageUrls.length === files.length) {
-              const updatedUrls = [...imageUrls, ...newImageUrls];
-              setImageUrls(updatedUrls);
-              onDataChange({ imageUrls: updatedUrls });
-            }
-          }
-        };
-        reader.readAsDataURL(file);
-      });
+      const updatedImageFiles = [...imageFiles, ...files];
+      setImageFiles(updatedImageFiles);
+      onDataChange({ imageFiles: updatedImageFiles });
     }
   };
 
   const handleRemoveImage = (index: number) => {
-    const updatedUrls = imageUrls.filter((_, i) => i !== index);
-    setImageUrls(updatedUrls);
-    onDataChange({ imageUrls: updatedUrls });
+    const updatedFiles = imageFiles.filter((_, i) => i !== index);
+    setImageFiles(updatedFiles);
+    onDataChange({ imageFiles: updatedFiles });
   };
 
   return (
     <Container>
       <ImageGrid>
-        {imageUrls.map((url, index) => (
+        {imageFiles.map((file, index) => (
           <ImageContainer key={index}>
-            <Image src={url} alt={`Uploaded ${index}`} />
+            <Image src={URL.createObjectURL(file)}/>
             <RemoveButton onClick={() => handleRemoveImage(index)}>
               <FiTrash />
             </RemoveButton>

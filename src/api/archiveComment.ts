@@ -29,7 +29,6 @@ const CommentPut = async (id: string | undefined, content: string, commentId: nu
         writer: nickname,
         content: content,
       };
-      console.log(requestBody);
     const response = await tokenAxios.put(
       `/api/archive/${id}/comments/${commentId}`,
         requestBody

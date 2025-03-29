@@ -19,6 +19,7 @@ import WithdrawPage from './withdraw/WithdrawPage';
 import ProjectDetailPage from './projectdetail/ProjectDetailPage';
 import CommentDetail from './projectdetail/components/CommentDetail';
 import TeamEvaluationPage from './teamevaluation/TeamEvaluationPage';
+import NoticeItem from './asset/component/NoticeItem';
 
 const AppRouter = () => {
   return (
@@ -33,6 +34,7 @@ const AppRouter = () => {
         <Route path="/announcement/1" element={<AnnouncementDetail />} />
         <Route path="/archive" element={<Archivelist />} />
         <Route path="/archive/:id" element={<ArchiveDetail />} />
+        <Route path="/1" element={<NoticeItem />} />
         <Route path="/archive/registration" element={<ArchiveRegistration />} />
         <Route path="/project/registration" element={<ProjectRegistration />} />
         <Route path="/mypage" element={<MyPage />} />
@@ -42,7 +44,7 @@ const AppRouter = () => {
         <Route path="/withdraw" element={<WithdrawPage />} />
         <Route path="/projectdetail/:id" element={<ProjectDetailPage />} />
         <Route path="/commentdetail" element={<CommentDetail />} />
-        <Route path="/teamevaluation" element={<TeamEvaluationPage />} />
+        <Route path=":archiveId/teamevaluation" element={<TeamEvaluationPage />} />
       </Routes>
     </Router> 
   );

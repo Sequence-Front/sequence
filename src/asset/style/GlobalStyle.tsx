@@ -18,7 +18,7 @@ const GlobalStyle = createGlobalStyle`
     outline: none;
     border-radius: 10px;
     border: 4px solid transparent;
-    background: red;
+    background: #E32929;
   }
 
 

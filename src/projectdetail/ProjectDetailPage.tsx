@@ -64,6 +64,7 @@ const IconContainer = styled.div`
 
 interface ProjectDetail {
   id: number;
+  views: number;
   title: string;
   writer: string;
   createdDate: string;
@@ -137,8 +138,8 @@ const ProjectDetailPage = () => {
           </DetailBox>
           <DetailBox>
             <div>Comment {projectData.comments.length}</div>
-            <div>북마크 4</div>
-            <div>조회 10</div>
+            <div>북마크 {projectData.views}</div>
+            <div>조회 {projectData.views}</div>
           </DetailBox>
         </Detail>
       </TitleSection>

@@ -31,7 +31,7 @@ const ThumbnailIntro = styled.div`
   font-size: clamp(16px, 1.5vw, 24px);
 `;
 
-const PhotoPreview = styled.label<{ imageUrl: string | null }>`
+const PhotoPreview = styled.label<{ imageFile: File | null }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -45,7 +45,7 @@ const PhotoPreview = styled.label<{ imageUrl: string | null }>`
   }
 
   ${(props) =>
-    props.imageUrl
+    props.imageFile
       ? `
         height: auto;
         aspect-ratio: auto;
@@ -76,33 +76,27 @@ const DefaultPhotoComponent = styled.div`
 `;
 
 interface ThumbnailProps {
-  onDataChange: (data: { imageUrl: string | null }) => void;
+  onDataChange: (data: { imageFile: File | null }) => void;
 }
 
 const Thumbnail = ({ onDataChange }: ThumbnailProps) => {
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (reader.result) {
-          setImageUrl(reader.result as string);
-          onDataChange({ imageUrl: reader.result as string });
-        }
-      };
-      reader.readAsDataURL(file);
+      setImageFile(file);
+      onDataChange({ imageFile: file });
     }
   };
 
   return (
     <Container>
       <PhotoContainer>
-        <PhotoPreview imageUrl={imageUrl}>
+        <PhotoPreview imageFile={imageFile}>
           <input type="file" accept="image/*" onChange={handleFileChange} />
-          {imageUrl ? (
-            <Image src={imageUrl} alt="썸네일 미리보기" />
+          {imageFile ? (
+            <Image src={URL.createObjectURL(imageFile)}/>
           ) : (
             <ShowInitial>
               <ThumbnailIntro>썸네일을 등록해주세요.</ThumbnailIntro>
