@@ -68,17 +68,32 @@ const SearchIcon = styled(FiSearch)`
 const SearchResultsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #212121;
-  padding: 10px;
   height: clamp(10rem, 20vw, 20rem);
+  overflow-y: auto;
+  border-radius: 4px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #E32929;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #1a1a1a;
+  }
 `
 
 const ResultItem = styled.div`
+  z-index: 2;
   display: flex;
   align-items: center;
   padding: 10px;
   color: white;
   cursor: pointer;
+  background-color: #212121;
 
   &:hover {
     background-color: #e32929;
@@ -98,10 +113,12 @@ const ProfileImage = styled.div<{ src: string }>`
 
 const UserName = styled.div`
   margin-right: 10px;
-  font-size: clamp(1rem, 1.5vw, 1.5rem);
   color: white;
   white-space: nowrap;
-`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+`;
 
 const RoleTag = styled.div`
   display: inline-flex;

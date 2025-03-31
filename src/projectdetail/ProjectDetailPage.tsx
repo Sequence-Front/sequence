@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Header from '../asset/component/Header';
 import { LuPen } from "react-icons/lu";
@@ -11,6 +11,7 @@ import ProgressSection from './components/ProgressSection';
 import ProfileSection from './components/ProfileSection';
 import CommentSection from './components/CommentSection';
 import { getProjectDetail } from '../api/projectdetail';
+
 
 const Wrapper = styled.div`
 `
@@ -101,6 +102,7 @@ interface ProjectDetail {
 const ProjectDetailPage = () => {
   const { id } = useParams();
   const [projectData, setProjectData] = useState<ProjectDetail | null>(null);
+  const navigate = useNavigate();
 
   const fetchProjectDetail = async () => {
     try {
@@ -117,6 +119,15 @@ const ProjectDetailPage = () => {
 
   if (!projectData) return <div>로딩 중...</div>;
 
+  const writeClick = ()=>{
+    const myNickname = localStorage.getItem("nickname");
+    if(myNickname !== projectData?.writer){
+      alert("수정 권한이 없습니다.");
+      return;
+    }
+    navigate(`/project/edit/${id}`);
+  }
+
   return (
     <Wrapper>
       <Header headerName="" isMain={false}/>
@@ -124,7 +135,7 @@ const ProjectDetailPage = () => {
         <IconContainer>
           <FaRegBookmark size={30} style={{color: "#E32929"}}/>
           <PiSirenLight size={30} style={{color: "#E32929"}}/>
-          <LuPen size={30} style={{color: "#E32929"}}/>
+          <LuPen onClick={writeClick} size={30} style={{color: "#E32929", cursor:"pointer"} } title="수정하기"/>
         </IconContainer>
         <Title>
           {projectData.title}

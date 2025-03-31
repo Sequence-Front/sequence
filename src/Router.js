@@ -36,7 +36,9 @@ const AppRouter = () => {
         <Route path="/1" element={<NoticeItem />} />
         <Route path="/archive/1" element={<ArchiveDetail />} />
         <Route path="/archive/registration" element={<ArchiveRegistration />} />
+        <Route path="/archive/edit/:archiveId" element={<ArchiveRegistration />} />
         <Route path="/project/registration" element={<ProjectRegistration />} />
+        <Route path="/project/edit/:projectId" element={<ProjectRegistration />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/header" element={<Header />} />
