@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import CommentDetail from './CommentDetail';
+import { CommentPost } from '../../api/archiveComment';
+import { useParams } from 'react-router-dom';
 
 const CommentContainer = styled.div`
   margin: 2rem 0;
@@ -64,71 +66,48 @@ const SubmitButton = styled.button`
   }
 `
 
-const CommentSection = () => {
+interface Comment {
+  comments: Array<{
+    parentComment: {
+      id: number;
+      writer: string;
+      content: string;
+      createdLocalDateTime: string;
+    };
+    childComments: Array<{
+      id: number;
+      writer: string;
+      content: string;
+      createdLocalDateTime: string;
+    }>;
+  }>;
+  onCommentAdd: () => void;
+}
+
+const CommentSection = ({ comments, onCommentAdd }: Comment) => {
   const [comment, setComment] = useState('');
   const maxLength = 300;
+  const { id } = useParams();
 
-  const [comments, setComments] = useState([
-    {
-      id: 1,
-      profile: "https://buly.kr/GZwmWfY",
-      nickname: '홍길동',
-      role: '팀장',
-      timestamp: '24.08.08 10:44',
-      commentText: '안녕하세요! ○○ 공모전에 관심이 많아서 댓글 남깁니다.',
-    },
-    {
-      id: 2,
-      profile: "https://buly.kr/GZwmWfY",
-      nickname: '박승균',
-      role: '',
-      timestamp: '24.08.09 11:20',
-      commentText: '저도 기획에 관심 있습니다. 함께 할 수 있으면 좋겠습니다!',
-    },
-  ]);
+  const totalCommentsCount = comments.reduce((total, comment) => 
+    total + 1 + comment.childComments.length, 0);
 
-  const [replies, setReplies] = useState<{ [key: number]: any[] }>({
-    1: [
-      {
-        profile: "https://buly.kr/GZwmWfY",
-        nickname: "김대연",
-        role: "팀장",
-        timestamp: "24.08.08 11:00",
-        commentText: "첫 번째 댓글에 대한 답글에 대한 댓글에 대한 답글입니다.",
-      },
-    ],
-    2: [],
-  });
-
-  const totalCommentsAndReplies = comments.length + Object.values(replies).reduce((acc, curr) => acc + curr.length, 0);
-
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (comment.trim() !== '') {
-      const newComment = {
-        id: comments.length + 1,
-        profile: "https://buly.kr/GZwmWfY",
-        nickname: '새 사용자',
-        role: '',
-        timestamp: new Date().toLocaleString(),
-        commentText: comment,
-      };
-      setComments([...comments, newComment]);
-      setReplies({ ...replies, [newComment.id]: [] });
-      setComment('');
+      try {
+        await CommentPost(id, comment);
+        setComment('');
+        onCommentAdd();
+      } catch (error) {
+        console.error('댓글 등록 실패:', error);
+      }
     }
-  };
-
-  const handleAddReply = (commentId: number, newReply: any) => {
-    setReplies({
-      ...replies,
-      [commentId]: [...(replies[commentId] || []), newReply],
-    });
   };
 
   return (
     <CommentContainer>
       <CommentCount>
-        <span>댓글</span>({totalCommentsAndReplies})
+        <span>댓글</span>({totalCommentsCount})
       </CommentCount>
       <CommentInputWrapper>
         <StyledInput
@@ -142,15 +121,10 @@ const CommentSection = () => {
       </CommentInputWrapper>
       {comments.map((commentData) => (
         <CommentDetail
-          key={commentData.id}
-          profile={commentData.profile}
-          nickname={commentData.nickname}
-          role={commentData.role}
-          timestamp={commentData.timestamp}
-          commentText={commentData.commentText}
-          replies={replies[commentData.id] || []}
-          onAddReply={(newReply) => handleAddReply(commentData.id, newReply)}
-          isReplyEnabled={true}
+          key={commentData.parentComment.id}
+          comment={commentData.parentComment}
+          childComments={commentData.childComments}
+          onCommentAdd={onCommentAdd}
         />
       ))}
     </CommentContainer>

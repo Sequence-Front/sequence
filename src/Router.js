@@ -33,8 +33,8 @@ const AppRouter = () => {
         <Route path="/announcement" element={<AnnouncementList />} />
         <Route path="/announcement/1" element={<AnnouncementDetail />} />
         <Route path="/archive" element={<Archivelist />} />
+        <Route path="/archive/:id" element={<ArchiveDetail />} />
         <Route path="/1" element={<NoticeItem />} />
-        <Route path="/archive/1" element={<ArchiveDetail />} />
         <Route path="/archive/registration" element={<ArchiveRegistration />} />
         <Route path="/archive/edit/:archiveId" element={<ArchiveRegistration />} />
         <Route path="/project/registration" element={<ProjectRegistration />} />
