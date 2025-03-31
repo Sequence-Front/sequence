@@ -14,13 +14,16 @@ const login = async (data) => {
     const profile = response.data.data.profileImg;
 
     if (accessToken) {
+      const expiresIn = 1000 * 60 * 60;
+      const now = Date.now();
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('nickname', nickname);
       localStorage.setItem('profile', profile);
-      console.log(localStorage.getItem('accessToken')); // 액세스 토큰 출력
-      console.log(localStorage.getItem('nickname')); // 닉네임 출력
-      console.log(localStorage.getItem('profile')); // 프로필 이미지 URL 출력
-
+      localStorage.setItem('tokenExpiresAt', String(now + expiresIn));
+      
+      console.log(localStorage.getItem('accessToken')); 
+      console.log(localStorage.getItem('nickname')); 
+      console.log(localStorage.getItem('profile')); 
       return true;
     }
     return false; 

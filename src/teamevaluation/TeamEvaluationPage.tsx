@@ -6,7 +6,7 @@ import BackButton from '../common/components/BackButton';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 import MemberCard from './components/MemberCard';
 import ResultView from './components/ResultView';
-import {getEvaluation} from '../api/evaluation';
+import {getEvaluation, postEvaluation} from '../api/evaluation';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -149,10 +149,29 @@ const handleEvaluationChange = (memberId: number, field: string, value: any) => 
     return true;
   };
 
-  const handleRegisterClick = () => {
+  const handleRegisterClick = async() => {
     setError('');
+    const formattedData = {
+      evaluations: evaluatedMembers.map((member) => ({
+        evaluatedNickname: member.name,
+        feedback: evaluations[member.id].comment,
+        keyword: evaluations[member.id].keywords,
+      })),
+    };
+
     if (validateEvaluations()) {
-      setShowResult(true);
+      try {
+
+        console.log("보낼 평가 데이터:", formattedData);
+        const response = await postEvaluation(archiveId, formattedData);
+  
+        console.log("서버 응답:", response.data);
+
+        setShowResult(true);
+      } catch (error) {
+        console.error("평가 등록 실패:", error);
+        setError("평가 등록 중 오류가 발생했습니다.");
+      }
     }
   };
 

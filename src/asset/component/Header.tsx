@@ -4,6 +4,7 @@ import Sequence from '../image/Sequence.svg'
 import { useNavigate, useLocation } from 'react-router-dom';
 import alert from '../image/alert.png'
 import NoticeItem from './NoticeItem';
+import { getNotice, acceptNotice, deleteNotice } from '../../api/notice';
 
 const Container = styled.div`
   width: 100%;
@@ -149,40 +150,61 @@ function Header({ headerName, isMain = false }: { headerName: string; isMain?: b
   { id: number; message: string; type: "invite" | "archive"; date: string }[]
 >([]);
 
-const dummyData: NoticeData = {
-  inviteProjectOutputList: [
-    { projectInvitedMemberId: 1, writer: "닉테스터1", title: "프로젝트5 구합니다.", inviteDate: "2025-02-08" },
-    { projectInvitedMemberId: 3, writer: "닉테스터2", title: "프로젝트6 구합니다.", inviteDate: "2025-02-08" }
-  ],
-  userArchiveList: [
-    { archiveId: 101, archiveTitle: "프로젝트5 아카이브", createDate: "2025-01-01" },
-    { archiveId: 102, archiveTitle: "프로젝트6 아카이브", createDate: "2025-03-02" }
-  ]
-};
 
-useEffect(() => {
-  const inviteProjects = dummyData.inviteProjectOutputList.map((project) => ({
-    id: project.projectInvitedMemberId,
-    message: `${project.writer}님이 '${project.title}'에 초대했습니다.`,
-    type: "invite" as const,
-    date: project.inviteDate,
-  }));
+  useEffect(() => {
+    const fetchNotices = async () => {
+      try {
+        const response = await getNotice();
+        const data: NoticeData = response.data;
 
-  const userArchives = dummyData.userArchiveList.map((archive) => ({
-    id: archive.archiveId,
-    message: `'${archive.archiveTitle}'의 팀원평가를 해주세요.`,
-    type: "archive" as const,
-    date: archive.createDate,
-  }));
+        const inviteProjects = (data.inviteProjectOutputList ?? []).map((project) => ({
+          id: project.projectInvitedMemberId,
+          message: `${project.writer}님이 '${project.title}'에 초대했습니다.`,
+          type: "invite" as const,
+          date: project.inviteDate,
+        }));
 
-  const mergedList = [...inviteProjects, ...userArchives].sort((a, b) =>
-    new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
+        const userArchives = (data.userArchiveList ?? []).map((archive) => ({
+          id: archive.archiveId,
+          message: `'${archive.archiveTitle}'의 팀원평가를 해주세요.`,
+          type: "archive" as const,
+          date: archive.createDate,
+        }));
 
-  setSortedNotices(mergedList);
-}, []);
+        const mergedList = [...inviteProjects, ...userArchives].sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
 
+        if (mergedList.length === 0) {
+          console.log("알림이 없습니다.");
+        }
 
+        setSortedNotices(mergedList);
+      } catch (error) {
+        console.error('알림 데이터를 불러오는 데 실패했습니다.', error);
+      }
+    };
+
+    fetchNotices();
+  }, []);
+
+  const handleAccept = async (id: number) => {
+    try {
+      await acceptNotice(id);
+      setSortedNotices((prev) => prev.filter((notice) => notice.id !== id));
+    } catch (error) {
+      console.error("수락 실패:", error);
+    }
+  };
+  
+  const handleDecline = async (id: number) => {
+    try {
+      await deleteNotice(id);
+      setSortedNotices((prev) => prev.filter((notice) => notice.id !== id));
+    } catch (error) {
+      console.error("거절 실패:", error);
+    }
+  };
 
   useEffect(() => {
     const updateAuthState = () => {
@@ -254,10 +276,23 @@ useEffect(() => {
           <AlertImg src={alert} onClick={NoticeClick}/>
           <div style = {{position:'relative'}}>
           <UserProfile  onClick={() => navigate(`/mypage?nickname=undefined`)} src= {profile} />
-          <NoticeContainer isOpen={isNoticeOpen} className="notice-container">
-          {sortedNotices.map((notice) => (
-            <NoticeItem key={notice.id} id={notice.id} message={notice.message} type={notice.type} />
-          ))}
+          <NoticeContainer isOpen={isNoticeOpen}>
+            {sortedNotices.length === 0 ? (
+            <div style={{ color: '#999', fontSize: '0.9rem', padding: '0.5rem' }}>
+              알림 없음
+            </div>
+              ) : (
+                sortedNotices.map((notice) => (
+                  <NoticeItem
+                    key={notice.id}
+                    id={notice.id}
+                    message={notice.message}
+                    type={notice.type}
+                    onAccept={handleAccept}
+                    onDecline={handleDecline}
+                  />
+                ))
+              )}
         </NoticeContainer>
           </div>
         </UserContainer>

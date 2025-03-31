@@ -16,3 +16,35 @@ export const getEvaluation = async (archiveId) => {
     throw error;
   }
 };
+
+export const postEvaluation = async (archiveId, evaluationsData) => {
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    const response = await axiosInstance.post(`/api/archive/${archiveId}/evaluations`, evaluationsData, {
+      headers: {
+        access: accessToken ? accessToken : "",
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error("평가 API 요청 중 오류 발생:", error);
+    throw error;
+  }
+};
+
+export const postStatusEvaluation= async (archiveId) => {
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    const response = await axiosInstance.get(`/api/archive/${archiveId}/evaluations/status`,  {
+      headers: {
+        access: accessToken ? accessToken : "",
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error("평가 API 요청 중 오류 발생:", error);
+    throw error;
+  }
+};

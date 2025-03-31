@@ -1,11 +1,13 @@
 // 2024-1208- 14:56 정준용 완성
 import React, { useState, useEffect, useCallback } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { formatPeriod, validatePeriodInput } from "./utils/func";
 import ProjectMember from "./page/ProjectMember";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import { postProject } from "../api/project";
+import { postProject, editProject } from "../api/project";
+import { getProjectDetail } from "../api/projectdetail";
 import Header from "../asset/component/Header";
 
 const Container = styled.div`
@@ -272,6 +274,8 @@ const ErrorMessage = styled.div`
 `
 
 const ProjectRegistration = () => {
+  const { projectId } = useParams();
+  const isEdit = !!projectId;
   const [postTitle, setPostTitle] = useState("");
   const [projectData, setProjectData] = useState({
     title: "",
@@ -355,8 +359,24 @@ const ProjectRegistration = () => {
     }
   };
 
-  const navigate = useNavigate();
+  const reverseStepType = (type: string) => {
+    switch (type) {
+      case "BEFORE_START":
+        return "시작 전";
+      case "PLANNING":
+        return "기획 중";
+      case "DESIGNING":
+        return "디자인 중";
+      case "DEVELOPING":
+        return "개발 중";
+      case "IN_BUSINESS":
+        return "창업 중";
+      default:
+        return type;
+    }
+  };
 
+  const navigate = useNavigate();
 
   const [selectedFields, setSelectedFields] = useState<string[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
@@ -456,13 +476,20 @@ const ProjectRegistration = () => {
     if(selectedSteps.length===0){
       return "프로젝트 단계를 선택해 주세요."
     }
-
+    if(projectData.description.length === 0 ){
+      return "프로젝트 소개를 입력해주세요."
+    }
+    if(recruitmentData.recruitmentComment.length ===0){
+      return "모집 칸을 입력해주세요."
+    }
     return "";
   }, [
     postTitle,
     projectData.title,
     projectData.period,
+    projectData.description,
     recruitmentData.person,
+    recruitmentData.recruitmentComment,
     selectedFields,
     selectedRoles,
     selectedSkills,
@@ -497,11 +524,15 @@ const ProjectRegistration = () => {
       article: recruitmentData.recruitmentComment,
       link : ProgressData.link
     };
-    
+
+      
+
     try {
-      const response = await postProject(project);
-      console.log("서버 응답 상태:", response.status);
-      console.log("전송된 프로젝트 데이터:", project);
+      if (isEdit) {
+        await editProject(project, projectId);
+      } else {
+        await postProject(project); 
+      }
       navigate('/project');
     } catch (error) {
       console.log("전송된 프로젝트 데이터:", project);
@@ -509,6 +540,58 @@ const ProjectRegistration = () => {
       setErrorMessage("프로젝트 등록 중 오류가 발생했습니다.");
     }
   };
+
+  useEffect(() => {
+
+    const checkPermission = async () => {
+      if (!isEdit) return;
+
+      try {
+        const res = await getProjectDetail(projectId);
+        const data = res.data;
+        
+        const myNickname = localStorage.getItem('nickname');
+        if (data.writer !== myNickname) {
+          alert("수정 권한이 없습니다.");
+          navigate("/project");
+          return;
+        }
+
+        setPostTitle(data.title);
+        setProjectData({
+          title: data.projectName,
+          period: data.period, 
+          field: data.category,
+          description: data.introduce,
+        });
+        setRecruitmentData({
+          person: data.personnel.toString(),
+          role: "",
+          skill: "",
+          recruitmentComment: data.article,
+        });
+        setProgressData({ link: data.link });
+
+        setSelectedFields([data.category]);
+        setSelectedRoles(data.roles);
+        setSelectedSkills(data.skills);
+        setSelectedMeetings([data.meetingOption]);
+        setSelectedSteps([reverseStepType(data.step)]);
+        setSelectedMembers(
+          data.members.map((m: { writer: string; profileImgUrl: string | null }, i: number) => ({
+            id: i,
+            name: m.writer,
+            role: "Front-End",
+            profile: m.profileImgUrl || "null",
+          }))
+        );
+      } catch (err) {
+        console.error("기존 프로젝트 불러오기 실패:", err);
+      }
+    };
+
+    checkPermission();
+  }, [isEdit, projectId]);
 
   const [date, setDate] = useState("");
   
@@ -715,7 +798,7 @@ const ProjectRegistration = () => {
       </ContentContainer>
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
       <ButtonContainer onClick={handleRegisterClick}>
-        <ButtonText>등록하기</ButtonText>
+        <ButtonText> {isEdit? "수정하기" : "등록하기"}</ButtonText>
         <AiOutlineArrowRight style={{ fontSize: "30px", strokeWidth: "0.5px" }} />
       </ButtonContainer>
     </Container>
