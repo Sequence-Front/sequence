@@ -9,6 +9,7 @@ import { FaArrowRight } from "react-icons/fa";
 import { Result, ResultContainer, IdText } from '../login/style/CommonStyles';
 import { SignUpButton } from '../login/style/LoginStyle';
 import BackButton from '../common/components/BackButton';
+import { delWithdraw } from '../api/withdraw';
 
 export const PageNumber = styled.div`
   font-size: clamp(1.5rem, 1.5vw, 2rem);
@@ -42,6 +43,7 @@ const WithdrawPage: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, boolean>>({});
   const [showResult, setShowResult] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -77,17 +79,31 @@ const WithdrawPage: React.FC = () => {
     return true;
   };
 
-  const handleNext = () => {
+  const handleNext = async() => {
     //모든 곳에 값이 입력되어 있지 않으면 return
     if (!isFormValid) {
       return;
     }
     
-    setErrorMessage(''); // 에러 메시지 초기화
+    setErrorMessage(''); 
     
-    if (validateForm()) {
+    if(!validateForm()) return;
+
+    const password = {
+      password : formData.password,
+      confirm_password : formData.passwordConfirm
+    };
+
+    try{
+      const response = await delWithdraw(password);
+      setUserEmail(response.data);
+
       setShowResult(true);
+      return response;
+    } catch (error){
+      setErrorMessage('회원 탈퇴 실패');
     }
+
   };
 
   return (
@@ -100,7 +116,7 @@ const WithdrawPage: React.FC = () => {
             <Result>
               회원탈퇴 되었습니다.
             <ResultContainer>
-              <IdText>이메일</IdText>
+              <IdText>{userEmail}</IdText>
             </ResultContainer>
             </Result>
           )}

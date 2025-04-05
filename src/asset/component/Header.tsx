@@ -5,6 +5,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import alert from '../image/alert.png'
 import NoticeItem from './NoticeItem';
 import { getNotice, acceptNotice, deleteNotice } from '../../api/notice';
+import { postLogout } from '../../api/logout';
+import { access } from 'fs';
 
 const Container = styled.div`
   width: 100%;
@@ -150,6 +152,15 @@ function Header({ headerName, isMain = false }: { headerName: string; isMain?: b
   { id: number; message: string; type: "invite" | "archive"; date: string }[]
 >([]);
 
+  const Logout = async()=>{
+    try{
+      const response = await postLogout();
+      console.log("로그아웃 response", response);
+    } catch(error){
+      console.log("error: ", error);
+      console.log("로그아웃 엑세스토큰 " , localStorage.getItem("accessToken"));
+    }
+  };
 
   useEffect(() => {
     const fetchNotices = async () => {
@@ -240,7 +251,8 @@ function Header({ headerName, isMain = false }: { headerName: string; isMain?: b
           <Logo src={Sequence} />
         </TitleContainer>
       ) : (
-        <TitleContainer onClick={() => navigate('/')}>
+        //<TitleContainer onClick={() => navigate('/')}>
+        <TitleContainer onClick={Logout}>
           <Logo src={Sequence} />
         </TitleContainer>
       )}
