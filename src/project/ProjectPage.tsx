@@ -145,11 +145,11 @@ type TagCategory = '분야' | '기간' | '역할' | '필요스킬' | '회의' | 
 
 const tagOptions: Record<TagCategory, string[]> = {
   분야: ['대회', '창업', '대외활동'],
-  기간: ['ONE_MONTH', 'ONE_TO_THREE_MONTH', 'THREE_TO_SIX_MONTH', 'SIX_TO_TWELVE_MONTH', 'MORE_THAN_YEAR'],
+  기간: ['ONE_MONTH_LESS', 'ONE_TO_THREE_MONTH', 'THREE_TO_SIX_MONTH', 'SIX_TO_ONE_YEAR', 'OVER_ONE_YEAR'],
   역할: ['백엔드', '프론트', '디자이너', 'PM'],
   필요스킬: ['figma', 'spring', 'docker', 'adobe'],
   회의: ['오프라인', '온라인', '병행'],
-  프로젝트단계: ['PLANNING', 'DESIGN', 'DEVELOPMENT', 'TESTING', 'DEPLOYMENT']
+  프로젝트단계: ['BEFORE_START', 'PLANNING', 'DESIGNING', 'DEVELOPING', 'IN_BUSINESS']
 };
 
 // 기간 표시를 위한 매핑 객체
@@ -167,7 +167,7 @@ const stepMapping = {
   'PLANNING': '기획 단계',
   'DESIGNING': '디자인 단계',
   'DEVELOPING': '개발 단계',
-  'IN_BUSINESS': '뭐임 사업중?'
+  'IN_BUSINESS': '사업 단계'
 };
 
 const ProjectPage: React.FC = () => {

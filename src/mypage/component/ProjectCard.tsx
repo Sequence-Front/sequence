@@ -1,6 +1,5 @@
 import React from 'react';
 import { FaArrowRight } from "react-icons/fa6";
-import { ProjectType } from '../types/portfolio.types';
 import {
   ProjectCard as Card,
   ImageContainer,
@@ -14,16 +13,28 @@ import {
   ProjectPeriod,
   ProjectRole
 } from '../styles/Portfolio.styles';
+import { useNavigate } from 'react-router-dom';
+
+interface ProjectType {
+  id: number;
+  title: string;
+  period: string;
+  role: string;
+  image: string;
+  devComplete?: boolean;
+  startupState?: boolean;
+}
 
 interface ProjectCardProps {
   project: ProjectType;
 }
 
 const ProjectCard = ({ project }: ProjectCardProps) => {
+  const navigate = useNavigate();
   return (
-    <Card>
+    <Card onClick={() => { navigate(`/archivedetail/${project.id}`) }}>
       <ImageContainer>
-        <ProjectImage src={project.image} alt={'.'} />
+        <ProjectImage src={project.image} alt={project.title} />
         <StatusContainer>
           {project.devComplete && <StatusBadge>개발완료</StatusBadge>}
           {project.startupState && <StatusBadge>창업중</StatusBadge>}

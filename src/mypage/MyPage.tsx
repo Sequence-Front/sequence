@@ -57,50 +57,92 @@ const ContentContainer = styled.div<{ isPortfolio: boolean }>`
   width: ${({ isPortfolio }) => (isPortfolio ? '90%' : '75%')};
 `
 
+interface MyPageData {
+  basicInfo: {
+    address: string;
+    birth: string;
+    degree: string;
+    desiredJob: string[];
+    entranceDate: string;
+    gender: string;
+    grade: string;
+    graduationDate: string;
+    major: string;
+    name: string;
+    nickname: string;
+    phone: string;
+    schoolName: string;
+    skillCategory: string[];
+    username: string;
+  };
+  careerHistory: {
+    awards: any[];
+    careers: any[];
+    experiences: any[];
+    introduction: string;
+    portfolios: string[];
+  };
+  myActivities: {
+    myArchive: {
+      bookmarkedPosts: any[];
+      writtenPosts: Array<{
+        title: string;
+        articleId: number;
+        createdDate: string;
+        numberOfComments: number;
+      }>;
+    };
+    myProject: {
+      bookmarkedPosts: any[];
+      writtenPosts: any[];
+    };
+  };
+  portfolio: {
+    archivePageResponseDTO: {
+      archives: Array<{
+        id: number;
+        writerNickname: string;
+        title: string;
+        description: string;
+        startDate: string;
+        endDate: string;
+        role: string;
+        image?: string;
+      }>;
+      totalPages: number;
+    };
+  };
+}
+
 const MyPage = () => {
   const [activeTab, setActiveTab] = useState<Tab>('PersonalHistory');
-  const [profileData, setProfileData] = useState<any>(null);
-  const [historyData, setHistoryData] = useState<HistoryDataType>({
-    introduction: '',
-    experiences: [],
-    careers: [],
-    awards: [],
-    portfolio: []
-  });
+  const [profileData, setProfileData] = useState<MyPageData | null>(null);
   const nickname = localStorage.getItem('nickname');
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await getMyInfo();
-      console.log("response : ", response);
-      if (response.data) {
-        setProfileData(response.data);
-        setHistoryData({
-          introduction: response.data.introduction || '',
-          experiences: response.data.experiences || [],
-          careers: response.data.careers || [],
-          awards: response.data.awards || [],
-          portfolio: response.data.portfolio || []
-        });
-      }
+      setProfileData(response);
     };
     fetchData();
   }, []);
 
-  const isOwnProfile = nickname === profileData?.nickname;
+  const isOwnProfile = nickname === profileData?.basicInfo.nickname;
 
   const renderContent = () => {
+    if (!profileData) return null;
+
     switch (activeTab) {
       case 'PersonalHistory':
-        return <PersonalHistory data={historyData} />;
+        return <PersonalHistory careerHistory={profileData.careerHistory} />;
       case 'Portfolio':
-        return <Portfolio />;
+        return <Portfolio portfolioData={profileData.portfolio.archivePageResponseDTO} />;
       case 'MemberEvaluation':
         return <MemberEvaluation />;
       case 'MyActivity':
-        return <MyActivity />;
+        return <MyActivity activities={profileData.myActivities} />;
       default:
-        return <PersonalHistory data={historyData} />;
+        return <PersonalHistory careerHistory={profileData.careerHistory} />;
     }
   };
 
@@ -109,11 +151,11 @@ const MyPage = () => {
       <Header headerName="MyPage" />
       <Container>
         <Profile 
-          name={profileData?.nickname} 
-          birth={profileData?.birth}
-          skills={profileData?.skillCategory || []}
-          desiredJobs={profileData?.desiredJob || []}
-          schoolname={profileData?.schoolName}
+          name={profileData?.basicInfo.nickname} 
+          birth={profileData?.basicInfo.birth}
+          skills={profileData?.basicInfo.skillCategory || []}
+          desiredJobs={profileData?.basicInfo.desiredJob || []}
+          // introduction={profileData?.careerHistory.introduction || ""}
         />
         <TabContainer>
           <TabButton 
@@ -128,12 +170,13 @@ const MyPage = () => {
           >
             포트폴리오
           </TabButton>
-          <TabButton 
+          {/* <TabButton 
             isActive={activeTab === 'MemberEvaluation'} 
             onClick={() => setActiveTab('MemberEvaluation')}
           >
             팀원 평가
-          </TabButton>
+          </TabButton> */}
+         
           {isOwnProfile && (
             <TabButton 
               isActive={activeTab === 'MyActivity'} 

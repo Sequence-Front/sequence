@@ -2,13 +2,14 @@
 // 내 활동 컴포넌트
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
-export type PostProps = {
+export interface PostProps {
   id: number;
-  status: '모집 중' | '모집 완료';
   title: string;
-  date: string;
-  comments: number;
+  createdDate: string;
+  numberOfComments: number;
+  type?: 'archive' | 'project'; // 아카이브인지 프로젝트인지 구분
 }
 
 const PostContainer = styled.div`
@@ -16,23 +17,12 @@ const PostContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   border-radius: 8px;
-  margin: clamp(0.3rem, 1vw, 0.5rem) 0; 
-`
-
-const StatusContainer = styled.div`
-  display: flex;
-  width: 20%;
-`
-
-const Status = styled.div<{ isActive: boolean }>`
-  display: flex;
-  background-color: ${(props) => (props.isActive ? 'red' : 'none')};
-  color: ${(props) => (props.isActive ? 'white' : '#616161')};
-  padding: clamp(0.2rem, 0.8vw, 0.4rem) clamp(0.5rem, 1.5vw, 1rem);
-  border: 1px solid ${(props) => (props.isActive ? 'red' : '#616161')};
-  border-radius: 20px;
-  font-size: clamp(0.6rem, 1.2vw, 1rem); 
-  font-weight: bold;
+  margin: clamp(0.3rem, 1vw, 0.5rem) 0;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
 `
 
 const Title = styled.span`
@@ -54,17 +44,27 @@ const Date = styled.span`
 const Comments = styled.span`
   font-size: clamp(0.7rem, 1.2vw, 1.2rem);
   color: #757575;
+  min-width: 30px;
+  text-align: right;
 `
 
-export const MyActivityPost = ({ id, status, title, date, comments }: PostProps) => {
+export const MyActivityPost = ({ id, title, createdDate, numberOfComments, type = 'project' }: PostProps) => {
+  const navigate = useNavigate();
+
+  const formatDate = (dateString: string) => {
+    // const date = new Date(dateString);
+    // return `${String(date.getFullYear()).slice(2)}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}.`;
+  };
+
+  const handleClick = () => {
+    navigate(`/${type}/${id}`);
+  };
+
   return (
-    <PostContainer>
-      <StatusContainer>
-        <Status isActive={status === '모집 중'}>{status}</Status>
-      </StatusContainer>
+    <PostContainer onClick={handleClick}>
       <Title>{title}</Title>
-      <Date>{date}</Date>
-      <Comments>{comments}</Comments>
+      {/* <Date>{formatDate(createdDate)}</Date> */}
+      <Comments>{numberOfComments}</Comments>
     </PostContainer>
   );
 };

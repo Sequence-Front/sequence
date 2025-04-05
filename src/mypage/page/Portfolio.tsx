@@ -1,36 +1,54 @@
 import React, { useState } from 'react';
 import { PortfolioContainer } from '../styles/Portfolio.styles';
 import ProjectCard from '../component/ProjectCard';
-import { ProjectType } from '../types/portfolio.types';
-import { dummyData } from '../data/portfolioData';
 import Pagination from '../../asset/component/Pagination';
 
-const Portfolio = () => {
-  const [projects, setProjects] = useState<ProjectType[]>(dummyData);
+interface PortfolioProps {
+  portfolioData: {
+    archives: Array<{
+      id: number;
+      writerNickname: string;
+      title: string;
+      description: string;
+      startDate: string;
+      endDate: string;
+      role: string;
+      image?: string;
+    }>;
+    totalPages: number;
+  };
+}
+
+const Portfolio: React.FC<PortfolioProps> = ({ portfolioData }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const projectsPerPage = 12;
-  const indexOfLastProject = currentPage * projectsPerPage;
-  const indexOfFirstProject = indexOfLastProject - projectsPerPage;
-  const currentProjects = projects.slice(indexOfFirstProject, indexOfLastProject);
-  const totalPages = Math.ceil(projects.length / projectsPerPage);
+  const formatArchiveToProject = (archive: any) => ({
+    id: archive.id,
+    title: archive.title,
+    period: `${new Date(archive.startDate).getFullYear()}.${String(new Date(archive.startDate).getMonth() + 1).padStart(2, '0')} - ${new Date(archive.endDate).getFullYear()}.${String(new Date(archive.endDate).getMonth() + 1).padStart(2, '0')}`,
+    role: archive.role || '역할 미지정',
+    image: archive.image || 'default-image-url',
+    devComplete: false, // API에서 제공되지 않는 정보는 기본값 설정
+    startupState: false
+  });
 
   return (
     <>
-    <PortfolioContainer>
-      {currentProjects.map((project, index) => (
-        <ProjectCard key={index} project={project} />
-      ))}
-
-      
-    </PortfolioContainer>
-    {projects.length > 0 && (
-      <Pagination 
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={setCurrentPage}
-      />
-    )}
+      <PortfolioContainer>
+        {portfolioData.archives.map((archive) => (
+          <ProjectCard 
+            key={archive.id} 
+            project={formatArchiveToProject(archive)}
+          />
+        ))}
+      </PortfolioContainer>
+      {portfolioData.archives.length > 0 && (
+        <Pagination 
+          currentPage={currentPage}
+          totalPages={portfolioData.totalPages}
+          onPageChange={setCurrentPage}
+        />
+      )}
     </>
   );
 };

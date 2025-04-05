@@ -7,7 +7,7 @@ const CommentPost = async (id: string | undefined, comment: string, parentCommen
     const requestBody = {
       content: comment,
       writer: nickname,
-      ...(parentCommentId && { parentCommentId })
+      parentId: parentCommentId
     };
 
     const response = await tokenAxios.post(
