@@ -10,6 +10,7 @@ const login = async (data) => {
       }
     });
     const accessToken = response.headers['access'];
+    console.log(accessToken);
     const nickname = response.data.data.nickname;
     const profile = response.data.data.profileImg;
 

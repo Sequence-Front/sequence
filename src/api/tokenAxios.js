@@ -7,6 +7,7 @@ const tokenAxios = axios.create({
   headers: {
     'access': localStorage.getItem("accessToken"),
   },
+    withCredentials: true
 });
 
 // 토큰 갱신 함수

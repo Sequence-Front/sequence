@@ -512,7 +512,8 @@ const ProjectRegistration = () => {
     const project = {
       title: postTitle, 
       projectName: projectData.title, 
-      period: "THREE_TO_SIX_MONTH", 
+      startDate: projectData.period.slice(0, 7),
+      endDate: projectData.period.slice(-7),
       category: projectData.field,
       introduce: projectData.description,
       personnel : recruitmentData.person,
@@ -525,7 +526,7 @@ const ProjectRegistration = () => {
       link : ProgressData.link
     };
 
-      
+    console.log(projectData.period);
 
     try {
       if (isEdit) {
@@ -636,7 +637,7 @@ const ProjectRegistration = () => {
         <Title>기간</Title>
         <InputContainer>
           <Input
-            placeholder="2000.00.00 ~ 2000.00.00"
+            placeholder="년도-월 ~ 년도-월"
             value={projectData.period}
             onChange={handlePeriodChange}
           />
