@@ -3,24 +3,40 @@
 // API: 포스트아이디, status, title, date, comments개수
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { MyActivityPost, PostProps} from '../component/MyActivityPost';
+import { MyActivityPost } from '../component/MyActivityPost';
 
-
-const dummyData: PostProps[] = [
-  { id: 1, status: '모집 중', title: '성장과 도전! 공모전에서 함께 할 팀원을 구합니다.', date: '24.08.08.', comments: 24 },
-  { id: 2, status: '모집 완료', title: '성장과 도전! 공모전에서 함께 할 팀원을 구합니다.', date: '24.08.08.', comments: 12 },
-  { id: 3, status: '모집 완료', title: '성장과 도전! 공모전에서 함께 할 팀원을 구합니다.', date: '24.08.08.', comments: 24 },
-  { id: 4, status: '모집 중', title: '성장과 도전! 공모전에서 함께 할 팀원을 구합니다.', date: '24.08.08.', comments: 12 },
-  { id: 5, status: '모집 완료', title: '성장과 도전! 공모전에서 함께 할 팀원을 구합니다.', date: '24.08.08.', comments: 24 },
-];
-
-const dummyData2: PostProps[] = [
-  { id: 1, status: '모집 중', title: '성장과 도전! 공모전에서 함께 할 팀원을 구합니다.', date: '24.08.08.', comments: 24 },
-  { id: 2, status: '모집 완료', title: '성장과 도전! 공모전에서 함께 할 팀원을 구합니다.', date: '24.08.08.', comments: 12 },
-  { id: 3, status: '모집 완료', title: '성장과 도전! 공모전에서 함께 할 팀원을 구합니다.', date: '24.08.08.', comments: 24 },
-  { id: 4, status: '모집 중', title: '성장과 도전! 공모전에서 함께 할 팀원을 구합니다.', date: '24.08.08.', comments: 12 },
-  { id: 5, status: '모집 완료', title: '성장과 도전! 공모전에서 함께 할 팀원을 구합니다.', date: '24.08.08.', comments: 24 },
-];
+interface MyActivityProps {
+  activities: {
+    myArchive: {
+      bookmarkedPosts: Array<{
+        title: string;
+        articleId: number;
+        createdDate: string;
+        numberOfComments: number;
+      }>;
+      writtenPosts: Array<{
+        title: string;
+        articleId: number;
+        createdDate: string;
+        numberOfComments: number;
+      }>;
+    };
+    myProject: {
+      bookmarkedPosts: Array<{
+        title: string;
+        articleId: number;
+        createdDate: string;
+        numberOfComments: number;
+      }>;
+      writtenPosts: Array<{
+        title: string;
+        articleId: number;
+        createdDate: string;
+        numberOfComments: number;
+      }>;
+    };
+  };
+}
 
 const Section = styled.div`
   margin-bottom: clamp(2rem, 5vw, 3rem); 
@@ -78,76 +94,114 @@ const Button = styled.button`
   }
 `
 
-const MyActivity = () => {
-  const [showAll, setShowAll] = useState<boolean>(false);
-  const [BookshowAll, setBookShowAll] = useState<boolean>(false);
+const MyActivity: React.FC<MyActivityProps> = ({ activities }) => {
+  const [showAllArchive, setShowAllArchive] = useState<boolean>(false);
+  const [showAllProject, setShowAllProject] = useState<boolean>(false);
 
-  const handleToggle = () => {
-    setShowAll((prev) => !prev);
-  };
+  const visibleArchiveWritten = showAllArchive 
+    ? activities.myArchive.writtenPosts 
+    : activities.myArchive.writtenPosts.slice(0, 3);
   
-  const handleBookToggle = () => {
-    setBookShowAll((prev) => !prev);
-  };
+  const visibleArchiveBookmarked = showAllArchive 
+    ? activities.myArchive.bookmarkedPosts 
+    : activities.myArchive.bookmarkedPosts.slice(0, 3);
   
-
-  const sortedData = [...dummyData].sort((a, b) => {
-    if (a.status === '모집 중' && b.status === '모집 완료') return -1;
-    if (a.status === '모집 완료' && b.status === '모집 중') return 1;
-    return 0;
-  });
-
-  const sortedBookData = [...dummyData2].sort((a, b) => {
-    if (a.status === '모집 중' && b.status === '모집 완료') return -1;
-    if (a.status === '모집 완료' && b.status === '모집 중') return 1;
-    return 0;
-  });
-
-  const visibleData = showAll ? sortedData : sortedData.slice(0, 3);
-  const visibleBookData = BookshowAll ? sortedBookData : sortedBookData.slice(0, 3);
+  const visibleProjectWritten = showAllProject 
+    ? activities.myProject.writtenPosts 
+    : activities.myProject.writtenPosts.slice(0, 3);
+  
+  const visibleProjectBookmarked = showAllProject 
+    ? activities.myProject.bookmarkedPosts 
+    : activities.myProject.bookmarkedPosts.slice(0, 3);
 
   return (
     <Container>
       <Section>
-        <Header>내가 쓴 글</Header>
+        <Header>아카이브</Header>
         <PostListContainer>
-          {visibleData.map((post) => (
+          {visibleArchiveWritten.map((post) => (
             <MyActivityPost
-              key={post.id}
-              id={post.id}
-              status={post.status}
+              key={post.articleId}
+              id={post.articleId}
               title={post.title}
-              date={post.date}
-              comments={post.comments}
+              createdDate={post.createdDate}
+              numberOfComments={post.numberOfComments}
+              type="archive"
             />
           ))}
         </PostListContainer>
-        <ButtonWrapper>
-          <Button onClick={handleToggle}>
-            {showAll ? '접기' : '더보기'} <div>→</div>
-          </Button>
-        </ButtonWrapper>
+        {activities.myArchive.writtenPosts.length > 3 && (
+          <ButtonWrapper>
+            <Button onClick={() => setShowAllArchive(!showAllArchive)}>
+              {showAllArchive ? '접기' : '더보기'} <div>→</div>
+            </Button>
+          </ButtonWrapper>
+        )}
+
+        <Header>북마크한 아카이브</Header>
+        <PostListContainer>
+          {visibleArchiveBookmarked.map((post) => (
+            <MyActivityPost
+              key={post.articleId}
+              id={post.articleId}
+              title={post.title}
+              createdDate={post.createdDate}
+              numberOfComments={post.numberOfComments}
+              type="archive"
+            />
+          ))}
+        </PostListContainer>
+        {activities.myArchive.bookmarkedPosts.length > 3 && (
+          <ButtonWrapper>
+            <Button onClick={() => setShowAllArchive(!showAllArchive)}>
+              {showAllArchive ? '접기' : '더보기'} <div>→</div>
+            </Button>
+          </ButtonWrapper>
+        )}
       </Section>
 
       <Section>
-        <Header>북마크한 글</Header>
+        <Header>프로젝트</Header>
         <PostListContainer>
-          {visibleBookData.map((post) => (
+          {visibleProjectWritten.map((post) => (
             <MyActivityPost
-              key={post.id}
-              id={post.id}
-              status={post.status}
+              key={post.articleId}
+              id={post.articleId}
               title={post.title}
-              date={post.date}
-              comments={post.comments}
+              createdDate={post.createdDate}
+              numberOfComments={post.numberOfComments}
+              type="project"
             />
           ))}
         </PostListContainer>
-        <ButtonWrapper>
-          <Button onClick={handleBookToggle}>
-            {BookshowAll ? '접기' : '더보기'} <div>→</div>
-          </Button>
-        </ButtonWrapper>
+        {activities.myProject.writtenPosts.length > 3 && (
+          <ButtonWrapper>
+            <Button onClick={() => setShowAllProject(!showAllProject)}>
+              {showAllProject ? '접기' : '더보기'} <div>→</div>
+            </Button>
+          </ButtonWrapper>
+        )}
+
+        <Header>북마크한 프로젝트</Header>
+        <PostListContainer>
+          {visibleProjectBookmarked.map((post) => (
+            <MyActivityPost
+              key={post.articleId}
+              id={post.articleId}
+              title={post.title}
+              createdDate={post.createdDate}
+              numberOfComments={post.numberOfComments}
+              type="project"
+            />
+          ))}
+        </PostListContainer>
+        {activities.myProject.bookmarkedPosts.length > 3 && (
+          <ButtonWrapper>
+            <Button onClick={() => setShowAllProject(!showAllProject)}>
+              {showAllProject ? '접기' : '더보기'} <div>→</div>
+            </Button>
+          </ButtonWrapper>
+        )}
       </Section>
     </Container>
   );

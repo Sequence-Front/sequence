@@ -140,13 +140,13 @@ interface CommentDetailProps {
     id: number;
     writer: string;
     content: string;
-    createdLocalDateTime: string;
+    createdDateTime: string;
   };
   childComments: Array<{
     id: number;
     writer: string;
     content: string;
-    createdLocalDateTime: string;
+    createdDateTime: string;
   }>;
   onCommentAdd: () => void;
 }
@@ -164,6 +164,17 @@ const CommentDetail = ({
   const [editReplyContent, setEditReplyContent] = useState("");
   const { id } = useParams();
   const nickname = localStorage.getItem('nickname');
+
+  const formatDateTime = (dateTimeString: string) => {
+    const date = new Date(dateTimeString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+  };
 
   const handleReplySubmit = async () => {
     if (reply.trim() !== "") {
@@ -229,7 +240,7 @@ const CommentDetail = ({
       <UserName>
         <ProfileImage src="https://buly.kr/GZwmWfY" alt={`${comment.writer}'s profile`} />
         {comment.writer}
-        <TimeStamp>{comment.createdLocalDateTime}</TimeStamp>
+        <TimeStamp>{formatDateTime(comment.createdDateTime)}</TimeStamp>
       </UserName>
       
       {isEditing ? (
@@ -274,7 +285,7 @@ const CommentDetail = ({
               <UserName>
                 <ProfileImage src="https://buly.kr/GZwmWfY" alt={`${reply.writer}'s profile`} />
                 {reply.writer}
-                <TimeStamp>{reply.createdLocalDateTime}</TimeStamp>
+                <TimeStamp>{formatDateTime(reply.createdDateTime)}</TimeStamp>
               </UserName>
               
               {editingReplyId === reply.id ? (

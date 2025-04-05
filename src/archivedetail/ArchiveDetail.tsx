@@ -1,14 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import { projectData } from './data/projectData';
 import Header from '../asset/component/Header';
 import { LuPen } from "react-icons/lu";
-import { FaRegBookmark } from "react-icons/fa";
+import { FaRegBookmark, FaBookmark } from "react-icons/fa";
 import { PiSirenLight } from "react-icons/pi";
+import { MdDelete } from "react-icons/md";
 import ProfileSection from './components/ProfileSection';
 import CommentSection from './components/CommentSection';
-import { getArchiveDetail } from '../api/archivedetail';
-import { useParams } from 'react-router-dom';
+import { getArchiveDetail, addBookmark, deleteArchive } from '../api/archivedetail';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
 `
@@ -210,7 +210,8 @@ interface ArchiveDetail {
 const ArchiveDetailPage = () => {
     const { id } = useParams();
     const [archiveData, setArchiveData] = useState<ArchiveDetail | null>(null);
-    
+    const myNickname = localStorage.getItem("nickname");
+    const navigate = useNavigate();
     const [images, setImages] = useState<string[]>([]);
     
     const fetchArchiveDetail = async () => {
@@ -230,14 +231,48 @@ const ArchiveDetailPage = () => {
 
     if (!archiveData) return <div>로딩 중...</div>;
 
+    const writeClick = ()=>{
+      if(myNickname !== archiveData?.writerNickname){
+        alert("수정 권한이 없습니다.");
+        return;
+      }
+      navigate(`/archive/edit/${id}`);
+    }
+  
+    const deleteClick = () => {
+      deleteArchive(id);
+      navigate(`/archive`);
+    }
+  
+    const handleBookmark = async () => {
+      try {
+        await addBookmark(id);
+        fetchArchiveDetail(); 
+      } catch (error) {
+        console.error('북마크 삭제 실패:', error);
+      }
+    }
+
     return (
         <Wrapper>
             <Header headerName = "" isMain = {false}/>
             <TitleSection>
                 <IconContainer>
-                    <FaRegBookmark size={30} style={{color: "#E32929"}}/>
-                    <PiSirenLight size={30} style={{color: "#E32929"}}/>
-                    <LuPen size={30} style={{color: "#E32929"}}/>
+                  { archiveData?.bookmarked === false ?
+                    (<FaRegBookmark onClick={handleBookmark} size={30} style={{color: "#E32929", cursor:"pointer"}}/>)
+                    :
+                    (<FaBookmark onClick={handleBookmark} size={30} style={{color: "#E32929", cursor:"pointer"}}/>)
+                  }
+
+                  <PiSirenLight size={30} style={{color: "#E32929"}}/>
+                  { myNickname === archiveData?.writerNickname && 
+                    (
+                      <>
+                        <LuPen onClick={writeClick} size={30} style={{color: "#E32929", cursor:"pointer"} } title="수정하기"/>
+                        <MdDelete onClick={deleteClick} size={30} style={{color: "#E32929", cursor:"pointer"}}/>
+                      </>
+                    )
+                  }
                 </IconContainer>
                 <Title>
                     {archiveData.title}
