@@ -3,7 +3,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { HistoryContainer, Introduction, PortfolioItem, PortfolioLink } from '../styles/PersonalHistory.styles';
 import HistorySection from '../component/HistorySection';
-import { HistoryDataType, ExperienceType, AwardType } from '../types/history.types';
 import { SignUpButton } from '../../login/style/LoginStyle';
 import { FaArrowRight } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
@@ -25,30 +24,31 @@ const WithDrawButton = styled.button`
   cursor: pointer;
 `;
 
-const getExperienceTypeKorean = (type: ExperienceType): string => {
-  const typeMap: Record<ExperienceType, string> = {
-    [ExperienceType.EXTERNAL_ACTIVITY]: '대외활동',
-    [ExperienceType.EDUCATION]: '교육',
-    [ExperienceType.VOLUNTEER]: '봉사',
-    [ExperienceType.CLUB]: '동아리',
-    [ExperienceType.ETC]: '기타'
-  };
-  return typeMap[type];
-};
-
-const getAwardTypeKorean = (type: AwardType): string => {
-  const typeMap: Record<AwardType, string> = {
-    [AwardType.CERTIFICATE]: '자격증',
-    [AwardType.AWARD]: '수상'
-  };
-  return typeMap[type];
-};
-
 interface PersonalHistoryProps {
-  data: HistoryDataType;
+  careerHistory: {
+    awards: Array<{
+      awardName: string;
+      organizer: string;
+      awardDuration: string;
+    }>;
+    careers: Array<{
+      companyName: string;
+      careerDescription: string;
+      startDate: string;
+      endDate: string;
+    }>;
+    experiences: Array<{
+      experienceName: string;
+      experienceDescription: string;
+      startDate: string;
+      endDate: string;
+    }>;
+    introduction: string;
+    portfolios: string[];
+  };
 }
 
-const PersonalHistory = ({ data }: PersonalHistoryProps) => {
+const PersonalHistory = ({ careerHistory }: PersonalHistoryProps) => {
   const navigate = useNavigate();
   const nickname = localStorage.getItem('nickname');
   const currentProfileNickname = new URLSearchParams(window.location.search).get('nickname');
@@ -56,53 +56,75 @@ const PersonalHistory = ({ data }: PersonalHistoryProps) => {
   const isOwnProfile = !currentProfileNickname || nickname === currentProfileNickname;
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('ko-KR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
+    const date = new Date(dateString);
+    return `${date.getFullYear()}년 ${date.getMonth() + 1}월`;
   };
 
-  const formatExperienceItems = (items: any[]) => {
-    return items.map(item => ({
-      title: item.experienceName || item.companyName || item.awardName,
-      category: item.experienceType ? getExperienceTypeKorean(item.experienceType) : 
-                item.awardType ? getAwardTypeKorean(item.awardType) : '경력',
-      period: `${formatDate(item.startDate)} ~ ${formatDate(item.endDate || item.awardDuration)}`,
-      description: item.experienceDescription || item.careerDescription || `${item.organizer} - ${item.awardName}`
+  const formatExperiences = () => {
+    return careerHistory.experiences.map(exp => ({
+      category: '활동',
+      title: exp.experienceName,
+      period: `${formatDate(exp.startDate)} ~ ${formatDate(exp.endDate)}`,
+      description: exp.experienceDescription
+    }));
+  };
+
+  const formatCareers = () => {
+    return careerHistory.careers.map(career => ({
+      category: '경력',
+      title: career.companyName,
+      period: `${formatDate(career.startDate)} ~ ${formatDate(career.endDate)}`,
+      description: career.careerDescription
+    }));
+  };
+
+  const formatAwards = () => {
+    return careerHistory.awards.map(award => ({
+      category: '수상',
+      title: award.awardName,
+      period: formatDate(award.awardDuration),
+      description: `주최: ${award.organizer}`
     }));
   };
 
   return (
     <HistoryContainer>
       <HistorySection title="자기소개" items={[]}>
-        <Introduction>{data.introduction}</Introduction>
+        <Introduction>
+          {careerHistory.introduction || "자기소개가 없습니다."}
+        </Introduction>
       </HistorySection>
 
       <HistorySection 
         title="경험 및 활동이력" 
-        items={formatExperienceItems(data.experiences)} 
+        items={formatExperiences()} 
       />
+
       <HistorySection 
         title="경력" 
-        items={formatExperienceItems(data.careers)} 
+        items={formatCareers()} 
       />
+
       <HistorySection 
-        title="자격증" 
-        items={formatExperienceItems(data.awards)} 
+        title="수상 내역" 
+        items={formatAwards()} 
       />
 
       <HistorySection title="포트폴리오" items={[]}>
-        {data.portfolio.map((item, index) => (
-          <PortfolioItem key={index}>
-            <PortfolioLink href={item} target="_blank" rel="noopener noreferrer">
-              {item}
-            </PortfolioLink>
-          </PortfolioItem>
-        ))}
+        {careerHistory.portfolios.length > 0 ? (
+          careerHistory.portfolios.map((item, index) => (
+            <PortfolioItem key={index}>
+              <PortfolioLink href={item} target="_blank" rel="noopener noreferrer">
+                {item}
+              </PortfolioLink>
+            </PortfolioItem>
+          ))
+        ) : (
+          <Introduction>등록된 포트폴리오가 없습니다.</Introduction>
+        )}
       </HistorySection>
 
-      {!isOwnProfile && (
+      {isOwnProfile && (
         <>
           <EditButton>로그인 정보 수정 <FaArrowRight /> </EditButton>
           <WithDrawButton onClick={() => navigate('/withdraw')}>회원탈퇴</WithDrawButton>

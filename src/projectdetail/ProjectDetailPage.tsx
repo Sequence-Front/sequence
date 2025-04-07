@@ -4,13 +4,15 @@ import styled from 'styled-components';
 import Header from '../asset/component/Header';
 import { LuPen } from "react-icons/lu";
 import { FaRegBookmark } from "react-icons/fa";
+import { FaBookmark } from "react-icons/fa";
 import { PiSirenLight } from "react-icons/pi";
+import { MdDelete } from "react-icons/md";
 import ProjectSection from './components/ProjectSection';
 import RecruitmentSection from './components/RecruitmentSection';
 import ProgressSection from './components/ProgressSection';
 import ProfileSection from './components/ProfileSection';
 import CommentSection from './components/CommentSection';
-import { getProjectDetail } from '../api/projectdetail';
+import { getProjectDetail, deleteProject, addBookmark, removeBookmark } from '../api/projectdetail';
 
 
 const Wrapper = styled.div`
@@ -80,6 +82,7 @@ interface ProjectDetail {
   introduce: string;
   article: string;
   link: string;
+  isBookmark: boolean;
   members: Array<{
     profileImgUrl: string | null;
     nickname: string;
@@ -104,6 +107,7 @@ const ProjectDetailPage = () => {
   const { id } = useParams();
   const [projectData, setProjectData] = useState<ProjectDetail | null>(null);
   const navigate = useNavigate();
+  const myNickname = localStorage.getItem("nickname");
 
   const fetchProjectDetail = async () => {
     try {
@@ -114,6 +118,24 @@ const ProjectDetailPage = () => {
     }
   };
 
+  const registBookmark = async () => {
+    try {
+      await addBookmark(id);
+      fetchProjectDetail();
+    } catch (error) {
+      console.error('북마크 등록 실패:', error);
+    }
+  }
+
+  const deleteBookmark = async () => {
+    try {
+      await removeBookmark(id);
+      fetchProjectDetail(); 
+    } catch (error) {
+      console.error('북마크 삭제 실패:', error);
+    }
+  }
+
   useEffect(() => {
     fetchProjectDetail();
   }, [id]);
@@ -121,7 +143,6 @@ const ProjectDetailPage = () => {
   if (!projectData) return <div>로딩 중...</div>;
 
   const writeClick = ()=>{
-    const myNickname = localStorage.getItem("nickname");
     if(myNickname !== projectData?.writer){
       alert("수정 권한이 없습니다.");
       return;
@@ -129,13 +150,24 @@ const ProjectDetailPage = () => {
     navigate(`/project/edit/${id}`);
   }
 
+  const deleteClick = ()=>{
+    deleteProject(id)
+    navigate(`/project`);
+  }
+
   return (
     <Wrapper>
       <Header headerName="" isMain={false}/>
       <TitleSection>
         <IconContainer>
-          <FaRegBookmark size={30} style={{color: "#E32929"}}/>
-            <PiSirenLight
+          { projectData?.isBookmark === false &&
+            <FaRegBookmark onClick={registBookmark} size={30} style={{color: "#E32929", cursor:"pointer"}}/>
+          }
+          { projectData?.isBookmark === true &&
+            <FaBookmark onClick={deleteBookmark} size={30} style={{color: "#E32929", cursor:"pointer"}}/>
+          }
+
+          <PiSirenLight
               size={30}
               title="신고"
               style={{ color: "#E32929", cursor: "pointer" }}
@@ -146,7 +178,15 @@ const ProjectDetailPage = () => {
               targetId: id
               }})}
             />
-          <LuPen onClick={writeClick} size={30} style={{color: "#E32929", cursor:"pointer"} } title="수정하기"/>
+          { myNickname === projectData?.writer && 
+            (
+              <>
+                <LuPen onClick={writeClick} size={30} style={{color: "#E32929", cursor:"pointer"} } title="수정하기"/>
+                <MdDelete onClick={deleteClick} size={30} style={{color: "#E32929", cursor:"pointer"}}/>
+              </>
+            )
+          }
+          
         </IconContainer>
         <Title>
           {projectData.title}

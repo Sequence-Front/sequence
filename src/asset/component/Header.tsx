@@ -288,7 +288,7 @@ function Header({ headerName, isMain = false }: { headerName: string; isMain?: b
           <UserContainer>
           <AlertImg src={alert} onClick={NoticeClick}/>
           <div style = {{position:'relative'}}>
-          <UserProfile  onClick={() => navigate(`/mypage?nickname=${loginUser}`)} src= {profile} />
+          <UserProfile onClick={() => {navigate(`/mypage?nickname=undefined`); window.location.reload();}} src= {profile} />
           <NoticeContainer isOpen={isNoticeOpen}>
             {sortedNotices.length === 0 ? (
             <div style={{ color: '#999', fontSize: '0.9rem', padding: '0.5rem' }}>

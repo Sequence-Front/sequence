@@ -72,13 +72,13 @@ interface Comment {
       id: number;
       writer: string;
       content: string;
-      createdLocalDateTime: string;
+      createdDateTime: string;
     };
     childComments: Array<{
       id: number;
       writer: string;
       content: string;
-      createdLocalDateTime: string;
+      createdDateTime: string;
     }>;
   }>;
   onCommentAdd: () => void;
