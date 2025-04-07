@@ -161,7 +161,7 @@ const MemberInfo = styled.div`
   display: flex;
   align-items: center;
 `;
-const ProjectMember  = ({ onMemberSelect }: { onMemberSelect: (members: { id: number; name: string; role: string; profile: string }[]) => void }) => {
+const ProjectMember = ({  onMemberSelect,  isEdit = false,}: {  onMemberSelect: (members: { id: number; name: string; role: string; profile: string }[]) => void;  isEdit?: boolean;}) => {
   const [userList, setUserList] = useState<
     { id: number; name: string; role: string; profile: string }[]
   >([]);
@@ -236,16 +236,19 @@ const ProjectMember  = ({ onMemberSelect }: { onMemberSelect: (members: { id: nu
     <Container ref={containerRef}>
       <SearchContainer>
         <SearchBox>
-          <Input
-            type="text"
-            placeholder="찾고 싶은 멤버명을 입력해주세요!"
-            value={query}
-            onFocus={() => setIsResultsVisible(true)}
-            onChange={(e) => {
+        <Input
+          type="text"
+          placeholder={isEdit ? "멤버 수정이 불가능합니다." : "찾고 싶은 멤버명을 입력해주세요!"}
+          value={query}
+          onFocus={() => !isEdit && setIsResultsVisible(true)}
+          onChange={(e) => {
+            if (!isEdit) {
               setQuery(e.target.value);
               setIsResultsVisible(true);
-            }}
-          />
+            }
+          }}
+          disabled={isEdit}
+        />
           <SearchIcon style={{ fontSize:"clamp(18px, 1.5vw, 26px)" }} />
         </SearchBox>
         <SearchResultsContainer visible={isResultsVisible}>

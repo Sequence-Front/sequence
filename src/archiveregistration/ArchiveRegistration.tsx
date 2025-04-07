@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { formatPeriod, validatePeriodInput } from "./utils/func";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Header from '../asset/component/Header';
 import ProjectMember from "./page/ProjectMember";
@@ -8,7 +8,8 @@ import SkillSearch from "./page/SkillSearch";
 import Thumbnail from "./page/Thumbnail";
 import ProjectImg from "./page/ProjectImg";
 import { AiOutlineArrowRight, AiOutlineArrowLeft } from "react-icons/ai";
-import { postArchive } from "../api/archive";
+import { postArchive, editArchive } from "../api/archive";
+import { getArchiveDetail } from "../api/archivedetail";
 import { duration } from "@mui/material";
 
 const Container = styled.div`
@@ -287,6 +288,16 @@ const ErrorMessage = styled.div`
 
 const ArchiveRegistration = () => {
   const navigate = useNavigate();
+  const { archiveId } = useParams();
+  const isEdit = !!archiveId;
+  const [loginUser, ] = useState(localStorage.getItem('nickname'));
+  const [date, setDate] = useState("");
+    useEffect(() => {
+      const today = new window.Date();
+      const formattedDate = `${today.getFullYear() % 100}.${String(today.getMonth() + 1).padStart(2, "0")}.${String(today.getDate()).padStart(2, "0")}`;
+      setDate(formattedDate);
+    }, []);
+  
 
   const [projectData, setProjectData] = useState({
     title: "",
@@ -307,7 +318,10 @@ const ArchiveRegistration = () => {
 
   const [thumbnailImage, setThumbnailImage] = useState<File | null>(null);
   const [projectImages, setProjectImages] = useState<File[]>([]); 
-
+  const [thumbnailUrl, setThumbnailUrl] = useState<string>("");  
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [deletedThumbnail, setDeletedThumbnail] = useState(false);
+  const [deletedProjectImgs, setDeletedProjectImgs] = useState<string[]>([]);
 
   const [skills] = useState<string[]>([
     "Adobe Illustration",
@@ -382,6 +396,45 @@ const ArchiveRegistration = () => {
   };
 
   const { startDate, endDate } = formatDateForServer(projectData.period);
+  const formatDateToDot = (date: string) => date.replace(/-/g, ".");
+
+  useEffect(() => {
+    const fetchArchiveData = async () => {
+      if (!isEdit) return;
+  
+      try {
+        const res = await getArchiveDetail(archiveId);
+        const data = res.data;
+  
+        setProjectData({
+          title: data.title,
+          period: `${formatDateToDot(data.startDate)} ~ ${formatDateToDot(data.endDate)}`,
+          field: data.category,
+          description: data.description,
+        });
+  
+        setSelectedFields([data.category]);
+        setSelectedSkills(data.skills);
+        setLink(data.link);
+  
+        setSelectedMembers(data.members.map((m: any, idx: number) => ({
+          id: idx,
+          name: m.nickname,
+          role: "", 
+          profile: m.profileImg,
+        })));
+        
+  
+        setThumbnailUrl(data.thumbnail); 
+        setImageUrls(data.imgUrls);   
+  
+      } catch (error) {
+        console.error("아카이브 상세 불러오기 실패:", error);
+      }
+    };
+  
+    fetchArchiveData();
+  }, [isEdit, archiveId]);
 
   const handleRegisterClick = async() => {
     const validationError = validateInputs();
@@ -389,7 +442,7 @@ const ArchiveRegistration = () => {
       setErrorMessage(validationError);
     }
 
-    const archiveData = {
+    const archiveData: any = {
       title: projectData.title,
       description : projectData.description,
       startDate: startDate,
@@ -399,24 +452,33 @@ const ArchiveRegistration = () => {
       skills: selectedSkills,
       archiveMembers: selectedMembers.map(member => ({ nickname: member.name }))
     }
-    
-    const images = projectImages;
-    const thumbnail = thumbnailImage;
 
-    try{
-      const response = await postArchive(archiveData, images, thumbnail);
-      console.log("서버 응답 상태:", response.status);
-      console.log("전송된 아카이브 데이터: ", archiveData);
-      if(response.data && response.data.data){
-        const archiveId = response.data.data;
-        navigate(`/${archiveId}/teamevaluation`);
-      }
-    } catch(error){
-      console.log("전송된 프로젝트 데이터: " , archiveData);
-      setErrorMessage("아카이브 등록중 오류가 발생했습니다. ");
+    if (isEdit) {
+      archiveData.thumbnail = deletedThumbnail ? "" : thumbnailUrl;
+      archiveData.imgUrls = imageUrls.filter((url) => !deletedProjectImgs.includes(url));
     }
-    
-  };
+
+    try {
+      let response;
+      if (isEdit) {
+        response = await editArchive(
+          archiveData,
+          projectImages,
+          thumbnailImage,
+          archiveId
+        );
+      } else {
+        response = await postArchive(archiveData, projectImages, thumbnailImage);
+      }
+  
+      if (response.data) {
+        navigate(isEdit ? `/archive/${archiveId}` : `/${response.data.data}/teamevaluation`);
+      }
+    } catch (err) {
+      console.error("아카이브 등록/수정 에러:", err);
+      setErrorMessage("오류 발생");
+    }
+  }; 
 
   return (
     <>
@@ -439,8 +501,8 @@ const ArchiveRegistration = () => {
         />
         <User>
           <ProfileImage src = ""/>
-          <UserName>홍길동</UserName>
-          <Date> 24.08.08</Date>
+          <UserName>{loginUser}</UserName>
+          <Date> {date}</Date>
         </User>
       </HeaderContainer>
       <ContentContainer>
@@ -485,11 +547,13 @@ const ArchiveRegistration = () => {
         <Title>함께한 멤버</Title>
         <ProjectMember
          onMemberSelect={setSelectedMembers}
+         isEdit={isEdit}
          />
         <Title>사용 스킬</Title>
         <SkillSearch
             results={skills}
             onSkillSelect={setSelectedSkills}
+            defaultSkills={selectedSkills}
         />
         <Title>링크</Title>
         <TextAreaContainer>
@@ -501,14 +565,26 @@ const ArchiveRegistration = () => {
         </TextAreaContainer>
       </MetadataContainer>
       <ProjectContainer>
-        <Thumbnail onDataChange={({ imageFile }) => setThumbnailImage(imageFile)} />
-        <ProjectImg
-              onDataChange={({ imageFiles }) => setProjectImages(imageFiles)} 
-            />
+      <Thumbnail
+        onDataChange={({ imageFile, deletedDefault }) => {
+        setThumbnailImage(imageFile);
+        if (deletedDefault !== undefined) setDeletedThumbnail(deletedDefault);
+        }}
+        defaultUrl={thumbnailUrl}
+      />
+
+      <ProjectImg
+        onDataChange={({ imageFiles, deletedDefaultUrls }) => {
+        setProjectImages(imageFiles);
+        if (deletedDefaultUrls) setDeletedProjectImgs(deletedDefaultUrls);
+        }}
+        defaultUrls={imageUrls}
+      />
+
       </ProjectContainer>
       </ContentContainer>
       <ButtonContainer onClick={handleRegisterClick}>
-        <ButtonText>팀원평가 하러가기</ButtonText>
+        <ButtonText>{isEdit ? "수정하기" : "팀원평가 하러가기"}</ButtonText>
         <AiOutlineArrowRight style={{ fontSize: "30px", strokeWidth: "0.5px" }} />
       </ButtonContainer>
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}

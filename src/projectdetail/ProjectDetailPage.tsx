@@ -135,7 +135,17 @@ const ProjectDetailPage = () => {
       <TitleSection>
         <IconContainer>
           <FaRegBookmark size={30} style={{color: "#E32929"}}/>
-          <PiSirenLight size={30} style={{color: "#E32929"}}/>
+            <PiSirenLight
+              size={30}
+              title="신고"
+              style={{ color: "#E32929", cursor: "pointer" }}
+              onClick={() =>
+              navigate(`/report`, {
+              state: {
+              targetType: 'project',
+              targetId: id
+              }})}
+            />
           <LuPen onClick={writeClick} size={30} style={{color: "#E32929", cursor:"pointer"} } title="수정하기"/>
         </IconContainer>
         <Title>

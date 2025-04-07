@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 interface NoticeItemProps {
   id: number;
   message: string;
+  date: string;
   type: "invite" | "archive" | "info";
   onAccept?: (id: number) => void; 
   onDecline?: (id: number) => void; 
@@ -33,6 +35,12 @@ const ButtonContainer = styled.div`
   gap: 0.5rem;
 `
 
+const DateText = styled.div`
+  font-size: 0.85rem;
+  color: #888;
+  margin-top: 0.4rem;
+`
+
 const Button = styled.button`
   flex: 1;
   background-color: #212121;
@@ -50,21 +58,49 @@ const Button = styled.button`
   }
 `
 
-const NoticeItem: React.FC<NoticeItemProps> = ({ id, message, type, onAccept, onDecline, onClick }) => {
+const NoticeItem: React.FC<NoticeItemProps> = ({ id, message, type, date, onAccept, onDecline, onClick }) => {
+  const navigate = useNavigate();
+
+  const getDateDiff = (dateStr: string) => {
+    const today = new Date();
+    const target = new Date(dateStr);
+    const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const targetDate = new Date(target.getFullYear(), target.getMonth(), target.getDate());
+    const diffTime = todayDate.getTime() - targetDate.getTime();
+    return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  };
+
+  const diffDays = getDateDiff(date);
+  if (diffDays > 3) return null; 
+
+  const getDateDiffText = (diff: number) => {
+    if (diff === 0) return '오늘';
+    return `${diff}일 전`;
+  };
+
+  const ArchiveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (type === "archive") {
+      navigate(`/${id}/teamevaluation`);
+    }
+  };
+
   return (
     <Container onClick={onClick}>
       <Title>{message}</Title>
 
       {type === "invite" && (
         <ButtonContainer>
-          <Button onClick={() => onAccept?.(id)}>수락</Button>
-          <Button onClick={() => onDecline?.(id)}>거절</Button>
+          <Button onClick={(e) => { e.stopPropagation(); onAccept?.(id); }}>수락</Button>
+          <Button onClick={(e) => { e.stopPropagation(); onDecline?.(id); }}>거절</Button>
         </ButtonContainer>
       )}
 
       {type === "archive" && (
-        <Button onClick={onClick}>팀원평가 하러가기</Button>
+        <Button onClick={ArchiveClick}>팀원평가 하러가기</Button>
       )}
+
+      <DateText>{getDateDiffText(diffDays)}</DateText>
     </Container>
   );
 };

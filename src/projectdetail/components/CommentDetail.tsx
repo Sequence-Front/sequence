@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { PiSirenLight } from "react-icons/pi";
 import { ReactComponent as Replyimg } from "../../asset/image/ReplyImg.svg";
 import CommentInput from "./CommentInput";
-import { useParams } from "react-router-dom";
+import { useNavigate,useParams } from "react-router-dom";
 import { CommentPost, CommentPut, CommentDelete } from "../../api/projectComment";
 
 const CommentContainer = styled.div`
@@ -158,13 +158,14 @@ const CommentDetail = ({
   childComments,
   onCommentAdd
 }: CommentDetailProps) => {
+  const navigate = useNavigate();
   const [showReplyInput, setShowReplyInput] = useState(false);
   const [reply, setReply] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
   const [editingReplyId, setEditingReplyId] = useState<number | null>(null);
   const [editReplyContent, setEditReplyContent] = useState("");
-  const { id } = useParams();
+  const { id, commentId } = useParams();
   const nickname = localStorage.getItem('nickname');
 
   const handleReplySubmit = async () => {
@@ -226,7 +227,17 @@ const CommentDetail = ({
   return (
     <CommentContainer>
       <ReportIcon>
-        <PiSirenLight />
+        <PiSirenLight
+          size={30}
+          title="신고"
+          style={{ color: "#E32929", cursor: "pointer" }}
+          onClick={() =>
+            navigate(`/report`, {
+            state: {
+              targetType: 'project_comment',
+              targetId: comment.id
+            }})}
+            />
       </ReportIcon>
       <UserName>
         <ProfileImage src="https://buly.kr/GZwmWfY" alt={`${comment.writer}'s profile`} />
@@ -271,7 +282,17 @@ const CommentDetail = ({
             <Replyimg style={{width:'3.5rem'}} />
             <ReplyContent>
               <ReportIcon>
-                <PiSirenLight />
+                <PiSirenLight
+                size={30}
+                title="신고"
+                style={{ color: "#E32929", cursor: "pointer" }}
+                onClick={() =>
+                navigate(`/report`, {
+                state: {
+                  targetType: 'project_comment',
+                  targetId: reply.id
+                }})}
+              />
               </ReportIcon>
               <UserName>
                 <ProfileImage src="https://buly.kr/GZwmWfY" alt={`${reply.writer}'s profile`} />

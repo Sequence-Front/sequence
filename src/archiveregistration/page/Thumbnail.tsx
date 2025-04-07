@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { AiOutlinePlus } from "react-icons/ai";
+import { FiTrash } from "react-icons/fi";
 
 const Container = styled.div`
   display: flex;
@@ -39,6 +40,7 @@ const PhotoPreview = styled.label<{ imageFile: File | null }>`
   background-color: #1e1e1e;
   cursor: pointer;
   overflow: hidden;
+  position: relative;
 
   input {
     display: none;
@@ -61,6 +63,26 @@ const Image = styled.img`
   object-fit: cover;
 `;
 
+const RemoveButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(255, 0, 0, 0.7);
+  }
+`;
+
 const DefaultPhotoComponent = styled.div`
   display: flex;
   width: 3rem;
@@ -76,27 +98,47 @@ const DefaultPhotoComponent = styled.div`
 `;
 
 interface ThumbnailProps {
-  onDataChange: (data: { imageFile: File | null }) => void;
+  onDataChange: (data: { imageFile: File | null; deletedDefault?: boolean }) => void;
+  defaultUrl?: string;
 }
 
-const Thumbnail = ({ onDataChange }: ThumbnailProps) => {
+const Thumbnail = ({ onDataChange, defaultUrl }: ThumbnailProps) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(defaultUrl || null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       setImageFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
       onDataChange({ imageFile: file });
     }
   };
+
+  const handleRemoveImage = () => {
+    setImageFile(null);
+    setPreviewUrl(null);
+    onDataChange({ imageFile: null, deletedDefault: true });
+  };
+
+  useEffect(() => {
+    if (defaultUrl && !imageFile) {
+      setPreviewUrl(defaultUrl);
+    }
+  }, [defaultUrl, imageFile]);
 
   return (
     <Container>
       <PhotoContainer>
         <PhotoPreview imageFile={imageFile}>
           <input type="file" accept="image/*" onChange={handleFileChange} />
-          {imageFile ? (
-            <Image src={URL.createObjectURL(imageFile)}/>
+          {previewUrl ? (
+            <>
+              <Image src={previewUrl} />
+              <RemoveButton type="button" onClick={handleRemoveImage}>
+                <FiTrash />
+              </RemoveButton>
+            </>
           ) : (
             <ShowInitial>
               <ThumbnailIntro>썸네일을 등록해주세요.</ThumbnailIntro>

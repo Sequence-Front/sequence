@@ -8,7 +8,7 @@ import { PiSirenLight } from "react-icons/pi";
 import ProfileSection from './components/ProfileSection';
 import CommentSection from './components/CommentSection';
 import { getArchiveDetail } from '../api/archivedetail';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Wrapper = styled.div`
 `
@@ -210,7 +210,7 @@ interface ArchiveDetail {
 const ArchiveDetailPage = () => {
     const { id } = useParams();
     const [archiveData, setArchiveData] = useState<ArchiveDetail | null>(null);
-    
+    const navigate = useNavigate();
     const [images, setImages] = useState<string[]>([]);
     
     const fetchArchiveDetail = async () => {
@@ -228,6 +228,7 @@ const ArchiveDetailPage = () => {
         fetchArchiveDetail();
     }, [id]);
 
+    
     if (!archiveData) return <div>로딩 중...</div>;
 
     return (
@@ -236,8 +237,18 @@ const ArchiveDetailPage = () => {
             <TitleSection>
                 <IconContainer>
                     <FaRegBookmark size={30} style={{color: "#E32929"}}/>
-                    <PiSirenLight size={30} style={{color: "#E32929"}}/>
-                    <LuPen size={30} style={{color: "#E32929"}}/>
+                    <PiSirenLight
+                      size={30}
+                      title="신고"
+                      style={{ color: "#E32929", cursor: "pointer" }}
+                      onClick={() =>
+                      navigate(`/report`, {
+                        state: {
+                          targetType: 'archive',
+                          targetId: id
+                      }})}
+                    />
+                    <LuPen size={30} title ={"수정"} style={{color: "#E32929", cursor: "pointer"}}  onClick={()=> navigate(`/archive/edit/${id}`)}/>
                 </IconContainer>
                 <Title>
                     {archiveData.title}

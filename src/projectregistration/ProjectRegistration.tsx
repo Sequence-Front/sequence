@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { postProject, editProject } from "../api/project";
 import { getProjectDetail } from "../api/projectdetail";
 import Header from "../asset/component/Header";
+import { memberSearch } from "../api/member";
 
 const Container = styled.div`
   display: flex;
@@ -561,7 +562,7 @@ const ProjectRegistration = () => {
         setPostTitle(data.title);
         setProjectData({
           title: data.projectName,
-          period: data.period, 
+          period: data.startDate + ' ~ ' +data.endDate, 
           field: data.category,
           description: data.introduce,
         });
@@ -578,14 +579,9 @@ const ProjectRegistration = () => {
         setSelectedSkills(data.skills);
         setSelectedMeetings([data.meetingOption]);
         setSelectedSteps([reverseStepType(data.step)]);
-        setSelectedMembers(
-          data.members.map((m: { writer: string; profileImgUrl: string | null }, i: number) => ({
-            id: i,
-            name: m.writer,
-            role: "Front-End",
-            profile: m.profileImgUrl || "null",
-          }))
-        );
+        setSelectedMembers([]); 
+        autoRegisterMembers(data.members.map((m: any) => m.nickname)); 
+  
       } catch (err) {
         console.error("기존 프로젝트 불러오기 실패:", err);
       }
@@ -601,6 +597,39 @@ const ProjectRegistration = () => {
     const formattedDate = `${today.getFullYear() % 100}.${String(today.getMonth() + 1).padStart(2, "0")}.${String(today.getDate()).padStart(2, "0")}`;
     setDate(formattedDate);
   }, []);
+
+  const autoRegisterMembers = async (nicknames: string[]) => {
+    const promises = nicknames.map(async (nickname, i) => {
+      try {
+        const res = await memberSearch(nickname);
+        const matched = res.message?.data?.find((name: string) => name === nickname);
+  
+        if (matched) {
+          return {
+            id: i,
+            name: matched,
+            role: "", 
+            profile: "",     
+          };
+        }
+  
+        return null;
+      } catch (err) {
+        console.error(`멤버 ${nickname} 자동 등록 실패`, err);
+        return null;
+      }
+    });
+  
+    const resolved = await Promise.all(promises);
+    const filtered = resolved.filter((item) => item !== null) as {
+      id: number;
+      name: string;
+      role: string;
+      profile: string;
+    }[];
+  
+    setSelectedMembers(filtered);
+  };
 
   return (
   <>
@@ -637,7 +666,7 @@ const ProjectRegistration = () => {
         <Title>기간</Title>
         <InputContainer>
           <Input
-            placeholder="년도-월 ~ 년도-월"
+            placeholder="0000-00 ~ 0000-00"
             value={projectData.period}
             onChange={handlePeriodChange}
           />
@@ -794,7 +823,10 @@ const ProjectRegistration = () => {
         <Info>함께한 멤버들은 누구인가요?</Info>
       </InfoContainer>
       <div style= {{display: 'flex', flex:'1'}}>
-      <ProjectMember onMemberSelect={setSelectedMembers} />
+      <ProjectMember
+  onMemberSelect={setSelectedMembers}
+  defaultMembers={selectedMembers}
+/>
       </div>
       </ContentContainer>
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}

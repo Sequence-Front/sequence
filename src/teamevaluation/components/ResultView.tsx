@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import LogoS from '../../asset/image/LogoS.png';
+import { FaCheck } from 'react-icons/fa'; // 체크 아이콘용 라이브러리
 
 const ResultContainer = styled.div`
   display: flex;
@@ -54,11 +55,19 @@ const MemberRole = styled.span`
   border: 1px solid #ffffff;
 `;
 
-const MemberImage = styled.img`
+const StatusCircle = styled.div<{ status: string }>`
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: #2C2C2C;
+  background-color: ${({ status }) => (status === '평가완료' ? '#2C2C2C' : '#FFFFFF')};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const CheckIcon = styled(FaCheck)`
+  color: white;
+  font-size: 24px;
 `;
 
 interface ResultViewProps {
@@ -66,11 +75,12 @@ interface ResultViewProps {
     id: number;
     name: string;
     role: string;
-    image: string;
+    status: string;
   }>;
 }
 
 const ResultView: React.FC<ResultViewProps> = ({ members }) => {
+  console.log("members", members);
   return (
     <ResultContainer>
       <Logo src={LogoS} alt="Logo" />
@@ -81,7 +91,9 @@ const ResultView: React.FC<ResultViewProps> = ({ members }) => {
       <MemberList>
         {members.map(member => (
           <MemberItem key={member.id}>
-            <MemberImage src={member.image} alt={member.name} />
+            <StatusCircle status={member.status}>
+              {member.status === '평가완료' && <CheckIcon style={{color: "#E32929"}} />}
+            </StatusCircle>
             <MemberName>{member.name}</MemberName>
             <MemberRole>{member.role}</MemberRole>
           </MemberItem>
@@ -91,4 +103,4 @@ const ResultView: React.FC<ResultViewProps> = ({ members }) => {
   );
 };
 
-export default ResultView; 
+export default ResultView;

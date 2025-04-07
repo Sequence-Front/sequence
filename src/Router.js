@@ -20,6 +20,8 @@ import ProjectDetailPage from './projectdetail/ProjectDetailPage';
 import CommentDetail from './projectdetail/components/CommentDetail';
 import TeamEvaluationPage from './teamevaluation/TeamEvaluationPage';
 import NoticeItem from './asset/component/NoticeItem';
+import ResultView from './teamevaluation/components/ResultView';
+import KoreanForm from './report/KoreanForm';
 
 const AppRouter = () => {
   return (
@@ -39,9 +41,12 @@ const AppRouter = () => {
         <Route path="/archive/edit/:archiveId" element={<ArchiveRegistration />} />
         <Route path="/project/registration" element={<ProjectRegistration />} />
         <Route path="/project/edit/:projectId" element={<ProjectRegistration />} />
+        <Route path="/:archiveId/a" element={<ResultView />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/header" element={<Header />} />
+        <Route path="/report" element={<KoreanForm />} />
+        
         <Route path="/project" element={<ProjectPage />} />
         <Route path="/withdraw" element={<WithdrawPage />} />
         <Route path="/projectdetail/:id" element={<ProjectDetailPage />} />
