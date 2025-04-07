@@ -7,8 +7,9 @@ import { PiSirenLight } from "react-icons/pi";
 import { MdDelete } from "react-icons/md";
 import ProfileSection from './components/ProfileSection';
 import CommentSection from './components/CommentSection';
-import { getArchiveDetail, addBookmark, deleteArchive } from '../api/archivedetail';
-import { useParams, useNavigate } from 'react-router-dom';
+import { getArchiveDetail } from '../api/archivedetail';
+import { useNavigate, useParams } from 'react-router-dom';
+
 
 const Wrapper = styled.div`
 `
@@ -229,6 +230,7 @@ const ArchiveDetailPage = () => {
         fetchArchiveDetail();
     }, [id]);
 
+    
     if (!archiveData) return <div>로딩 중...</div>;
 
     const writeClick = ()=>{
@@ -264,7 +266,17 @@ const ArchiveDetailPage = () => {
                     (<FaBookmark onClick={handleBookmark} size={30} style={{color: "#E32929", cursor:"pointer"}}/>)
                   }
 
-                  <PiSirenLight size={30} style={{color: "#E32929"}}/>
+                    <PiSirenLight
+                      size={30}
+                      title="신고"
+                      style={{ color: "#E32929", cursor: "pointer" }}
+                      onClick={() =>
+                      navigate(`/report`, {
+                        state: {
+                          targetType: 'archive',
+                          targetId: id
+                      }})}
+                    />
                   { myNickname === archiveData?.writerNickname && 
                     (
                       <>

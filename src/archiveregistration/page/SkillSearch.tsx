@@ -129,9 +129,11 @@ const RemoveButton = styled(HiXMark)`
 const SkillSearch = ({
   results,
   onSkillSelect,
+  defaultSkills = [],
 }: {
   results: string[];
   onSkillSelect: (skills: string[]) => void;
+  defaultSkills?: string[];
 }) => {
   const [query, setQuery] = useState("");
   const [isResultsVisible, setIsResultsVisible] = useState(false);
@@ -174,6 +176,13 @@ const SkillSearch = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    if (defaultSkills.length > 0) {
+      setSkillsList(defaultSkills);
+      onSkillSelect(defaultSkills);
+    }
+  }, [defaultSkills]);
 
   return (
     <Container ref={containerRef}>

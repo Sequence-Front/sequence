@@ -223,7 +223,7 @@ const Activity = ({ onDataChange }: ActivityProps) => {
     endRefs.current.push([React.createRef(), React.createRef(), React.createRef()]);
   };
 
-  const ActivityOptions = ["대외활동", "동아리", "봉사", "교육", "기타"];
+  const ActivityOptions = ["유형 선택", "대외활동", "동아리", "봉사", "교육", "기타"];
 
 
   //날짜 수정

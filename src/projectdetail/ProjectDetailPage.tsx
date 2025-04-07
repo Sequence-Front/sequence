@@ -167,7 +167,17 @@ const ProjectDetailPage = () => {
             <FaBookmark onClick={deleteBookmark} size={30} style={{color: "#E32929", cursor:"pointer"}}/>
           }
 
-          <PiSirenLight size={30} style={{color: "#E32929"}}/>
+          <PiSirenLight
+              size={30}
+              title="신고"
+              style={{ color: "#E32929", cursor: "pointer" }}
+              onClick={() =>
+              navigate(`/report`, {
+              state: {
+              targetType: 'project',
+              targetId: id
+              }})}
+            />
           { myNickname === projectData?.writer && 
             (
               <>

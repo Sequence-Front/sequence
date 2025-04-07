@@ -6,7 +6,8 @@ import BackButton from '../common/components/BackButton';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 import MemberCard from './components/MemberCard';
 import ResultView from './components/ResultView';
-import {getEvaluation, postEvaluation} from '../api/evaluation';
+import {getEvaluation, postEvaluation, getEvaluationStatus} from '../api/evaluation';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -76,7 +77,8 @@ const TeamEvaluationPage = () => {
 
   const { archiveId } = useParams();
   const [evaluatedMembers, setEvaluatedMembers] = useState<any[]>([]);
-
+  const [status, setStatus] = useState<any[]>([]);
+  const navigate = useNavigate();
   // 임시 멤버 데이터
   const members = [
     { id: 1, name: '홍길동', role: 'PM', image: '/profile1.jpg' },
@@ -112,6 +114,78 @@ const TeamEvaluationPage = () => {
     };
     fetchEvaluations();
   }, [archiveId]);
+
+  useEffect(() => {
+    const fetchStatus = async () => {
+      try {
+        if (!archiveId) return;
+        const response = await getEvaluationStatus(archiveId);
+        console.log("받은 평가 상태 데이터:", response.data);
+  
+        const memberStatusObj = response.data?.data?.memberStatus;
+  
+        if (memberStatusObj && Object.keys(memberStatusObj).length > 0) {
+          const parsed = Object.values(memberStatusObj).map((member: any, idx) => ({
+            id: idx + 1,
+            name: member.nickname,
+            role: member.roles[0],
+            status: member.status,
+          }));
+  
+          setStatus(parsed);
+        }
+      } catch (error) {
+        console.error("평가 상태 데이터를 불러오는 중 오류 발생:", error);
+        setError("평가 상태 데이터를 불러오는 중 오류가 발생했습니다.");
+      }
+    };
+  
+    fetchStatus();
+  }, [archiveId]);
+  
+  useEffect(() => {
+    const checkIfMyEvaluationCompleted = async () => {
+      try {
+        if (!archiveId) return;
+  
+        const response = await getEvaluationStatus(archiveId);
+        const memberStatusObj = response.data?.data?.memberStatus;
+        const myNickname = localStorage.getItem("nickname");
+  
+        const allNicknames = Object.values(memberStatusObj || {}).map(
+          (member: any) => member.nickname
+        );
+  
+        if (!allNicknames.includes(myNickname)) {
+          alert("접근 권한이 없습니다.");
+          navigate("/");
+          return;
+        }
+
+        const parsed = Object.values(memberStatusObj).map((member: any, idx) => ({
+          id: idx + 1,
+          name: member.nickname,
+          role: member.roles[0],
+          status: member.status,
+        }));
+  
+        setStatus(parsed);
+  
+        const me = parsed.find(member => member.name === myNickname);
+        if (me?.status === "평가완료") {
+          setShowResult(true);
+        }
+  
+      } catch (error) {
+        console.error("내 평가 상태 확인 실패:", error);
+      }
+    };
+  
+    checkIfMyEvaluationCompleted();
+  }, [archiveId]);
+  
+  
+  
 
 const handleEvaluationChange = (memberId: number, field: string, value: any) => {
   setEvaluations(prev => ({
@@ -149,8 +223,9 @@ const handleEvaluationChange = (memberId: number, field: string, value: any) => 
     return true;
   };
 
-  const handleRegisterClick = async() => {
+  const handleRegisterClick = async () => {
     setError('');
+  
     const formattedData = {
       evaluations: evaluatedMembers.map((member) => ({
         evaluatedNickname: member.name,
@@ -158,29 +233,47 @@ const handleEvaluationChange = (memberId: number, field: string, value: any) => 
         keyword: evaluations[member.id].keywords,
       })),
     };
-
+  
     if (validateEvaluations()) {
       try {
-
         console.log("보낼 평가 데이터:", formattedData);
-        const response = await postEvaluation(archiveId, formattedData);
+        await postEvaluation(archiveId, formattedData);
   
-        console.log("서버 응답:", response.data);
-
-        setShowResult(true);
+        setTimeout(async () => {
+          try {
+            const response = await getEvaluationStatus(archiveId);
+            const memberStatusObj = response.data?.data?.memberStatus;
+  
+            if (memberStatusObj && Object.keys(memberStatusObj).length > 0) {
+              const parsed = Object.values(memberStatusObj).map((member: any, idx) => ({
+                id: idx + 1,
+                name: member.nickname,
+                role: member.roles[0],
+                status: member.status,
+              }));
+  
+              setStatus(parsed);
+              setShowResult(true); 
+            }
+          } catch (error) {
+            console.error("최신 평가 상태 다시 불러오기 실패:", error);
+            setError("평가 상태를 갱신하는 중 오류가 발생했습니다.");
+          }
+        }, 1000); 
+  
       } catch (error) {
         console.error("평가 등록 실패:", error);
         setError("평가 등록 중 오류가 발생했습니다.");
       }
     }
   };
-
+  
   if (showResult) {
     return (
       <>
         <Header headerName="팀 평가" />
         <Container>
-          <ResultView members={members} />
+          <ResultView members={status} />
         </Container>
       </>
     );

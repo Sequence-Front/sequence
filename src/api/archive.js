@@ -89,4 +89,61 @@ const postArchive = async(archiveData, images, thumbnail) => {
   }
 }
 
-export { getArchives, searchArchives, postArchive};
+const editArchive = async(archiveData, images, thumbnail, archiveId) => {
+  try{
+    const accessToken = localStorage.getItem('accessToken');
+    
+    const formData = new FormData();
+    formData.append("archiveData", new Blob([JSON.stringify(archiveData)], {type: "application/json"}));
+
+    if (Array.isArray(images) && images.every(img => img instanceof File)) {
+      images.forEach((file) => {
+        formData.append("images", file);
+      });
+      console.log("프로젝트 이미지들");
+    } else {
+      console.log("프로젝트 이미지 형식이 잘못되었습니다.");
+    }
+
+    if(thumbnail instanceof File){
+      formData.append("thumbnail", thumbnail);
+      console.log("프로젝트이미지2는 파일형식")
+    }else{
+      console.log("프로젝트이미지2는 파일형식아님");
+    }
+
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+  }
+    const response = await axiosInstance.put(`/api/archive/${archiveId}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        access: accessToken ? accessToken : ""
+
+    },
+    });
+
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+  }
+
+  console.log(response.status);
+  if (response.status === 200) {
+      return response;
+  }
+    if(response.status === 200){
+      return response;
+    }
+    throw response.status.error;
+  } catch(error){
+    if(error.response && error.response.status === 100){
+      console.log("카테고리 입력");
+    }
+    else if(error.response && error.response.status === 40000){
+      console.log("값을 잘못입력");
+    }
+    throw error;
+  }
+}
+
+export { getArchives, searchArchives, postArchive, editArchive};

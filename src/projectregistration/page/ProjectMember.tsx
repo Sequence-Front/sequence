@@ -143,8 +143,7 @@ const DeleteButton = styled.button`
   }
 `
 
-const ProjectMember = ({ onMemberSelect }: { onMemberSelect: (members: { id: number; name: string; role: string; profile: string }[]) => void }) => {
-  const [userList, setUserList] = useState<
+const ProjectMember = ({  onMemberSelect,  defaultMembers = []}: {  onMemberSelect: (members: { id: number; name: string; role: string; profile: string }[]) => void;  defaultMembers?: { id: number; name: string; role: string; profile: string }[];}) => {  const [userList, setUserList] = useState<
     { id: number; name: string; role: string; profile: string }[]
   >([]);
   const [results, setResults] = useState<{ name: string; role: string; profile: string }[]>([]);
@@ -184,6 +183,13 @@ const ProjectMember = ({ onMemberSelect }: { onMemberSelect: (members: { id: num
     fetchMembers();
   }, [query]);
 
+  useEffect(() => {
+    if (defaultMembers.length > 0) {
+      setUserList(defaultMembers);
+      onMemberSelect(defaultMembers);
+    }
+  }, [defaultMembers]);
+  
   const handleDeleteUser = (id: number) => {
     const updatedList = userList.filter((user) => user.id !== id);
     setUserList(updatedList);

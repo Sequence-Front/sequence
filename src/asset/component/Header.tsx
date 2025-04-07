@@ -27,8 +27,8 @@ const NoticeContainer = styled.div<{ isOpen: boolean }>`
   right: 0;
   background-color: #212121;
   width: clamp(25rem, 33vw, 40rem);
-  min-height: 100px;
-  max-height: 1000px;
+  max-height: 40rem; 
+  overflow-y: auto; 
   color: white;
   font-family: 'SUIT', sans-serif;
   border-radius: 8px;
@@ -41,7 +41,8 @@ const NoticeContainer = styled.div<{ isOpen: boolean }>`
   transform: translateY(${(props) => (props.isOpen ? '0' : '-10px')});
   transition: opacity 0.3s ease, transform 0.3s ease;
   pointer-events: ${(props) => (props.isOpen ? 'auto' : 'none')};
-`
+`;
+
 
 const TitleContainer = styled.div`
   display: flex;
@@ -140,7 +141,7 @@ function Header({ headerName, isMain = false }: { headerName: string; isMain?: b
   const [profile, ] = useState(localStorage.getItem('profile') || '/default-profile.png');
   const [isLogin, setIsLoggedIn] = useState(!!localStorage.getItem('accessToken'));
   const [isNoticeOpen, setIsNoticeOpen] = useState(false);
-
+  const [loginUser, ] = useState(localStorage.getItem("nickname"));
   const getCurrentHeader = () => {
     if (location.pathname.startsWith('/project')) return 'Project';
     if (location.pathname.startsWith('/Announcement')) return 'Announcement';
@@ -298,6 +299,7 @@ function Header({ headerName, isMain = false }: { headerName: string; isMain?: b
                   <NoticeItem
                     key={notice.id}
                     id={notice.id}
+                    date={notice.date}
                     message={notice.message}
                     type={notice.type}
                     onAccept={handleAccept}

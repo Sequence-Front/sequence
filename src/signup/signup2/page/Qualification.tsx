@@ -325,7 +325,7 @@ const Qualification = ({onDataChange}: QualificationProps) => {
                 </DropdownButton>
                 {isDropdownOpen[index] && (
                   <DropdownList>
-                    {["수상", "자격증"].map((option) => (
+                    {["유형 선택", "수상", "자격증"].map((option) => (
                       <li key={option} onClick={() => handleDropdownSelect(index, option)}>
                         {option}
                       </li>

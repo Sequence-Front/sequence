@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { AiOutlinePlus } from "react-icons/ai";
 import { FiTrash } from "react-icons/fi";
@@ -34,23 +34,13 @@ const ProjectImgIntro = styled.div`
   font-size: clamp(16px, 1.5vw, 24px);
 `;
 
-const PhotoPreview = styled.label<{ imageFile?: File }>`
+const PhotoPreview = styled.label`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  background-color: none;
   cursor: pointer;
   overflow: hidden;
-  ${(props) =>
-    props.imageFile
-      ? `
-        height: auto;
-        aspect-ratio: auto;
-      `
-      : `
-        height: clamp(180px, 17vw, 300px);
-      `}
 
   input {
     display: none;
@@ -110,33 +100,59 @@ const DefaultPhotoComponent = styled.div`
 `;
 
 interface ProjectImgProps {
-  onDataChange: (data: { imageFiles: File[] }) => void;
+  onDataChange: (data: { imageFiles: File[]; deletedDefaultUrls?: string[] }) => void;
+  defaultUrls?: string[];
 }
 
-const ProjectImg = ({ onDataChange }: ProjectImgProps) => {
+const ProjectImg = ({ onDataChange, defaultUrls = [] }: ProjectImgProps) => {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [defaultImageUrls, setDefaultImageUrls] = useState<string[]>(defaultUrls);
+  const [deletedDefaultUrls, setDeletedDefaultUrls] = useState<string[]>([]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const files = Array.from(e.target.files);
       const updatedImageFiles = [...imageFiles, ...files];
       setImageFiles(updatedImageFiles);
-      onDataChange({ imageFiles: updatedImageFiles });
+      onDataChange({ imageFiles: updatedImageFiles, deletedDefaultUrls });
     }
   };
 
   const handleRemoveImage = (index: number) => {
     const updatedFiles = imageFiles.filter((_, i) => i !== index);
     setImageFiles(updatedFiles);
-    onDataChange({ imageFiles: updatedFiles });
+    onDataChange({ imageFiles: updatedFiles, deletedDefaultUrls });
   };
+
+  const handleRemoveDefaultImage = (index: number) => {
+    const removedUrl = defaultImageUrls[index];
+    const updatedUrls = defaultImageUrls.filter((_, i) => i !== index);
+    const updatedDeleted = [...deletedDefaultUrls, removedUrl];
+
+    setDefaultImageUrls(updatedUrls);
+    setDeletedDefaultUrls(updatedDeleted);
+    onDataChange({ imageFiles, deletedDefaultUrls: updatedDeleted });
+  };
+
+  useEffect(() => {
+    setDefaultImageUrls(defaultUrls);
+  }, [defaultUrls]);
+  
 
   return (
     <Container>
       <ImageGrid>
+        {defaultImageUrls.map((url, index) => (
+          <ImageContainer key={`default-${index}`}>
+            <Image src={url} />
+            <RemoveButton onClick={() => handleRemoveDefaultImage(index)}>
+              <FiTrash />
+            </RemoveButton>
+          </ImageContainer>
+        ))}
         {imageFiles.map((file, index) => (
-          <ImageContainer key={index}>
-            <Image src={URL.createObjectURL(file)}/>
+          <ImageContainer key={`file-${index}`}>
+            <Image src={URL.createObjectURL(file)} />
             <RemoveButton onClick={() => handleRemoveImage(index)}>
               <FiTrash />
             </RemoveButton>
