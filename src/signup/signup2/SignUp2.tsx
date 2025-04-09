@@ -1,7 +1,6 @@
 //2024-11-28 02:20 정준용완성
 import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
-import Header from '../../asset/component/Header';
 import Profile from "./page/Profile";
 import Education from "./page/Education";
 import Activity from "./page/Activity";
@@ -573,7 +572,6 @@ const SignUp2: React.FC<{ userData: any; onNext: () => void }> = ({ userData, on
   const  navigate = useNavigate();
   return (
     <div style={{ display:"flex",flexDirection:"column", backgroundColor: "#151515", minWidth: "680px" }}>
-      <Header headerName="SignUp" />
       <TitleContainer>
         <Arrow>
           <AiOutlineArrowLeft  onClick = {()=>navigate('/signup1')}/>

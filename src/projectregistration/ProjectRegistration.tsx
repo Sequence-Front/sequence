@@ -633,7 +633,6 @@ const ProjectRegistration = () => {
 
   return (
   <>
-  <Header headerName="Project"/>
     <Container>
       <HeaderContainer>
         <ProjectTitle 

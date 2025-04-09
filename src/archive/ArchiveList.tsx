@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import Header from '../asset/component/Header';
 import Pagination from '../asset/component/Pagination';
 import { useNavigate } from 'react-router-dom';
 import ScrollToTopButton from '../asset/component/ScrollToTopButton';
@@ -119,9 +118,7 @@ const ArchiveList = () => {
     };
 
     return (
-        <>
-            <Header headerName="archive"/>
-            
+        <>            
             <Container>
                 <SearchBar>
                     <SearchInput 

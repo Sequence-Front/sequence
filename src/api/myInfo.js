@@ -3,6 +3,7 @@ import tokenAxios from "./tokenAxios";
 export const getMyInfo = async () => {
     const params = new URLSearchParams(window.location.search);
     const nickname = params.get('nickname');
+    const storedNickname = localStorage.getItem('nickname');
     
     try {
         const accessToken = localStorage.getItem('accessToken');
@@ -11,7 +12,8 @@ export const getMyInfo = async () => {
             throw new Error("로그인 다시");
         }
 
-        const endpoint = nickname != "undefined" ? `/api/mypage/${nickname}` : '/api/mypage';
+        const endpoint =
+        nickname && nickname !== "undefined" && nickname !== storedNickname ? `/api/mypage/${nickname}` : `/api/mypage`;
         
         const response = await tokenAxios.get(endpoint);
 

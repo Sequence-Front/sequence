@@ -1,14 +1,13 @@
 import React, {useState, useEffect} from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import Header from '../asset/component/Header';
 import { LuPen } from "react-icons/lu";
 import { FaRegBookmark, FaBookmark } from "react-icons/fa";
 import { PiSirenLight } from "react-icons/pi";
 import { MdDelete } from "react-icons/md";
 import ProfileSection from './components/ProfileSection';
 import CommentSection from './components/CommentSection';
-import { getArchiveDetail } from '../api/archivedetail';
-import { useNavigate, useParams } from 'react-router-dom';
+import { getArchiveDetail, deleteArchive, addBookmark } from '../api/archivedetail';
 
 
 const Wrapper = styled.div`
@@ -257,7 +256,6 @@ const ArchiveDetailPage = () => {
 
     return (
         <Wrapper>
-            <Header headerName = "" isMain = {false}/>
             <TitleSection>
                 <IconContainer>
                   { archiveData?.bookmarked === false ?

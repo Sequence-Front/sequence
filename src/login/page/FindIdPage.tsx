@@ -8,7 +8,6 @@
 // }
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import Header from '../../asset/component/Header';
 import { CommonButton } from '../components/CommonButton';
 import { CommonInput } from '../components/CommonInput';
 import * as S from '../style/CommonStyles';
@@ -147,7 +146,6 @@ const FindIdPage: React.FC = () => {
 
   return (
     <>
-      <Header headerName="ID" />
       <S.Container>
         <S.Title>아이디 찾기</S.Title>
         <S.FormContainer>

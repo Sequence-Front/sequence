@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaSearch } from 'react-icons/fa';
-import Header from '../../asset/component/Header';
 import { dummyAnnouncements } from '../data/dummyAnnouncements';
 import AnnouncementCard from '../components/AnnouncementCard';
 import Pagination from '../../asset/component/Pagination';
@@ -80,7 +79,6 @@ const AnnouncementList = () => {
 
   return (
     <>
-      <Header headerName="공지사항" />
       <Container>
         <SearchBar>
           <SearchInput 

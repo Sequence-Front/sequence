@@ -21,7 +21,6 @@ import {
   BlackBox
 } from './style/LoginStyle';
 
-import Header from '../asset/component/Header';
 import { login } from '../api/login';
 
 const LoginPage: React.FC = () => {
@@ -53,7 +52,6 @@ const LoginPage: React.FC = () => {
 
   return (
     <>
-    <Header headerName="Project" />
     <LoginContainer>
       <Logo src={LogoImage} alt="Login Logo" />
       <Title>Login</Title>

@@ -1,8 +1,8 @@
 // 2024-11-18 18:09 승균 작성
 // 2024-11-19 18:47 준용 작성
 import React, {useState, useEffect} from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import Header from '../asset/component/Header';
 import Profile from './component/ProfileHeader';
 import PersonalHistory from './page/PersonalHistory';
 import Portfolio from './page/Portfolio';
@@ -115,17 +115,24 @@ interface MyPageData {
 }
 
 const MyPage = () => {
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState<Tab>('PersonalHistory');
   const [profileData, setProfileData] = useState<MyPageData | null>(null);
   const nickname = localStorage.getItem('nickname');
 
+  const params = new URLSearchParams(location.search);
+  const queryNickname = params.get('nickname');
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const response = await getMyInfo();
       setProfileData(response);
+      setLoading(false);
     };
     fetchData();
-  }, []);
+  }, [queryNickname]);
 
   const isOwnProfile = nickname === profileData?.basicInfo.nickname;
 
@@ -148,7 +155,11 @@ const MyPage = () => {
 
   return (
     <>
-      <Header headerName="MyPage" />
+      {loading || !profileData ? (
+      <div style={{ color: 'white', paddingTop: '200px', textAlign: 'center' }}>
+        불러오는 중...
+      </div>
+    ) : (
       <Container>
         <Profile 
           name={profileData?.basicInfo.nickname} 
@@ -190,6 +201,7 @@ const MyPage = () => {
           {renderContent()}
         </ContentContainer>
       </Container>
+    )}
     </>
   );
 };

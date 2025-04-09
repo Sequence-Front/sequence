@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import Header from '../../asset/component/Header';
 
 const Container = styled.div`
   background-color: #151515;
@@ -60,7 +59,6 @@ const Text = styled.div`
 const AnnouncementDetail = () => {
     return (
         <>
-        <Header headerName = "" isMain = {false}/>
         <Container>
         <Title>
           프로젝트 디자이너 구합니다

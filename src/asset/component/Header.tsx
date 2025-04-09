@@ -5,7 +5,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import alert from '../image/alert.png'
 import NoticeItem from './NoticeItem';
 import { getNotice, acceptNotice, deleteNotice } from '../../api/notice';
-import { postLogout } from '../../api/logout';
 import { access } from 'fs';
 
 const Container = styled.div`
@@ -135,17 +134,18 @@ interface NoticeData {
 }
 
 
-function Header({ headerName, isMain = false }: { headerName: string; isMain?: boolean } ) {
+function Header({  isMain = false }: { isMain?: boolean } ) {
   const navigate = useNavigate();
   const location = useLocation();
   const [profile, ] = useState(localStorage.getItem('profile') || '/default-profile.png');
   const [isLogin, setIsLoggedIn] = useState(!!localStorage.getItem('accessToken'));
   const [isNoticeOpen, setIsNoticeOpen] = useState(false);
   const [loginUser, ] = useState(localStorage.getItem("nickname"));
+
   const getCurrentHeader = () => {
     if (location.pathname.startsWith('/project')) return 'Project';
-    if (location.pathname.startsWith('/Announcement')) return 'Announcement';
-    if (location.pathname.startsWith('/Archive')) return 'Archive';
+    if (location.pathname.startsWith('/announcement')) return 'Announcement';
+    if (location.pathname.startsWith('/archive')) return 'Archive';
     return '';
   };
   
@@ -153,15 +153,10 @@ function Header({ headerName, isMain = false }: { headerName: string; isMain?: b
   { id: number; message: string; type: "invite" | "archive"; date: string }[]
 >([]);
 
-  const Logout = async()=>{
-    try{
-      const response = await postLogout();
-      console.log("로그아웃 response", response);
-    } catch(error){
-      console.log("error: ", error);
-      console.log("로그아웃 엑세스토큰 " , localStorage.getItem("accessToken"));
-    }
-  };
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    setIsLoggedIn(!!token);
+  }, [location]);
 
   useEffect(() => {
     const fetchNotices = async () => {
@@ -252,8 +247,7 @@ function Header({ headerName, isMain = false }: { headerName: string; isMain?: b
           <Logo src={Sequence} />
         </TitleContainer>
       ) : (
-        //<TitleContainer onClick={() => navigate('/')}>
-        <TitleContainer onClick={Logout}>
+        <TitleContainer onClick={() => navigate('/')}>
           <Logo src={Sequence} />
         </TitleContainer>
       )}
@@ -268,18 +262,18 @@ function Header({ headerName, isMain = false }: { headerName: string; isMain?: b
         </ContentWrap>
         <ContentWrap>
           <Content
-            onClick={() => navigate('/Announcement')}
-            isActive={currentHeader === 'Announcement'}
+            onClick={() => navigate('/archive')}
+            isActive={currentHeader === 'Archive'}
           >
-            Announcement
+            Archive
           </Content>
         </ContentWrap>
         <ContentWrap>
           <Content
-            onClick={() => navigate('/Archive')}
-            isActive={currentHeader === 'Archive'}
+            onClick={() => navigate('/announcement')}
+            isActive={currentHeader === 'Announcement'}
           >
-            Archive
+            Announcement
           </Content>
         </ContentWrap>
       </ContentContainer>
@@ -288,7 +282,7 @@ function Header({ headerName, isMain = false }: { headerName: string; isMain?: b
           <UserContainer>
           <AlertImg src={alert} onClick={NoticeClick}/>
           <div style = {{position:'relative'}}>
-          <UserProfile onClick={() => {navigate(`/mypage?nickname=undefined`); window.location.reload();}} src= {profile} />
+          <UserProfile onClick={() => {navigate(`/mypage?nickname=${loginUser}`); window.location.reload();}} src= {profile} />
           <NoticeContainer isOpen={isNoticeOpen}>
             {sortedNotices.length === 0 ? (
             <div style={{ color: '#999', fontSize: '0.9rem', padding: '0.5rem' }}>

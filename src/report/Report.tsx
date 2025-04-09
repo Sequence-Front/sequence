@@ -1,7 +1,6 @@
 import React, { useState, ChangeEvent, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import Header from '../asset/component/Header';
 import { Result } from '../login/style/CommonStyles';
 import { getReport, postReport } from '../api/report';
 
@@ -191,7 +190,7 @@ const SubmitButton = styled.button`
   }
 `;
 
-const KoreanForm = () => {
+const Report = () => {
   const location = useLocation();
   const {targetType, targetId} = location.state || {};
 
@@ -244,15 +243,23 @@ const KoreanForm = () => {
     4: 'FALSE_INFORMATION',
     5: 'OTHER',
   };
-
+  const degreeMap: Record<string, string> = {
+    ENROLLMENT: '재학',
+    LEAVE_OF_ABSENCE: '휴학',
+    GRADUATION: '졸업',
+    MASTER: '석사',
+    DOCTORATE: '박사',
+    EXPELLED: '제적',
+    DROPOUT: '중퇴',
+  };
+  
   const handleReportClick = async() =>{
     const reportData = {
       nickname: userData.nickname, 
-      reporter: loginUser,
-      reportType: reportTypeMap[formType],
+      reportType: String(reportTypeMap[formType]),
       reportContent: content,
       reportTarget: targetType.toUpperCase(),
-      targetId: targetId
+      targetId: Number(targetId)
     };
 
     try{
@@ -262,14 +269,14 @@ const KoreanForm = () => {
       console.log("신고", response);
     } catch (error){
       console.error("신고 실패");
-      alert("신고 중 오류가 발생하였습니다");
+      alert("이미 신고한 대상입니다.");
+      navigate(-1);
       console.log("신고 데이터  :", reportData);
     }
   }
 
   return (
     <Container>
-        <Header headerName="Project"/>
       <FormTitle>신고하기</FormTitle>
     <ContentContainer>
       {userData && (
@@ -284,7 +291,7 @@ const KoreanForm = () => {
             </TopInfo>
             <ProfileCompany>
               {userData.major} {userData.grade}{' '}
-              {userData.degree === 'LEAVE_OF_ABSENCE' ? '휴학' : userData.degree}
+              {degreeMap[userData.degree] || userData.degree}
             </ProfileCompany>
           </ProfileInfo>
         </ProfileSection>
@@ -338,4 +345,4 @@ const KoreanForm = () => {
   );
 };
 
-export default KoreanForm;
+export default Report;
