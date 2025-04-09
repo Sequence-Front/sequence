@@ -4,22 +4,8 @@ import { MyActivityPost } from './MyActivityPost';
 
 const Section = styled.div`
   margin-bottom: clamp(2rem, 5vw, 3rem); 
-`;
-
-const Header = styled.div`
-  display: flex;
-  margin-bottom: clamp(1.5rem, 4vw, 2rem); 
-  font-size: clamp(1rem, 2.5vw, 2rem); 
-  font-weight: bold;
-  align-items: center;
-  gap: clamp(1rem, 3vw, 1.5rem); 
-  
-  &:after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background-color: #757575;
-  }
+  margin: 0 auto;
+  width: 95%;
 `;
 
 const PostListContainer = styled.div`
@@ -39,7 +25,6 @@ interface ProjectSectionProps {
 const ProjectSection: React.FC<ProjectSectionProps> = ({ posts }) => {
   return (
     <Section>
-      <Header>프로젝트</Header>
       <PostListContainer>
         {posts.map((post) => (
           <MyActivityPost
