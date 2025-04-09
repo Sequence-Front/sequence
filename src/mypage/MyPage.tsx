@@ -142,10 +142,16 @@ const MyPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const response = await getMyInfo();
-      setProfileData(response);
-      setLoading(false);
+      try {
+        const response = await getMyInfo();
+        setProfileData(response);
+      } catch (error) {
+        console.error('프로필 데이터 로딩 실패:', error);
+      } finally {
+        setLoading(false);
+      }
     };
+    
     fetchData();
   }, [queryNickname]);
 
