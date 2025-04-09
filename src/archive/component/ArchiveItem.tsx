@@ -122,7 +122,7 @@ const ArchiveItem = ({ id, item }: ArchiveItemProps) => {
                     <StatusContainer>
                         <StatItem>
                             <StatText>댓글</StatText>
-                            {/* <StatText>{item.comments}</StatText> */}
+                            <StatText>{item.commentCount}</StatText>
                         </StatItem>
                         <StatItem>
                             <StatText>북마크</StatText>

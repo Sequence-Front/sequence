@@ -53,7 +53,7 @@ const PersonalHistory = ({ careerHistory }: PersonalHistoryProps) => {
   const nickname = localStorage.getItem('nickname');
   const currentProfileNickname = new URLSearchParams(window.location.search).get('nickname');
   
-  const isOwnProfile = !currentProfileNickname || nickname === currentProfileNickname;
+  const isOwnProfile = !currentProfileNickname || currentProfileNickname === nickname;
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

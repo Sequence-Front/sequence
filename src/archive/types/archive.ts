@@ -10,6 +10,7 @@ export interface Archive {
     link: string;
     skills: string[];
     view: number;
+    commentCount: number;
     bookmarkCount: number;
     createdDateTime: string;
     modifiedDateTime: string;

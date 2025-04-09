@@ -264,20 +264,21 @@ const ArchiveDetailPage = () => {
                     (<FaBookmark onClick={handleBookmark} size={30} style={{color: "#E32929", cursor:"pointer"}}/>)
                   }
 
-                    <PiSirenLight
-                      size={30}
-                      title="신고"
-                      style={{ color: "#E32929", cursor: "pointer" }}
-                      onClick={() =>
-                      navigate(`/report`, {
-                        state: {
-                          targetType: 'archive',
-                          targetId: id
-                      }})}
-                    />
+                    
                   { myNickname === archiveData?.writerNickname && 
                     (
                       <>
+                        <PiSirenLight
+                          size={30}
+                          title="신고"
+                          style={{ color: "#E32929", cursor: "pointer" }}
+                          onClick={() =>
+                          navigate(`/report`, {
+                            state: {
+                              targetType: 'archive',
+                              targetId: id
+                          }})}
+                        />
                         <LuPen onClick={writeClick} size={30} style={{color: "#E32929", cursor:"pointer"} } title="수정하기"/>
                         <MdDelete onClick={deleteClick} size={30} style={{color: "#E32929", cursor:"pointer"}}/>
                       </>
