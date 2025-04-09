@@ -30,7 +30,7 @@ export const getReport = async (targetType, targetId) => {
 export const postReport = async (data) => {
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await tokenAxios.post(`/api/report`, data, {
+      const response = await tokenAxios.post(`/api/report/submit`, data, {
         headers: {
           access: accessToken,
         },

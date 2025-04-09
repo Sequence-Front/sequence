@@ -15,7 +15,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import Header from '../../asset/component/Header';
 import { CommonButton } from '../../login/components/CommonButton';
 import { GenderSelect } from '../../common/components/GenderSelect';
 import * as S from './style/SignUpPageStyle';
@@ -289,7 +288,6 @@ const SignUp1:React.FC<{ onNext: (data: any) => void }> = ({ onNext }) => {
 
   return (
     <>
-      <Header headerName="SignUp" />
       <S.Container>
         <S.Title>회원가입</S.Title>
         <PageNumber>1/2</PageNumber>

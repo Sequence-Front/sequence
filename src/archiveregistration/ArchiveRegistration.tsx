@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import { formatPeriod, validatePeriodInput } from "./utils/func";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import Header from '../asset/component/Header';
 import ProjectMember from "./page/ProjectMember";
 import SkillSearch from "./page/SkillSearch";
 import Thumbnail from "./page/Thumbnail";
@@ -498,7 +497,6 @@ const ArchiveRegistration = () => {
 
   return (
     <>
-      <Header headerName="archive"/> 
     <Container>
       <HeaderTitleContainer>
         <Arrow>

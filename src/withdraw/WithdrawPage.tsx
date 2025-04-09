@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import Header from '../asset/component/Header';
 import { CommonButton } from '../login/components/CommonButton';
 import * as S from '../signup/signup1/style/SignUpPageStyle';
 import { SignUpInput } from '../signup/signup1/component/SignUpInput';
@@ -108,7 +107,6 @@ const WithdrawPage: React.FC = () => {
 
   return (
     <>
-      <Header headerName="SignUp" />
       <S.Container>
       <Title> <div style={{display: 'flex', alignItems: 'center', cursor: 'pointer', color: '#E32929'}}> {showResult ? <></> : <BackButton /> }</div> <div style={{margin: '0 auto'}}>회원탈퇴</div> </Title>
         <S.FormContainer>

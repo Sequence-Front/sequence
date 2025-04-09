@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { FaSearch } from 'react-icons/fa';
 import { AiOutlinePlus } from "react-icons/ai";
-import Header from '../asset/component/Header';
 import Masonry from '@mui/lab/Masonry';
 import Box from '@mui/material/Box';
 import ProjectCard from './components/ProjectCard';
@@ -315,7 +314,6 @@ const ProjectPage: React.FC = () => {
 
   return (
     <>
-    <Header headerName="Project"/>
     <Container>
       <SearchBar>
         <SearchInput 

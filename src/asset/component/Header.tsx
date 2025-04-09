@@ -134,17 +134,18 @@ interface NoticeData {
 }
 
 
-function Header({ headerName, isMain = false }: { headerName: string; isMain?: boolean } ) {
+function Header({  isMain = false }: { isMain?: boolean } ) {
   const navigate = useNavigate();
   const location = useLocation();
   const [profile, ] = useState(localStorage.getItem('profile') || '/default-profile.png');
   const [isLogin, setIsLoggedIn] = useState(!!localStorage.getItem('accessToken'));
   const [isNoticeOpen, setIsNoticeOpen] = useState(false);
   const [loginUser, ] = useState(localStorage.getItem("nickname"));
+
   const getCurrentHeader = () => {
     if (location.pathname.startsWith('/project')) return 'Project';
-    if (location.pathname.startsWith('/Announcement')) return 'Announcement';
-    if (location.pathname.startsWith('/Archive')) return 'Archive';
+    if (location.pathname.startsWith('/announcement')) return 'Announcement';
+    if (location.pathname.startsWith('/archive')) return 'Archive';
     return '';
   };
   
@@ -152,6 +153,10 @@ function Header({ headerName, isMain = false }: { headerName: string; isMain?: b
   { id: number; message: string; type: "invite" | "archive"; date: string }[]
 >([]);
 
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    setIsLoggedIn(!!token);
+  }, [location]);
 
   useEffect(() => {
     const fetchNotices = async () => {
@@ -257,18 +262,18 @@ function Header({ headerName, isMain = false }: { headerName: string; isMain?: b
         </ContentWrap>
         <ContentWrap>
           <Content
-            onClick={() => navigate('/Announcement')}
-            isActive={currentHeader === 'Announcement'}
+            onClick={() => navigate('/archive')}
+            isActive={currentHeader === 'Archive'}
           >
-            Announcement
+            Archive
           </Content>
         </ContentWrap>
         <ContentWrap>
           <Content
-            onClick={() => navigate('/Archive')}
-            isActive={currentHeader === 'Archive'}
+            onClick={() => navigate('/announcement')}
+            isActive={currentHeader === 'Announcement'}
           >
-            Archive
+            Announcement
           </Content>
         </ContentWrap>
       </ContentContainer>

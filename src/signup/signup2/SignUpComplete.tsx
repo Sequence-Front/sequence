@@ -2,7 +2,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import SequnceImg from '../../asset/image/Sequence.svg'
-import Header from '../../asset/component/Header';
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
 
@@ -68,7 +67,6 @@ const SignUpComplete = () => {
   const  navigate = useNavigate();
     return (
       <div style={{backgroundColor:"#151515", height:"100vh"}}>
-        <Header headerName="SignUp" />
         <Container>
           <ContentContainer>
             <SequenceContainer>
