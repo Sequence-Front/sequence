@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import Header from '../asset/component/Header';
 import BackButton from '../common/components/BackButton';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 import MemberCard from './components/MemberCard';
@@ -271,7 +270,6 @@ const handleEvaluationChange = (memberId: number, field: string, value: any) => 
   if (showResult) {
     return (
       <>
-        <Header headerName="팀 평가" />
         <Container>
           <ResultView members={status} />
         </Container>
@@ -281,7 +279,6 @@ const handleEvaluationChange = (memberId: number, field: string, value: any) => 
 
   return (
     <>
-      <Header headerName="팀 평가" />
       <Container>
         <Title>
           <BackButton />

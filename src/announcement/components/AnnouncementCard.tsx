@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Announcement } from '../data/dummyAnnouncements';
 
@@ -94,6 +95,7 @@ const HighlightedText = styled.span`
 `;
 
 const AnnouncementCard: React.FC<AnnouncementCardProps> = ({ announcement, searchTerm }) => {
+  const navigate = useNavigate();
   const highlightText = (text: string) => {
     if (!searchTerm) return text;
     
@@ -105,7 +107,7 @@ const AnnouncementCard: React.FC<AnnouncementCardProps> = ({ announcement, searc
   };
 
   return (
-    <Card>
+    <Card onClick={()=>navigate(`/announcement/1`)}>
       <TypeTagsContainer>
         {announcement.type.map((t, index) => (
           <TypeTag key={index}>{t}</TypeTag>

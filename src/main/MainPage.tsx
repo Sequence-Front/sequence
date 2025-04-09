@@ -6,7 +6,6 @@ import Partner from './page/Partner';
 import Experience from './page/Experience';
 import WhoMade from './page/WhoMade';
 import Benefit from './page/Benefit';
-import Header from '../asset/component/Header';
 
 
 const Container = styled.div`
@@ -28,7 +27,6 @@ function MainPage() {
 
   return (
     <Container>
-        <Header headerName='Project' isMain = {true}/>
         <Blank style={{height : '200px'}}/>
         <Sequence/>
         <Blank/>

@@ -1,4 +1,4 @@
-import axiosInstance from "./axiosInstance";
+import tokenAxios from "./axiosInstance";
 
 export const getReport = async (targetType, targetId) => {
     const accessToken = localStorage.getItem('accessToken');
@@ -7,7 +7,7 @@ export const getReport = async (targetType, targetId) => {
     }
   
     try {
-      const response = await axiosInstance.get(
+      const response = await tokenAxios.get(
         `/api/report/target/${targetType}/${targetId}`,
         {
           headers: {
@@ -30,7 +30,7 @@ export const getReport = async (targetType, targetId) => {
 export const postReport = async (data) => {
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await axiosInstance.post(`/api/report`, data, {
+      const response = await tokenAxios.post(`/api/report/submit`, data, {
         headers: {
           access: accessToken,
         },

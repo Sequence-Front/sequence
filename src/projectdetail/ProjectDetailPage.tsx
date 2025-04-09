@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import Header from '../asset/component/Header';
 import { LuPen } from "react-icons/lu";
 import { FaRegBookmark } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa";
@@ -157,7 +156,6 @@ const ProjectDetailPage = () => {
 
   return (
     <Wrapper>
-      <Header headerName="" isMain={false}/>
       <TitleSection>
         <IconContainer>
           { projectData?.isBookmark === false &&
