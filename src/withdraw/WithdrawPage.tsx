@@ -65,7 +65,6 @@ const WithdrawPage: React.FC = () => {
   const validateForm = () => {
     const newFieldErrors: Record<string, boolean> = {};
 
-    // 비밀번호 일치 검증
     if (formData.password !== formData.passwordConfirm) {
       newFieldErrors.password = true;
       newFieldErrors.passwordConfirm = true;
@@ -80,7 +79,6 @@ const WithdrawPage: React.FC = () => {
   };
 
   const handleNext = async() => {
-    //모든 곳에 값이 입력되어 있지 않으면 return
     if (!isFormValid) {
       return;
     }
@@ -90,6 +88,7 @@ const WithdrawPage: React.FC = () => {
     if(!validateForm()) return;
 
     const password = {
+      username : localStorage.getItem("nickname"),
       password : formData.password,
       confirm_password : formData.passwordConfirm
     };
@@ -97,11 +96,12 @@ const WithdrawPage: React.FC = () => {
     try{
       const response = await delWithdraw(password);
       setUserEmail(response.data);
-
       setShowResult(true);
+      localStorage.clear();
       return response;
     } catch (error){
       setErrorMessage('회원 탈퇴 실패');
+      console.log(error);
     }
 
   };

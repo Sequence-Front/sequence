@@ -1,8 +1,11 @@
 // 2024-11-18 18:09 승균 작성
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { CiBookmark } from "react-icons/ci";
-import { PiSirenThin } from "react-icons/pi";
+import { PiSirenThin,  } from "react-icons/pi";
+import { IoIosLogOut } from "react-icons/io";
+import { postLogout } from '../../api/logout';
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -225,12 +228,25 @@ interface ProfileProps {
 }
 
 const Profile: React.FC<ProfileProps> = ({ name, birth, skills, desiredJobs, schoolname }) => {
+  const navigate = useNavigate();
+  const localNickname = localStorage.getItem("nickname");
   const formatBirth = (birth?: string) => {
     if (!birth) return "";
     const date = new Date(birth);
     return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}.`;
   };
-
+  const handleLogout = async() => {
+        try{
+          const response = await postLogout();
+          console.log("로그아웃 response", response);
+          localStorage.clear();
+          alert("로그아웃 되었습니다.");
+          navigate("/login"); 
+        } catch(error){
+          console.log("error: ", error);
+          console.log("로그아웃 엑세스토큰 " , localStorage.getItem("accessToken"));
+        }
+  };
   return (
     <ProfileContainer>
       <ImageSection />
@@ -246,6 +262,14 @@ const Profile: React.FC<ProfileProps> = ({ name, birth, skills, desiredJobs, sch
           <IconContainer>
             <CiBookmark size={40} />
             <PiSirenThin size={40} />
+            {name === localNickname && (
+              <IoIosLogOut 
+                title="로그아웃"
+                style={{ color: "#FF0000", cursor: "pointer", fontSize: "1px"}}
+                
+                onClick={handleLogout}
+              />
+            )}
           </IconContainer>
         </TopInfo>
         

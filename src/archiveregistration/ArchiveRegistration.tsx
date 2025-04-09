@@ -281,9 +281,17 @@ export const ButtonText = styled.div`
 `
 
 const ErrorMessage = styled.div`
-  color: white;
+  color: #e32929;
   font-size: clamp(12px,1.5vw,24px);
   margin-bottom: 1rem;
+`
+
+const NoticeMessage = styled.div`
+  color: #9e9e9e;
+  font-size: clamp(12px,1.5vw,18px);
+  margin-bottom: 1rem;
+  font-family: 'SUIT', sans-serif;
+  text-align: center;
 `
 
 const ArchiveRegistration = () => {
@@ -373,19 +381,27 @@ const ArchiveRegistration = () => {
 
 
   const validateInputs = useCallback(() => {
-    return "팀원들이 모두 평가를 진행해야 프로젝트가 등록됩니다.";
-
+    if (!projectData.title) return "프로젝트 제목을 입력해주세요.";
+    if (!projectData.period) return "프로젝트 기간을 입력해주세요.";
+    if (!projectData.description) return "프로젝트 소개를 입력해주세요.";
+    if (selectedFields.length === 0) return "분야를 선택해주세요.";
+    if (selectedSkills.length === 0) return "스킬을 한 개 이상 선택해주세요.";
+    if (selectedMembers.length === 0) return "함께한 멤버를 한 명 이상 선택해주세요.";
+    return ""; 
   }, [
     projectData.title,
     projectData.period,
     projectData.description,
     selectedFields,
     selectedSkills,
+    selectedMembers,
   ]);
+  
 
   useEffect(() => {
     const validationError = validateInputs();
     setErrorMessage(validationError);
+    return;
   }, [validateInputs]);
 
   const formatDateForServer = (period: string) => {
@@ -583,11 +599,12 @@ const ArchiveRegistration = () => {
 
       </ProjectContainer>
       </ContentContainer>
-      <ButtonContainer onClick={handleRegisterClick}>
+      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      <ButtonContainer onClick={handleRegisterClick} disabled={!!validateInputs()}>
         <ButtonText>{isEdit ? "수정하기" : "팀원평가 하러가기"}</ButtonText>
         <AiOutlineArrowRight style={{ fontSize: "30px", strokeWidth: "0.5px" }} />
       </ButtonContainer>
-      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      <NoticeMessage>팀원들이 모두 평가를 진행해야 프로젝트가 등록됩니다.</NoticeMessage>
       </FlexContainer>
     </Container>
     </>

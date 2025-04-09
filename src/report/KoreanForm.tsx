@@ -248,11 +248,10 @@ const KoreanForm = () => {
   const handleReportClick = async() =>{
     const reportData = {
       nickname: userData.nickname, 
-      reporter: loginUser,
-      reportType: reportTypeMap[formType],
+      reportType: [reportTypeMap[formType]],
       reportContent: content,
       reportTarget: targetType.toUpperCase(),
-      targetId: targetId
+      targetId: Number(targetId)
     };
 
     try{
