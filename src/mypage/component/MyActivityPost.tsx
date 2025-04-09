@@ -51,19 +51,24 @@ const Comments = styled.span`
 export const MyActivityPost = ({ id, title, createdDate, numberOfComments, type = 'project' }: PostProps) => {
   const navigate = useNavigate();
 
-  const formatDate = (dateString: string) => {
-    // const date = new Date(dateString);
-    // return `${String(date.getFullYear()).slice(2)}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}.`;
-  };
+  // const formatDate = (dateString: string) => {
+  //   const date = new Date(dateString);
+  //   return `${String(date.getFullYear()).slice(2)}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}.`;
+  // };
 
   const handleClick = () => {
-    navigate(`/${type}/${id}`);
+    if(type == "archive")
+      navigate(`/${type}/${id}`);
+    else if(type == "project")
+      navigate(`/${type}detail/${id}`);
+    
+    
   };
 
   return (
     <PostContainer onClick={handleClick}>
       <Title>{title}</Title>
-      {/* <Date>{formatDate(createdDate)}</Date> */}
+      <Date>{createdDate}</Date>
       <Comments>{numberOfComments}</Comments>
     </PostContainer>
   );

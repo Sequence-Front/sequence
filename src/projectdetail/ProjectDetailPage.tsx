@@ -167,20 +167,21 @@ const ProjectDetailPage = () => {
             <FaBookmark onClick={deleteBookmark} size={30} style={{color: "#E32929", cursor:"pointer"}}/>
           }
 
-          <PiSirenLight
-              size={30}
-              title="신고"
-              style={{ color: "#E32929", cursor: "pointer" }}
-              onClick={() =>
-              navigate(`/report`, {
-              state: {
-              targetType: 'project',
-              targetId: id
-              }})}
-            />
+          
           { myNickname === projectData?.writer && 
             (
               <>
+                <PiSirenLight
+                  size={30}
+                  title="신고"
+                  style={{ color: "#E32929", cursor: "pointer" }}
+                  onClick={() =>
+                  navigate(`/report`, {
+                  state: {
+                  targetType: 'project',
+                  targetId: id
+                  }})}
+                />
                 <LuPen onClick={writeClick} size={30} style={{color: "#E32929", cursor:"pointer"} } title="수정하기"/>
                 <MdDelete onClick={deleteClick} size={30} style={{color: "#E32929", cursor:"pointer"}}/>
               </>

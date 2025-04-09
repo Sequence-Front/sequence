@@ -97,20 +97,35 @@ interface MyPageData {
       writtenPosts: any[];
     };
   };
+  teamFeedback: {
+    myPageEvaluation: {
+      keywords: Array<{
+          content: string;
+          count: number;
+        }>;
+      feedbacks: Array<{
+        content: string;
+        duration: string;
+      }>
+    }
+  }
   portfolio: {
-    archivePageResponseDTO: {
-      archives: Array<{
+    archivePage: {
+      content: Array<{
         id: number;
-        writerNickname: string;
         title: string;
-        description: string;
+        thumbnail?: string;
         startDate: string;
         endDate: string;
-        role: string;
-        image?: string;
       }>;
-      totalPages: number;
     };
+    invitedProjects: Array<{
+      projectInvitedMemberId: number;
+      writer: string;
+      title: string;
+      inviteDate: string;
+      commentCount: number;
+    }>
   };
 }
 
@@ -136,7 +151,7 @@ const MyPage = () => {
       case 'PersonalHistory':
         return <PersonalHistory careerHistory={profileData.careerHistory} />;
       case 'Portfolio':
-        return <Portfolio portfolioData={profileData.portfolio.archivePageResponseDTO} />;
+        return <Portfolio portfolioData={profileData.portfolio} />;
       case 'MemberEvaluation':
         return <MemberEvaluation />;
       case 'MyActivity':

@@ -18,11 +18,8 @@ import { useNavigate } from 'react-router-dom';
 interface ProjectType {
   id: number;
   title: string;
+  image?: string;
   period: string;
-  role: string;
-  image: string;
-  devComplete?: boolean;
-  startupState?: boolean;
 }
 
 interface ProjectCardProps {
@@ -36,13 +33,13 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
       <ImageContainer>
         <ProjectImage src={project.image} alt={project.title} />
         <StatusContainer>
-          {project.devComplete && <StatusBadge>개발완료</StatusBadge>}
-          {project.startupState && <StatusBadge>창업중</StatusBadge>}
+          {/* {project.devComplete && <StatusBadge>개발완료</StatusBadge>}
+          {project.startupState && <StatusBadge>창업중</StatusBadge>} */}
         </StatusContainer>
         <HoverOverlay className="hover-overlay">
           <StatusContainer>
-            {project.devComplete && <StatusBadge className="hover">개발완료</StatusBadge>}
-            {project.startupState && <StatusBadge className="hover">창업중</StatusBadge>}
+            {/* {project.devComplete && <StatusBadge className="hover">개발완료</StatusBadge>}
+            {project.startupState && <StatusBadge className="hover">창업중</StatusBadge>} */}
           </StatusContainer>
           <PageOpenText>
             <span>페이지 열기</span>
@@ -52,8 +49,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
       </ImageContainer>
       <ProjectInfo>
         <ProjectTitle>{project.title}</ProjectTitle>
-        <ProjectPeriod>프로젝트 기간 | {project.period}</ProjectPeriod>
-        <ProjectRole>참여직무 | {project.role}</ProjectRole>
+        <ProjectPeriod>{project.period}</ProjectPeriod>
       </ProjectInfo>
     </Card>
   );
