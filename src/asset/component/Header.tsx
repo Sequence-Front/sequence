@@ -280,33 +280,36 @@ function Header({  isMain = false }: { isMain?: boolean } ) {
       <LoginContainer>
         {isLogin ? (
           <UserContainer>
-          <AlertImg src={alert} onClick={NoticeClick}/>
-          <div style = {{position:'relative'}}>
-          <UserProfile onClick={() => {navigate(`/mypage?nickname=${loginUser}`); window.location.reload();}} src= {profile} />
-          <NoticeContainer isOpen={isNoticeOpen}>
-            {sortedNotices.length === 0 ? (
-            <div style={{ color: '#999', fontSize: '0.9rem', padding: '0.5rem' }}>
-              알림 없음
+            <AlertImg src={alert} onClick={NoticeClick}/>
+            <div style={{ position:'relative' }}>
+              <UserProfile 
+                onClick={() => navigate(`/mypage?nickname=${loginUser}`)} 
+                src={profile} 
+              />
+              <NoticeContainer isOpen={isNoticeOpen}>
+                {sortedNotices.length === 0 ? (
+                <div style={{ color: '#999', fontSize: '0.9rem', padding: '0.5rem' }}>
+                  알림 없음
+                </div>
+                  ) : (
+                    sortedNotices.map((notice) => (
+                      <NoticeItem
+                        key={notice.id}
+                        id={notice.id}
+                        date={notice.date}
+                        message={notice.message}
+                        type={notice.type}
+                        onAccept={handleAccept}
+                        onDecline={handleDecline}
+                      />
+                    ))
+                  )}
+              </NoticeContainer>
             </div>
-              ) : (
-                sortedNotices.map((notice) => (
-                  <NoticeItem
-                    key={notice.id}
-                    id={notice.id}
-                    date={notice.date}
-                    message={notice.message}
-                    type={notice.type}
-                    onAccept={handleAccept}
-                    onDecline={handleDecline}
-                  />
-                ))
-              )}
-        </NoticeContainer>
-          </div>
-        </UserContainer>
-      ) : (
-        <Login onClick={() => navigate('/login')}>Log In</Login>
-      )}
+          </UserContainer>
+        ) : (
+          <Login onClick={() => navigate('/login')}>Log In</Login>
+        )}
       </LoginContainer>
       
     </Container>

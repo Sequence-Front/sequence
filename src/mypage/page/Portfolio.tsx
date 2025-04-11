@@ -44,6 +44,7 @@ interface PortfolioProps {
 const Portfolio: React.FC<PortfolioProps> = ({ portfolioData }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [activeTab, setActiveTab] = useState<'portfolio' | 'project'>('portfolio');
+  const itemsPerPage = 6;
 
   const formatArchiveToProject = (archive: any) => ({
     id: archive.id,
@@ -51,6 +52,16 @@ const Portfolio: React.FC<PortfolioProps> = ({ portfolioData }) => {
     period: `${new Date(archive.startDate).getFullYear()}.${String(new Date(archive.startDate).getMonth() + 1).padStart(2, '0')} - ${new Date(archive.endDate).getFullYear()}.${String(new Date(archive.endDate).getMonth() + 1).padStart(2, '0')}`,
     image: archive.thumbnail || 'default-image-url',
   });
+
+  // 현재 페이지에 해당하는 아카이브 항목만 필터링
+  const getCurrentPageItems = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return portfolioData.archivePage.content.slice(startIndex, endIndex);
+  };
+
+  // 전체 페이지 수 계산
+  const totalPages = Math.ceil(portfolioData.archivePage.content.length / itemsPerPage);
 
   return (
     <>
@@ -72,7 +83,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ portfolioData }) => {
       {activeTab === 'portfolio' ? (
         <>
           <PortfolioContainer>
-            {portfolioData.archivePage.content.map((archive) => (
+            {getCurrentPageItems().map((archive) => (
               <ProjectCard 
                 key={archive.id} 
                 project={formatArchiveToProject(archive)}
@@ -82,7 +93,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ portfolioData }) => {
           {portfolioData.archivePage.content.length > 0 && (
             <Pagination 
               currentPage={currentPage}
-              totalPages={1}
+              totalPages={totalPages}
               onPageChange={setCurrentPage}
             />
           )}
