@@ -95,7 +95,6 @@ const SkillsContainer = styled.div`
 const SkillTag = styled.div`
   background-color: transparent;
   border: 1px solid #d9d9d9;
-  width: clamp(30px, 3vw, 85px);
   height: clamp(30px, 2vw, 2rem);
   border-radius: 25px;
   font-size: clamp(10px, 1.2vw, 18px);
@@ -105,10 +104,9 @@ const SkillTag = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 clamp(0.5rem, 2vw, 2rem);
+  padding: 0 clamp(0.5rem, 1vw, 1rem);
 
   @media (max-width: 1000px) {
-    width: 5rem;
     height: clamp(2rem, 3vw, 2.5rem);
     font-size: clamp(1rem, 1.2vw, 18px);
   }
