@@ -4,7 +4,6 @@ import ExperienceItem from "../component/ExperienceItem";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import LogoS from "../../asset/image/LogoS.png"
 import MainPageTitle from "../component/MainPageTitle";
 
 const Container = styled.div`
@@ -116,10 +115,7 @@ function Experience() {
         </SliderWrapper>
         <Blank/>
         <ImageWrapper>
-        <Image 
-          src={LogoS}
-          alt="LogoS"
-          />
+        <Image src="/image/LogoS.png" alt="LogoS"/>
         </ImageWrapper>
         <ButtonWrapper>
             <Button>

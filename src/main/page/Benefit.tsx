@@ -1,10 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import MainPageTitle from "../component/MainPageTitle";
-import BenefitImg1 from '../../asset/image/Benefit1.png'
-import BenefitImg2 from '../../asset/image/Benefit2.png'
-import BenefitImg3 from '../../asset/image/Benefit3.png'
-import Logo from "../../asset/image/MainLogo.png"
+
 
 const Container = styled.div`
   display: flex;
@@ -128,9 +125,9 @@ function Benefit(){
         <Container>
             <MainPageTitle>Benefit</MainPageTitle>
             <BenefitContainer>
-                <BenefitImg src = {BenefitImg1}/>
+              <BenefitImg src="/image/Benefit1.png" />
                 <BenefitPartContainer>
-                    <BenefitPartLogo src = {Logo}/>
+                  <BenefitPartLogo src="/image/MainLogo.png" />
                     <BottomContainer>
                       <BenefitPartTitle> 개발자와 디자이너의 만남</BenefitPartTitle>
                       <BenefitPartContent>
@@ -141,9 +138,9 @@ function Benefit(){
                 </BenefitPartContainer>
             </BenefitContainer>
             <BenefitContainer>
-                <BenefitImg src = {BenefitImg2}/>
+              <BenefitImg src="/image/Benefit2.png" />
                 <BenefitPartContainer>
-                    <BenefitPartLogo src = {Logo}/>
+                  <BenefitPartLogo src="/image/MainLogo.png" />
                     <BottomContainer>
                       <BenefitPartTitle> 실제 서비스를 세상에</BenefitPartTitle>
                       <BenefitPartContent>
@@ -154,9 +151,9 @@ function Benefit(){
                 </BenefitPartContainer>
             </BenefitContainer>
             <BenefitContainer>
-                <BenefitImg src = {BenefitImg3}/>
+              <BenefitImg src="/image/Benefit3.png" />
                 <BenefitPartContainer>
-                      <BenefitPartLogo src = {Logo}/>
+                  <BenefitPartLogo src="/image/MainLogo.png" />
                       <BottomContainer>
                       <BenefitPartTitle> 실무에서 필요한 협업 경험</BenefitPartTitle>
                       <BenefitPartContent style={{width: '100%'}}>

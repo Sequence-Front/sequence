@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import PartnerImage from "../../asset/image/PartnerImage.png"
 import MainPageTitle from '../component/MainPageTitle';
 
 const Container = styled.div`
@@ -73,7 +72,7 @@ function Partner() {
       <MainPageTitle>Partner</MainPageTitle>
       <ImageWrapper>
         <Image 
-          src={PartnerImage}
+          src="/image/PartnerImage.png"
           alt="PartnerImage"
         />
         <ContentSection>

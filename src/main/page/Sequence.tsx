@@ -1,7 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import runningimg from '../../asset/image/running.png'
-import LogoS from '../../asset/image/LogoS.png'
 import { BsArrowRight } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
 
@@ -94,10 +92,10 @@ function Sequence(){
         <Container>
             <SequenceContainer>
                 <TitleContainer>
-                  <Logo src={LogoS}/>
+                  <Logo src="/image/LogoS.png"/>
                   <Title>equence</Title>
                 </TitleContainer>
-                <Img rel="preload" src={runningimg}/>
+                <Img rel="preload" src="/image/running.png"/>
             </SequenceContainer>
             <Content>새로운 이야기를 만들다. 시퀀스</Content>
             <Button onClick={() => navigate('/archive/registration')}>프로젝트 올리고 새로운 이야기를 만들어보세요!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

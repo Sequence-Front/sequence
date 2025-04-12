@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import LogoImage from '../asset/image/LoginLogo.png';
 
 import { FaArrowRight } from "react-icons/fa6";
 import { IoIosArrowForward } from "react-icons/io";
@@ -53,7 +52,7 @@ const LoginPage: React.FC = () => {
   return (
     <>
     <LoginContainer>
-      <Logo src={LogoImage} alt="Login Logo" />
+    <Logo src="/image/LoginLogo.png" alt="Login Logo" />
       <Title>Login</Title>
       <FormWrapper>
         <LoginForm onSubmit={handleSubmit}>

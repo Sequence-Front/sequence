@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import LogoS from '../../asset/image/LogoS.png';
 import { FaCheck } from 'react-icons/fa'; // 체크 아이콘용 라이브러리
 
 const ResultContainer = styled.div`
@@ -83,7 +82,7 @@ const ResultView: React.FC<ResultViewProps> = ({ members }) => {
   console.log("members", members);
   return (
     <ResultContainer>
-      <Logo src={LogoS} alt="Logo" />
+      <Logo src="/image/LogoS.png" alt="Logo" />
       <ResultTitle>프로젝트 등록 완료</ResultTitle>
       <ResultText>
         모든 팀원들이 평가를 완료하면 프로젝트가 등록됩니다.

@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import LogoS from '../../asset/image/MainLogo.png'
 
 const Container = styled.div`
   width: 100%;
@@ -51,7 +50,7 @@ function Header() {
 
   return (
     <Container>
-      <Logo src = {LogoS} onClick = {() => window.location.reload()} />
+      <Logo src="/image/MainLogo.png" onClick={() => window.location.reload()} />
       <ProjectContainer>
         <Now>
           NOW
