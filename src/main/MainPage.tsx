@@ -27,6 +27,7 @@ function MainPage() {
 
   return (
     <Container>
+      <h1 style={{ color: 'white' }}>HELLO FROM DEPLOYED</h1>
         <Blank style={{height : '200px'}}/>
         <Sequence/>
         <Blank/>
