@@ -23,7 +23,7 @@ import Layout from './asset/component/Layout';
 
 const AppRouter = () => {
   return (
-    <Router basename={process.env.PUBLIC_URL}>
+    <Router>
       <Routes>
         <Route element={<Layout />}>
         <Route path="/" element={<MainPage />} />
