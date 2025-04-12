@@ -22,7 +22,7 @@ jobs:
           git remote add upstream https://github.com/Sequence-Front/sequence.git
           git fetch upstream
 
-      - name: Overwrite with upstream/main
+      - name: Merge upstream/main into sync
         run: |
-          git reset --hard upstream/main
-          git push origin sync --force
+          git merge upstream/main --no-edit || echo "No changes to merge"
+          git push origin sync
