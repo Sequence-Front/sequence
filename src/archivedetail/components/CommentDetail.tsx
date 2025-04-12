@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { PiSirenLight } from "react-icons/pi";
-import { ReactComponent as Replyimg } from "../../asset/image/ReplyImg.svg";
 import CommentInput from "./CommentInput";
 import { useParams, useNavigate } from "react-router-dom";
 import { CommentPost, CommentPut, CommentDelete } from "../../api/archiveComment";
@@ -288,7 +287,7 @@ const CommentDetail = ({
       <ReplyContainer>
         {childComments.map((reply) => (
           <ReplyItem key={reply.id}>
-            <Replyimg style={{width:'3.5rem'}} />
+            <img src="/image/ReplyImg.svg" alt="답글 아이콘" style={{ width: '3.5rem' }} />
             <ReplyContent>
               <ReportIcon>
                 <PiSirenLight
@@ -335,7 +334,7 @@ const CommentDetail = ({
         ))}
         {showReplyInput && (
           <ReplyInputWrapper>
-            <Replyimg style={{width:'3.5rem'}} />
+            <img src="/image/ReplyImg.svg" alt="답글 아이콘" style={{ width: '3.5rem' }} />
             <ReplyToContainer>
               <ReplyToText>'{comment.writer}'님에게 답글</ReplyToText>
               <CommentInput

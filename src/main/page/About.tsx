@@ -1,10 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import MainPageTitle from '../component/MainPageTitle';
-import AboutImg1 from '../../asset/image/About1.png';
-import AboutImg2 from '../../asset/image/About2.png'
-import AboutImgCenter from '../../asset/image/LogoEmpty.png'
-import logo from '../../asset/image/MainLogo.png'
+
 
 const Container = styled.div`
   display: flex;
@@ -161,7 +158,7 @@ function About() {
       <MainPageTitle>About</MainPageTitle>
       <About1Container>
         <About1ContentContainer>
-          <About1ContentLogo src={logo}/>
+        <About1ContentLogo src="/image/MainLogo.png" />
         <About1Content>
           시퀀스는 IT 서비스 개발을 원하는
           <br/>
@@ -170,13 +167,13 @@ function About() {
           함께 프로젝트를 진행하는 공간입니다.
         </About1Content>
         </About1ContentContainer>
-        <About1Img src = {AboutImg1}/>
+        <About1Img src="/image/About1.png" />
       </About1Container>
-      <AboutCenterImg src = {AboutImgCenter}/>
+      <AboutCenterImg src="/image/LogoEmpty.png" />
       <About2Container>
-        <About2Img src = {AboutImg2} />
+      <About2Img src="/image/About2.png" />
         <About2ContentContainer>
-        <About1ContentLogo src={logo}/>
+        <About1ContentLogo src="/image/MainLogo.png" />
         <About2Content>
         영화의 주제와 인물들을 소개하는 시퀀스처럼,
         우리의 만남과 협업이 하나의 영화와 같이 

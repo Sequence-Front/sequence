@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
-import Sequence from '../image/Sequence.svg'
 import { useNavigate, useLocation } from 'react-router-dom';
-import alert from '../image/alert.png'
 import NoticeItem from './NoticeItem';
 import { getNotice, acceptNotice, deleteNotice } from '../../api/notice';
 import { access } from 'fs';
@@ -244,11 +242,11 @@ function Header({  isMain = false }: { isMain?: boolean } ) {
     <Container>
       {isMain ? (
         <TitleContainer onClick={() => window.location.reload()}>
-          <Logo src={Sequence} />
+          <Logo src="/image/Sequence.svg" />
         </TitleContainer>
       ) : (
         <TitleContainer onClick={() => navigate('/')}>
-          <Logo src={Sequence} />
+          <Logo src="/image/Sequence.svg" />
         </TitleContainer>
       )}
       <ContentContainer>
@@ -280,7 +278,7 @@ function Header({  isMain = false }: { isMain?: boolean } ) {
       <LoginContainer>
         {isLogin ? (
           <UserContainer>
-            <AlertImg src={alert} onClick={NoticeClick}/>
+            <AlertImg src="/image/alert.png" onClick={NoticeClick} />
             <div style={{ position:'relative' }}>
               <UserProfile 
                 onClick={() => navigate(`/mypage?nickname=${loginUser}`)} 
