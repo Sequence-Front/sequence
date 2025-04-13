@@ -3,6 +3,7 @@ import tokenAxios from "./tokenAxios";
 const getProjects = async () => {
   try {
     const response = await tokenAxios.get('/api/projects/list');
+    // console.log(response)
     return response.data;
   } catch (error) {
     console.error('프로젝트 조회 에러:', error);

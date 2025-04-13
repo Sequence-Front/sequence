@@ -22,9 +22,6 @@ const login = async (data) => {
       localStorage.setItem('profile', profile);
       localStorage.setItem('tokenExpiresAt', String(now + expiresIn));
       
-      console.log(localStorage.getItem('accessToken')); 
-      console.log(localStorage.getItem('nickname')); 
-      console.log(localStorage.getItem('profile')); 
       return true;
     }
     return false; 

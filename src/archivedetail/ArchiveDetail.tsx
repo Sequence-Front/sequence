@@ -217,7 +217,6 @@ const ArchiveDetailPage = () => {
     const fetchArchiveDetail = async () => {
         try {
             const response = await getArchiveDetail(Number(id));
-            console.log('Archive Detail Response:', response);
             setArchiveData(response.data);
             setImages(response.data.imgUrls || []); // imgUrls가 없을 경우 빈 배열
         } catch (error) {

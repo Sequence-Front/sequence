@@ -82,6 +82,7 @@ interface ProjectDetail {
   article: string;
   link: string;
   isBookmark: boolean;
+  bookmarks: number;
   members: Array<{
     profileImgUrl: string | null;
     nickname: string;
@@ -198,7 +199,7 @@ const ProjectDetailPage = () => {
           </DetailBox>
           <DetailBox>
             <div>Comment {projectData.comments.length}</div>
-            <div>북마크 {projectData.views}</div>
+            <div>북마크 {projectData.bookmarks}</div>
             <div>조회 {projectData.views}</div>
           </DetailBox>
         </Detail>

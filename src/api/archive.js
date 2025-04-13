@@ -8,7 +8,7 @@ const getArchives = async (page = 0) => {
         'access': localStorage.getItem("accessToken"),
       }
     });
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('프로젝트 조회 에러:', error);
