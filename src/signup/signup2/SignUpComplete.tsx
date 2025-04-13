@@ -1,7 +1,6 @@
 //2024-11-28 02:20 정준용완성
 import React from 'react';
 import styled from 'styled-components';
-import SequnceImg from '../../asset/image/Sequence.svg'
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
 
@@ -70,7 +69,7 @@ const SignUpComplete = () => {
         <Container>
           <ContentContainer>
             <SequenceContainer>
-              <Logo src={SequnceImg}/>
+              <Logo src="/image/Sequence.svg"/>
             </SequenceContainer>
         <Message>회원가입이 완료되었습니다!</Message>
         <StartButton onClick={()=>navigate('/')}>

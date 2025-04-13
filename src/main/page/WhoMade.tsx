@@ -1,12 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import BackgroundImage from '../../asset/image/WhoMadeImage.png';
 
 const Container = styled.div`
   width: 100%;
   min-height: 100vh;
   position: relative;
-  background: url(${BackgroundImage}) no-repeat center center;
+  background: url("/image/WhoMadeImage.png") no-repeat center center;
   background-size: cover;
   display: flex;
   flex-direction: column;
