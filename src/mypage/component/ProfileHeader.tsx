@@ -232,15 +232,18 @@ const Profile: React.FC<ProfileProps> = ({
     )}.${String(date.getDate()).padStart(2, "0")}.`;
   };
   const handleLogout = async () => {
-    try {
-      const response = await postLogout();
-      console.log("로그아웃 response", response);
-      localStorage.clear();
-      alert("로그아웃 되었습니다.");
-      navigate("/login");
-    } catch (error) {
-      console.log("error: ", error);
-      console.log("로그아웃 엑세스토큰 ", localStorage.getItem("accessToken"));
+
+    if(window.confirm("로그아웃 하시겠습니까?")){
+      try {
+        const response = await postLogout();
+        console.log("로그아웃 response", response);
+        localStorage.clear();
+        alert("로그아웃 되었습니다.");
+        navigate("/login");
+      } catch (error) {
+        console.log("error: ", error);
+        console.log("로그아웃 엑세스토큰 ", localStorage.getItem("accessToken"));
+      }
     }
   };
   return (

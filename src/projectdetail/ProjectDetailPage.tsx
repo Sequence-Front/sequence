@@ -198,7 +198,14 @@ const ProjectDetailPage = () => {
             <div>{projectData.createdDate}</div>
           </DetailBox>
           <DetailBox>
-            <div>Comment {projectData.comments.length}</div>
+            <div>
+              Comment {
+                projectData.comments.reduce(
+                  (total, comment) => total + 1 + comment.childComments.length,
+                  0
+                )
+              }
+            </div>
             <div>북마크 {projectData.bookmarks}</div>
             <div>조회 {projectData.views}</div>
           </DetailBox>
