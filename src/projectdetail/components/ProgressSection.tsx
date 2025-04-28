@@ -6,6 +6,18 @@ interface ProgressSectionProps {
 }
 
 const ProgressSection = ({ progressData }: ProgressSectionProps) => {
+
+  const getProgressDisplay = (progress: string) => {
+    const periodMapping: { [key: string]: string } = {
+      'BEFORE_START': '개발 전',
+      'PLANNING': '기획 단계',
+      'DESIGNING': '디자인 단계',
+      'DEVELOPING': '개발 단계',
+      'IN_BUSINESS': '사업 단계'
+    };
+    return periodMapping[progress] || progress;
+  };
+
   return (
     <Section>
       <Content>
@@ -17,7 +29,7 @@ const ProgressSection = ({ progressData }: ProgressSectionProps) => {
         <SecondColumn>
           <LabelTitle>프로젝트 단계</LabelTitle>
           <ContentText>
-            <Tag>{progressData}</Tag>
+            <Tag>{getProgressDisplay(progressData)}</Tag>
           </ContentText>
         </SecondColumn>
 

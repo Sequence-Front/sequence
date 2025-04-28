@@ -26,22 +26,22 @@ const AppRouter = () => {
     <Router>
       <Routes>
         <Route element={<Layout />}>
-        <Route path="/" element={<MainPage />} />
+        <Route path="/about" element={<MainPage />} />
         <Route path="/login" element={<LoginPage />} />    
         <Route path="/findId" element={<FindIdPage />} />
         <Route path="/findPassword" element={<FindPasswordPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/withdraw" element={<WithdrawPage />} />
-        <Route path="/announcement" element={<AnnouncementList />} />
-        <Route path="/announcement/1" element={<AnnouncementDetail />} />
+        {/* <Route path="/announcement" element={<AnnouncementList />} />
+        <Route path="/announcement/1" element={<AnnouncementDetail />} /> */}
         <Route path="/archive" element={<Archivelist />} />
         <Route path="/archive/:id" element={<ArchiveDetail />} />
         <Route path="/:archiveId/a" element={<ResultView />} />
         <Route path="/archive/registration" element={<ArchiveRegistration />} />
         <Route path="/archive/edit/:archiveId" element={<ArchiveRegistration />} />
         <Route path=":archiveId/teamevaluation" element={<TeamEvaluationPage />} />
-        <Route path="/project" element={<ProjectPage />} />
+        <Route path="/" element={<ProjectPage />} />
         <Route path="/projectdetail/:id" element={<ProjectDetailPage />} />
         <Route path="/project/registration" element={<ProjectRegistration />} />
         <Route path="/project/edit/:projectId" element={<ProjectRegistration />} />

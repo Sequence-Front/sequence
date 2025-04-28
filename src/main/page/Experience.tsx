@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import ExperienceItem from "../component/ExperienceItem";
 import Slider from "react-slick";
@@ -61,6 +61,12 @@ function Experience() {
         title: `DANJAM ${index + 1}`,
         description: `기숙사생을 위한 메이트 매칭 및\n동네 커뮤니티 서비스 ${index + 1}`,
     }));
+    
+    const [isDragging, setIsDragging] = useState(false);
+    const [mouseDownTime, setMouseDownTime] = useState(0);
+    const [mouseDownPosition, setMouseDownPosition] = useState({ x: 0, y: 0 });
+    const sliderRef = useRef<Slider>(null);
+    const sliderWrapperRef = useRef<HTMLDivElement>(null);
 
     const settings = {
       infinite: true,
@@ -75,26 +81,56 @@ function Experience() {
       startIndex: 0,
       swipeToSlide: true,
       speed: 500,
-        responsive: [
-          {
-            breakpoint: 1800,
-            settings: {
-                slidesToShow: 3.5,
-            }
-          },
-          {
-            breakpoint: 1500,
-            settings: {
-                slidesToShow: 2.5,
-            }
-          },
-          {
-              breakpoint: 1000,
-              settings: {
-                  slidesToShow: 1.5,
-              }
+      responsive: [
+        {
+          breakpoint: 1800,
+          settings: {
+              slidesToShow: 3.5,
           }
-        ]
+        },
+        {
+          breakpoint: 1500,
+          settings: {
+              slidesToShow: 2.5,
+          }
+        },
+        {
+            breakpoint: 1000,
+            settings: {
+                slidesToShow: 1.5,
+            }
+        }
+      ]
+    };
+
+    // 마우스 이벤트 핸들러
+    const handleMouseDown = (e: React.MouseEvent) => {
+      setMouseDownTime(Date.now());
+      setMouseDownPosition({ x: e.clientX, y: e.clientY });
+    };
+
+    const handleMouseUp = (e: React.MouseEvent) => {
+      const mouseUpTime = Date.now();
+      const mouseUpPosition = { x: e.clientX, y: e.clientY };
+      
+      // 마우스 다운과 업 사이의 시간 차이
+      const timeDiff = mouseUpTime - mouseDownTime;
+      
+      // 마우스 다운과 업 사이의 거리 차이
+      const distanceX = Math.abs(mouseUpPosition.x - mouseDownPosition.x);
+      const distanceY = Math.abs(mouseUpPosition.y - mouseDownPosition.y);
+      
+      // 시간이 짧고(300ms 이하) 거리가 작으면(10px 이하) 클릭으로 간주
+      if (timeDiff < 300 && distanceX < 10 && distanceY < 10) {
+        // 클릭 이벤트 처리
+        const target = e.target as HTMLElement;
+        const experienceItem = target.closest('.experience-item');
+        
+        if (experienceItem) {
+          // 여기에 클릭 시 수행할 작업 추가
+          console.log('Experience item clicked');
+        }
+      }
     };
 
     return (
@@ -102,13 +138,18 @@ function Experience() {
         <Container>
             <MainPageTitle>Experience</MainPageTitle>
         </Container>
-        <SliderWrapper>
-            <Slider {...settings}>
+        <SliderWrapper 
+          ref={sliderWrapperRef}
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
+        >
+            <Slider ref={sliderRef} {...settings}>
                 {experiences.map((exp, index) => (
                     <ExperienceItem 
                         key={index}
                         title={exp.title}
                         description={exp.description}
+                        className="experience-item"
                     />
                 ))}
             </Slider>

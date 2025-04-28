@@ -169,6 +169,15 @@ const stepMapping = {
   'IN_BUSINESS': '사업 단계'
 };
 
+// 기간 필터 매핑 (API 요청용)
+const periodFilterMapping = {
+  'ONE_MONTH_LESS': '1개월 이하',
+  'ONE_TO_THREE_MONTH': '1개월 ~ 3개월',
+  'THREE_TO_SIX_MONTH': '3개월 ~ 6개월',
+  'SIX_TO_ONE_YEAR': '6개월 ~ 1년',
+  'OVER_ONE_YEAR': '1년 이상'
+};
+
 const ProjectPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -176,6 +185,7 @@ const ProjectPage: React.FC = () => {
   const navigate = useNavigate();
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
 
   //모든 프로젝트 조회
   useEffect(() => {
@@ -248,15 +258,31 @@ const ProjectPage: React.FC = () => {
             []
           ));
           setProjects(projectList);
+          if (response.totalPages !== undefined) {
+            setTotalPages(response.totalPages);
+          }
         } else {
+          // 기간 필터링을 위한 특별 처리
+          const periodTag = selectedTags.find(tag => tagOptions.기간.includes(tag));
+          
           const filters = {
             category: selectedTags.find(tag => tagOptions.분야.includes(tag)),
-            periodKey: selectedTags.find(tag => tagOptions.기간.includes(tag)),
+            periodKey: periodTag ? periodFilterMapping[periodTag as keyof typeof periodFilterMapping] : undefined,
             roles: selectedTags.find(tag => tagOptions.역할.includes(tag)),
             skills: selectedTags.find(tag => tagOptions.필요스킬.includes(tag)),
             meetingOption: selectedTags.find(tag => tagOptions.회의.includes(tag)),
             step: selectedTags.find(tag => tagOptions.프로젝트단계.includes(tag))
           };
+          
+          // 필터 객체에서 undefined 값 제거
+          Object.keys(filters).forEach(key => {
+            if (filters[key as keyof typeof filters] === undefined) {
+              delete filters[key as keyof typeof filters];
+            }
+          });
+          
+          console.log('필터링 요청:', filters); // 디버깅용 로그
+          
           const response = await filterProjects(filters);
           const projectList = response.data.map((item: any) => new Project(
             item.id,
@@ -267,6 +293,9 @@ const ProjectPage: React.FC = () => {
             []
           ));
           setProjects(projectList);
+          if (response.totalPages !== undefined) {
+            setTotalPages(response.totalPages);
+          }
         }
       } catch (error) {
         console.error('프로젝트 필터링 실패:', error);
@@ -282,7 +311,8 @@ const ProjectPage: React.FC = () => {
   const indexOfLastProject = currentPage * projectsPerPage;
   const indexOfFirstProject = indexOfLastProject - projectsPerPage;
   const currentProjects = projects.slice(indexOfFirstProject, indexOfLastProject);
-  const totalPages = Math.ceil(projects.length / projectsPerPage);
+  
+  const calculatedTotalPages = totalPages || Math.ceil(projects.length / projectsPerPage);
 
   const handleTagClick = (tag: string) => {
     setCurrentPage(1);
@@ -354,7 +384,7 @@ const ProjectPage: React.FC = () => {
                 key={tag}
                 onClick={() => handleTagClick(tag)}
               >
-                {tag}
+                {getDisplayTag(tag)}
               </SelectedTag>
             ))}
           </SelectedTags>
@@ -393,7 +423,7 @@ const ProjectPage: React.FC = () => {
       {projects.length > 0 && (
         <Pagination 
           currentPage={currentPage}
-          totalPages={totalPages}
+          totalPages={calculatedTotalPages}
           onPageChange={setCurrentPage}
         />
       )}

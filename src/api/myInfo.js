@@ -16,7 +16,7 @@ export const getMyInfo = async () => {
         nickname && nickname !== "undefined" && nickname !== storedNickname ? `/api/mypage/${nickname}` : `/api/mypage`;
         
         const response = await tokenAxios.get(endpoint);
-        // console.log(response)
+        console.log(response)
 
         if (response.status === 200) {
             return response.data.data;

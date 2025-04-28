@@ -2,8 +2,8 @@ import tokenAxios from "./tokenAxios";
 
 const getProjects = async () => {
   try {
-    const response = await tokenAxios.get('/api/projects/list');
-    // console.log(response)
+    const response = await tokenAxios.get('/api/projects/filter/keyword');
+    console.log(response)
     return response.data;
   } catch (error) {
     console.error('프로젝트 조회 에러:', error);
@@ -29,6 +29,12 @@ const filterProjects = async (filters) => {
       .join('&');
     
     const response = await tokenAxios.get(`/api/projects/filter/keyword?${queryString}`);
+    
+    // 응답에 totalPages가 없으면 기본값 0 설정
+    if (response.data && response.data.totalPages === undefined) {
+      response.data.totalPages = 0;
+    }
+    
     return response.data;
   } catch (error) {
     console.error('프로젝트 필터링 에러:', error);

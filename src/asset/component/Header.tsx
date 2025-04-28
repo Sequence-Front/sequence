@@ -141,9 +141,11 @@ function Header({  isMain = false }: { isMain?: boolean } ) {
   const [loginUser, ] = useState(localStorage.getItem("nickname"));
 
   const getCurrentHeader = () => {
-    if (location.pathname.startsWith('/project')) return 'Project';
-    if (location.pathname.startsWith('/announcement')) return 'Announcement';
-    if (location.pathname.startsWith('/archive')) return 'Archive';
+    const path = location.pathname;
+    
+    if (path === '/' || path.startsWith('/project')) return 'Project';
+    if (path.startsWith('/about')) return 'About';
+    if (path.startsWith('/archive')) return 'Archive';
     return '';
   };
   
@@ -252,8 +254,8 @@ function Header({  isMain = false }: { isMain?: boolean } ) {
       <ContentContainer>
         <ContentWrap>
           <Content
-            onClick={() => navigate('/project')}
-            isActive={currentHeader === 'Project'}
+            onClick={() => navigate('/')}
+            isActive={getCurrentHeader() === 'Project'}
           >
             Project
           </Content>
@@ -261,17 +263,17 @@ function Header({  isMain = false }: { isMain?: boolean } ) {
         <ContentWrap>
           <Content
             onClick={() => navigate('/archive')}
-            isActive={currentHeader === 'Archive'}
+            isActive={getCurrentHeader() === 'Archive'}
           >
             Archive
           </Content>
         </ContentWrap>
         <ContentWrap>
           <Content
-            onClick={() => navigate('/announcement')}
-            isActive={currentHeader === 'Announcement'}
+            onClick={() => navigate('/about')}
+            isActive={getCurrentHeader() === 'About'}
           >
-            Announcement
+            About
           </Content>
         </ContentWrap>
       </ContentContainer>

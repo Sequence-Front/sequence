@@ -43,11 +43,12 @@ interface ExperienceItemProps {
   // image: string;
   title: string;
   description: string;
+  className?: string;
 }
 
-const ExperienceItem: React.FC<ExperienceItemProps> = ({ title, description }) => {
+const ExperienceItem: React.FC<ExperienceItemProps> = ({ title, description, className }) => {
   return (
-    <ItemContainer>
+    <ItemContainer className={className}>
       <Image /> 
       <Title>{title}</Title>
       <Description>{description}</Description>
