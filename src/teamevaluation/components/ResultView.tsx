@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FaCheck } from 'react-icons/fa'; // 체크 아이콘용 라이브러리
+import { useNavigate } from 'react-router-dom';
 
 const ResultContainer = styled.div`
   display: flex;
@@ -69,6 +70,24 @@ const CheckIcon = styled(FaCheck)`
   font-size: 24px;
 `;
 
+const ButtonContainer = styled.div`
+  display : flex;
+  margin : 20px;
+  margin-top: 70px;
+`
+const Button = styled.div`
+  display: flex;
+  width: 300px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #E32929;
+  color : #E32929;
+  font-weight: 500;
+  font-size: 20px;
+  cursor: pointer;
+`
+
 interface ResultViewProps {
   members: Array<{
     id: number;
@@ -80,6 +99,8 @@ interface ResultViewProps {
 
 const ResultView: React.FC<ResultViewProps> = ({ members }) => {
   console.log("members", members);
+  const navigate = useNavigate()
+
   return (
     <ResultContainer>
       <Logo src="/image/LogoS.png" alt="Logo" />
@@ -98,6 +119,10 @@ const ResultView: React.FC<ResultViewProps> = ({ members }) => {
           </MemberItem>
         ))}
       </MemberList>
+      <ButtonContainer>
+        <Button onClick ={()=>{
+          navigate("/")}}> 확인</Button>
+      </ButtonContainer>
     </ResultContainer>
   );
 };

@@ -3,7 +3,7 @@ import tokenAxios from "./tokenAxios"
 export const getNotice = async () => {
     try{
         const response = await tokenAxios.get('/api/alarm/project-archive');
-        console.log("서버로온 데이터", response.data);
+        console.log("알림창 / 서버로온 데이터", response.data);
         console.log("로그인한 아이디: ", localStorage.getItem('nickname'));
         return response.data;
     }  catch (error){

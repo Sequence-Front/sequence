@@ -18,7 +18,7 @@ const EvaluationRight = styled.div`
 `;
 
 const Period = styled.div`
-  margin: 15px 0;
+  margin: 10px 0;
 `;
 
 const PeriodInput = styled.input`
@@ -36,7 +36,7 @@ const PeriodInput = styled.input`
 `;
 
 const TextArea = styled.textarea`
-  width: 100%;
+  width: 90%;
   height: 100px;
   background: #2C2C2C;
   border: none;
@@ -98,21 +98,14 @@ const EvaluationForm: React.FC<EvaluationFormProps> = ({
   return (
     <EvaluationContent onClick={onClick}>
       <EvaluationLeft>
-        <Period>함께 한 기간</Period>
-        <PeriodInput
-          type="text"
-          placeholder="YYYY.MM.DD~YYYY.MM.DD"
-          value={evaluation?.period || ''}
-          onChange={handlePeriodChange}
-        />
-        
+        <Period>팀원 평가</Period>        
         <TextArea
           placeholder="팀원의 한줄평을 100자 이내로 작성주세요!"
           value={evaluation?.comment || ''}
           onChange={(e) => onChange(memberId, 'comment', e.target.value)}
           maxLength={100}
         />
-        <div style={{ textAlign: 'right', color: '#757575' }}>
+        <div style={{ width : "93%", textAlign: 'right', color: '#757575' }}>
           {(evaluation?.comment || '').length}/100
         </div>
       </EvaluationLeft>

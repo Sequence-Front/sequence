@@ -554,7 +554,7 @@ const SignUp2: React.FC<{ userData: any; onNext: () => void }> = ({ userData, on
     } catch (error: any) {
       console.log(error.response);
       if (error.response && error.response.status === 400) {
-        setErrorMessage("입력한 값이 올바르지 않습니다. 다시 확인해주세요.");
+        setErrorMessage(error.response.message);
       } else {
         setErrorMessage("서버와의 연결이 원활하지 않습니다. 다시 시도해주세요.");
       }

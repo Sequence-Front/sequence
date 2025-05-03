@@ -227,29 +227,7 @@ const Qualification = ({onDataChange}: QualificationProps) => {
     value: string
   ) => {
     const updatedQualifications = [...qualifications];
-    let newValue = value.replace(/[^0-9]/g, "");
-  
-    if (fieldIndex === 1) { 
-      if (parseInt(newValue, 10) > 12) {
-        newValue = "12";
-      }
-    }
-  
-    if (fieldIndex === 2) {
-      const month = parseInt(updatedQualifications[index][type][1], 10) || 0;
-      let maxDays = 31; 
-  
-      if ([4, 6, 9, 11].includes(month)) { 
-        maxDays = 30;
-      } else if (month === 2) { 
-        maxDays = 29;
-      }
-  
-      if (parseInt(newValue, 10) > maxDays) {
-        newValue = maxDays.toString();
-      }
-  
-    }
+    const newValue = value.replace(/[^0-9]/g, "").slice(0, 2);
   
     updatedQualifications[index][type][fieldIndex] = newValue.slice(0, 2);
     setQualifications(updatedQualifications);
@@ -259,13 +237,41 @@ const Qualification = ({onDataChange}: QualificationProps) => {
     const updatedQualifications = [...qualifications];
     let value = updatedQualifications[index][type][fieldIndex];
   
-
     if (value.length === 1) {
-      updatedQualifications[index][type][fieldIndex] = `0${value}`;
+      value = `0${value}`;
     }
   
+    if (fieldIndex === 0) {
+      updatedQualifications[index][type][fieldIndex] = value;
+      setQualifications(updatedQualifications);
+      return;
+    }
+  
+    if (value === "00" || value === "0") {
+      value = "01";
+    }
+  
+    if (fieldIndex === 1) {
+      const month = parseInt(value, 10);
+      if (isNaN(month) || month < 1) value = "01";
+      else if (month > 12) value = "12";
+    }
+  
+    if (fieldIndex === 2) {
+      const month = parseInt(updatedQualifications[index][type][1], 10) || 1;
+      let maxDay = 31;
+      if ([4, 6, 9, 11].includes(month)) maxDay = 30;
+      else if (month === 2) maxDay = 29; 
+  
+      const day = parseInt(value, 10);
+      if (isNaN(day) || day < 1) value = "01";
+      else if (day > maxDay) value = String(maxDay).padStart(2, "0");
+    }
+  
+    updatedQualifications[index][type][fieldIndex] = value;
     setQualifications(updatedQualifications);
   };
+  
 
   const convertAwardType = (type: string) => {
     const mapping: Record<string, string> = {
