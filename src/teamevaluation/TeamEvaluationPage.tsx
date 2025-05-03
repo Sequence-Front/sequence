@@ -204,11 +204,6 @@ const handleEvaluationChange = (memberId: number, field: string, value: any) => 
         return false;
       }
 
-      if (!evaluation.period || evaluation.period.length < 21) {
-        setError(`${member.name}의 함께 한 기간을 입력해주세요.`);
-        return false;
-      }
-
       if (!evaluation.comment || evaluation.comment.trim() === '') {
         setError(`${member.name}의 한줄평을 입력해주세요.`);
         return false;

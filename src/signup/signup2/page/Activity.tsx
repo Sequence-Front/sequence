@@ -235,44 +235,60 @@ const Activity = ({ onDataChange }: ActivityProps) => {
     value: string
   ) => {
     const updatedActivities = [...activities];
-    let newValue = value.replace(/[^0-9]/g, ""); 
+    const newValue = value.replace(/[^0-9]/g, "").slice(0, 2);
   
-    if (fieldIndex === 1) { 
-      if (parseInt(newValue, 10) > 12) {
-        newValue = "12";
-      }
-    }
-  
-    if (fieldIndex === 2) {
-      const month = parseInt(updatedActivities[index][type][1], 10) || 0;
-      let maxDays = 31; 
-  
-      if ([4, 6, 9, 11].includes(month)) { 
-        maxDays = 30;
-      } else if (month === 2) { 
-        maxDays = 29;
-      }
-  
-      if (parseInt(newValue, 10) > maxDays) {
-        newValue = maxDays.toString();
-      }
-  
-    }
-  
-    updatedActivities[index][type][fieldIndex] = newValue.slice(0, 2);
+    updatedActivities[index][type][fieldIndex] = newValue;
     setActivities(updatedActivities);
   };
   
-  const handleDateBlur = (index: number, type: "startDate" | "endDate", fieldIndex: number) => {
+  
+  const handleDateBlur = (
+    index: number,
+    type: "startDate" | "endDate",
+    fieldIndex: number
+  ) => {
     const updatedActivities = [...activities];
     let value = updatedActivities[index][type][fieldIndex];
   
+    // 1자리면 앞에 0 붙이기
     if (value.length === 1) {
-      updatedActivities[index][type][fieldIndex] = `0${value}`; 
+      value = `0${value}`;
     }
   
+    if (fieldIndex === 0) {
+      updatedActivities[index][type][fieldIndex] = value;
+      setActivities(updatedActivities);
+      return;
+    }
+  
+    if (value === "00" || value === "0") {
+      value = "01";
+    }
+  
+    // 월 보정
+    if (fieldIndex === 1) {
+      const month = parseInt(value, 10);
+      if (isNaN(month) || month < 1) value = "01";
+      else if (month > 12) value = "12";
+    }
+  
+    // 일 보정
+    if (fieldIndex === 2) {
+      const month = parseInt(updatedActivities[index][type][1], 10) || 1;
+      let maxDay = 31;
+      if ([4, 6, 9, 11].includes(month)) maxDay = 30;
+      else if (month === 2) maxDay = 29;
+  
+      const day = parseInt(value, 10);
+      if (isNaN(day) || day < 1) value = "01";
+      else if (day > maxDay) value = String(maxDay).padStart(2, "0");
+    }
+  
+    updatedActivities[index][type][fieldIndex] = value;
     setActivities(updatedActivities);
   };
+  
+ 
 
 
   const handleChange = (
