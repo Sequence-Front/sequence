@@ -192,8 +192,8 @@ const ProjectPage: React.FC = () => {
     const fetchProjects = async () => {
       setIsLoading(true);
       try {
-        const response = await getProjects();
-        const projectList = response.data.map((item: any) => new Project(
+        const response = await getProjects(currentPage);
+        const projectList = response.data.projects.map((item: any) => new Project(
           item.id,
           item.title,
           item.writer,
@@ -202,6 +202,7 @@ const ProjectPage: React.FC = () => {
           [] 
         ));
         setProjects(projectList);
+        setTotalPages(response.data.totalPages);
       } catch (error) {
         console.error('프로젝트 로딩 실패:', error);
       } finally {
@@ -219,100 +220,64 @@ const ProjectPage: React.FC = () => {
       try {
         let response;
         if (searchTerm) {
+          // 검색어가 있을 때는 검색 API만 사용
           response = await searchProjects(searchTerm);
-        } else {
-          response = await getProjects();
-        }
-        const projectList = response.data.map((item: any) => new Project(
-          item.id,
-          item.title,
-          item.writer,
-          item.createdDate,
-          item.roles,
-          []
-        ));
-        setProjects(projectList);
-      } catch (error) {
-        console.error('프로젝트 검색 실패:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchFilteredProjects();
-  }, [searchTerm]);
-
-  //키워드 필터링
-  useEffect(() => {
-    const fetchFilteredProjects = async () => {
-      setIsLoading(true);
-      try {
-        if (selectedTags.length === 0) {
-          const response = await getProjects();
-          const projectList = response.data.map((item: any) => new Project(
-            item.id,
-            item.title,
-            item.writer,
-            item.createdDate,
-            item.roles,
-            []
-          ));
-          setProjects(projectList);
-          if (response.totalPages !== undefined) {
-            setTotalPages(response.totalPages);
+          if (response && Array.isArray(response)) {
+            const projectList = response.map((item: any) => new Project(
+              item.id,
+              item.title,
+              item.writer,
+              item.createdDate,
+              item.roles,
+              []
+            ));
+            setProjects(projectList);
+            setTotalPages(1); // 검색 결과는 페이지네이션 없음
+          } else {
+            setProjects([]);
+            setTotalPages(1);
           }
         } else {
-          // 기간 필터링을 위한 특별 처리
-          const periodTag = selectedTags.find(tag => tagOptions.기간.includes(tag));
-          
+          // 검색어가 없을 때만 필터링 적용
           const filters = {
             category: selectedTags.find(tag => tagOptions.분야.includes(tag)),
-            periodKey: periodTag ? periodFilterMapping[periodTag as keyof typeof periodFilterMapping] : undefined,
+            periodKey: selectedTags.find(tag => tagOptions.기간.includes(tag)) 
+              ? periodFilterMapping[selectedTags.find(tag => tagOptions.기간.includes(tag)) as keyof typeof periodFilterMapping] 
+              : undefined,
             roles: selectedTags.find(tag => tagOptions.역할.includes(tag)),
             skills: selectedTags.find(tag => tagOptions.필요스킬.includes(tag)),
             meetingOption: selectedTags.find(tag => tagOptions.회의.includes(tag)),
             step: selectedTags.find(tag => tagOptions.프로젝트단계.includes(tag))
           };
           
-          // 필터 객체에서 undefined 값 제거
-          Object.keys(filters).forEach(key => {
-            if (filters[key as keyof typeof filters] === undefined) {
-              delete filters[key as keyof typeof filters];
-            }
-          });
-          
-          console.log('필터링 요청:', filters); // 디버깅용 로그
-          
-          const response = await filterProjects(filters);
-          const projectList = response.data.map((item: any) => new Project(
-            item.id,
-            item.title,
-            item.writer,
-            item.createdDate,
-            item.roles,
-            []
-          ));
-          setProjects(projectList);
-          if (response.totalPages !== undefined) {
-            setTotalPages(response.totalPages);
+          response = await getProjects(filters, currentPage - 1);
+          if (response.data && response.data.projects) {
+            const projectList = response.data.projects.map((item: any) => new Project(
+              item.id,
+              item.title,
+              item.writer,
+              item.createdDate,
+              item.roles,
+              []
+            ));
+            setProjects(projectList);
+            setTotalPages(response.data.totalPages || 1);
+          } else {
+            setProjects([]);
+            setTotalPages(1);
           }
         }
       } catch (error) {
-        console.error('프로젝트 필터링 실패:', error);
+        console.error('프로젝트 검색 실패:', error);
+        setProjects([]);
+        setTotalPages(1);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchFilteredProjects();
-  }, [selectedTags]);
-
-  const projectsPerPage = 12;
-  const indexOfLastProject = currentPage * projectsPerPage;
-  const indexOfFirstProject = indexOfLastProject - projectsPerPage;
-  const currentProjects = projects.slice(indexOfFirstProject, indexOfLastProject);
-  
-  const calculatedTotalPages = totalPages || Math.ceil(projects.length / projectsPerPage);
+  }, [searchTerm, selectedTags, currentPage]);
 
   const handleTagClick = (tag: string) => {
     setCurrentPage(1);
@@ -321,6 +286,15 @@ const ProjectPage: React.FC = () => {
         ? prev.filter(t => t !== tag)
         : [...prev, tag]
     );
+  };
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentPage(1);
+    setSearchTerm(e.target.value);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   const [activeCategory, setActiveCategory] = useState<TagCategory>('분야');
@@ -349,7 +323,7 @@ const ProjectPage: React.FC = () => {
         <SearchInput 
           placeholder="프로젝트 제목을 검색해보세요!" 
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={handleSearch}
         />
         <SearchIcon />
         <AddProjectButton onClick={() => navigate('/project/registration')}>
@@ -403,7 +377,7 @@ const ProjectPage: React.FC = () => {
             defaultHeight={450}
             sx={{ margin: 0 }}
           >
-            {currentProjects.map((project) => (
+            {projects.map((project) => (
               <ProjectCard 
                 key={project.id} 
                 project={project}
@@ -423,8 +397,8 @@ const ProjectPage: React.FC = () => {
       {projects.length > 0 && (
         <Pagination 
           currentPage={currentPage}
-          totalPages={calculatedTotalPages}
-          onPageChange={setCurrentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
         />
       )}
     </Container>

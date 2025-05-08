@@ -1,9 +1,21 @@
 import tokenAxios from "./tokenAxios";
 
-const getProjects = async () => {
+const getProjects = async (filters = {}, page = 0, size = 12) => {
   try {
-    const response = await tokenAxios.get('/api/projects/filter/keyword');
-    console.log(response)
+    const queryParams = new URLSearchParams();
+    
+    // 필터 파라미터 추가
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value) {
+        queryParams.append(key, value);
+      }
+    });
+    
+    // 페이지네이션 파라미터 추가
+    queryParams.append('page', page);
+    queryParams.append('size', size);
+    
+    const response = await tokenAxios.get(`/api/projects/filter/keyword?${queryParams.toString()}`);
     return response.data;
   } catch (error) {
     console.error('프로젝트 조회 에러:', error);
