@@ -25,8 +25,15 @@ const ProfileContainer = styled.div`
 const ImageSection = styled.div`
   width: clamp(250px, 30vw, 400px);
   height: clamp(250px, 30vw, 400px);
-  background-color: #d9d9d9;
   flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 10px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const InfoSection = styled.div`
@@ -212,6 +219,7 @@ interface ProfileProps {
   skills?: string[];
   desiredJobs?: string[];
   schoolname?: string;
+  image?: string;
 }
 
 const Profile: React.FC<ProfileProps> = ({
@@ -220,6 +228,7 @@ const Profile: React.FC<ProfileProps> = ({
   skills,
   desiredJobs,
   schoolname,
+  image
 }) => {
   const navigate = useNavigate();
   const localNickname = localStorage.getItem("nickname");
@@ -248,7 +257,9 @@ const Profile: React.FC<ProfileProps> = ({
   };
   return (
     <ProfileContainer>
-      <ImageSection />
+      <ImageSection>
+        {image && <img src={image} alt="프로필 이미지" />}
+      </ImageSection>
       <InfoSection>
         <TopInfo>
           <div>

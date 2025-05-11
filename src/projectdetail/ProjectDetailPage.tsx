@@ -24,8 +24,6 @@ const Container = styled.div`
   margin: 0 auto;
 `;
 
-
-
 const TitleSection = styled.div`
   margin: 4rem auto;
   width: 75%;

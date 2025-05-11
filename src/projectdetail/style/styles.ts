@@ -13,10 +13,10 @@ export const SectionTitle = styled.div`
 export const Content = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  gap: 2rem;
   
   @media (max-width: 1200px) {
-    gap: 4rem;
+    flex-direction: column;
   }
 `;
 
@@ -26,13 +26,23 @@ export const FirstColumn = styled.div`
 `;
 
 export const SecondColumn = styled.div`
-  width: clamp(100px, 25vw, 180px);
+  width: clamp(200px, 25vw, 300px);
   flex-shrink: 0;
+  
+  @media (max-width: 1200px) {
+    width: 100%;
+  }
 `;
 
 export const ThirdColumn = styled.div`
   flex: 1;
+  min-width: 300px;
   max-width: 600px;
+  
+  @media (max-width: 1200px) {
+    width: 100%;
+    max-width: none;
+  }
 `;
 
 export const LabelTitle = styled.div`
@@ -42,16 +52,18 @@ export const LabelTitle = styled.div`
   color: white;
 `;
 
-export const ChipsWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
-`;
-
 export const ContentText = styled.div`
   margin-bottom: 2rem;
   color: #BDBDBD;
   font-size: clamp(0.9rem, 1vw, 1rem);
+  width: 100%;
+`;
+
+export const ChipsWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: 100%;
 `;
 
 export const Description = styled.p`

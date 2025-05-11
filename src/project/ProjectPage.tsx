@@ -222,8 +222,8 @@ const ProjectPage: React.FC = () => {
         if (searchTerm) {
           // 검색어가 있을 때는 검색 API만 사용
           response = await searchProjects(searchTerm);
-          if (response && Array.isArray(response)) {
-            const projectList = response.map((item: any) => new Project(
+          if (response && response.data && response.data.projects) {
+            const projectList = response.data.projects.map((item: any) => new Project(
               item.id,
               item.title,
               item.writer,
@@ -232,7 +232,7 @@ const ProjectPage: React.FC = () => {
               []
             ));
             setProjects(projectList);
-            setTotalPages(1); // 검색 결과는 페이지네이션 없음
+            setTotalPages(response.data.totalPages || 1);
           } else {
             setProjects([]);
             setTotalPages(1);

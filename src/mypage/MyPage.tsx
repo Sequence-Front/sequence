@@ -9,7 +9,6 @@ import Portfolio from "./page/Portfolio";
 import MemberEvaluation from "./page/MemberEvaluation";
 import MyActivity from "./page/MyActivity";
 import { getMyInfo } from "../api/myInfo";
-import { HistoryDataType } from "./types/history.types";
 
 const Container = styled.div`
   width: 100%;
@@ -60,6 +59,7 @@ interface MyPageData {
   basicInfo: {
     address: string;
     birth: string;
+    profileImg: string;
     degree: string;
     desiredJob: string[];
     entranceDate: string;
@@ -188,6 +188,7 @@ const MyPage = () => {
             birth={profileData?.basicInfo.birth}
             skills={profileData?.basicInfo.skillCategory || []}
             desiredJobs={profileData?.basicInfo.desiredJob || []}
+            image={profileData?.basicInfo.profileImg}
             // introduction={profileData?.careerHistory.introduction || ""}
           />
           <TabContainer>

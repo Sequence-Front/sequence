@@ -43,7 +43,7 @@ const LoginPage: React.FC = () => {
     const loginSuccess = await login(formData);
     
     if (loginSuccess) {
-      navigate('/project');
+      navigate('/');
     } else {
       alert('로그인에 실패했습니다. 아이디와 비밀번호를 다시 확인해주세요.');
     }
