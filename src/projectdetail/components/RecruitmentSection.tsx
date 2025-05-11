@@ -35,7 +35,7 @@ const RecruitmentSection = ({ recruitmentData }: RecruitmentSectionProps) => {
 
         <ThirdColumn>
           <LabelTitle>모집글</LabelTitle>
-          <Description>{recruitmentData.description}</Description>
+          <Description>{recruitmentData.article}</Description>
         </ThirdColumn>
       </Content>
     </Section>
