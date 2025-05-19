@@ -48,12 +48,12 @@ const DetailBox =styled.div`
   align-items: center;
   gap: 1rem;
 `
-
-const TempImage = styled.div`
+const ProfileImage = styled.img`
   background-color: grey;
-  border-radius: 50%;
   width: 40px;
   height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
 `
 
 const IconContainer = styled.div`
@@ -81,6 +81,7 @@ interface ProjectDetail {
   link: string;
   isBookmark: boolean;
   bookmarks: number;
+  writerProfileImage: string;
   members: Array<{
     profileImgUrl: string | null;
     nickname: string;
@@ -91,12 +92,14 @@ interface ProjectDetail {
       writer: string;
       content: string;
       createdLocalDateTime: string;
+      profileImage: string;
     };
     childComments: Array<{
       id: number;
       writer: string;
       content: string;
       createdLocalDateTime: string;
+      profileImage: string;
     }>;
   }>;
 }
@@ -191,7 +194,10 @@ const ProjectDetailPage = () => {
         </Title>
         <Detail>
           <DetailBox>
-            <TempImage/>
+            <ProfileImage 
+              src={projectData.writerProfileImage|| '/default-profile-image.png'} 
+              alt={projectData.writer} 
+            />
             <div>{projectData.writer}</div>
             <div>{projectData.createdDate}</div>
           </DetailBox>

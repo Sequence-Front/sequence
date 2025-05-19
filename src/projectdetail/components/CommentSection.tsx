@@ -73,12 +73,14 @@ interface Comment {
       writer: string;
       content: string;
       createdLocalDateTime: string;
+      profileImage: string;
     };
     childComments: Array<{
       id: number;
       writer: string;
       content: string;
       createdLocalDateTime: string;
+      profileImage: string;
     }>;
   }>;
   onCommentAdd: () => void;

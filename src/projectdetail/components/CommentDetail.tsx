@@ -142,12 +142,14 @@ interface CommentDetailProps {
     writer: string;
     content: string;
     createdLocalDateTime: string;
+    profileImage: string;
   };
   childComments: Array<{
     id: number;
     writer: string;
     content: string;
     createdLocalDateTime: string;
+    profileImage: string;
   }>;
   onCommentAdd: () => void;
 }
@@ -250,7 +252,10 @@ const CommentDetail = ({
             />
       </ReportIcon>
       <UserName>
-        <ProfileImage src="https://buly.kr/GZwmWfY" alt={`${comment.writer}'s profile`} />
+        <ProfileImage 
+          src={comment.profileImage || '/default-profile-image.png'} 
+          alt={comment.writer} 
+        />
         {comment.writer}
         <TimeStamp>{formatDateTime(comment.createdLocalDateTime)}</TimeStamp>
       </UserName>
@@ -287,8 +292,8 @@ const CommentDetail = ({
       </div>
 
       <ReplyContainer>
-        {childComments.map((reply) => (
-          <ReplyItem key={reply.id}>
+        {childComments.map((childComment) => (
+          <ReplyItem key={childComment.id}>
             <img src="/image/ReplyImg.svg" alt="답글 아이콘" style={{ width: '3.5rem' }} />
             <ReplyContent>
               <ReportIcon>
@@ -300,33 +305,36 @@ const CommentDetail = ({
                 navigate(`/report`, {
                 state: {
                   targetType: 'project_comment',
-                  targetId: reply.id
+                  targetId: childComment.id
                 }})}
               />
               </ReportIcon>
               <UserName>
-                <ProfileImage src="https://buly.kr/GZwmWfY" alt={`${reply.writer}'s profile`} />
-                {reply.writer}
-                <TimeStamp>{formatDateTime(reply.createdLocalDateTime)}</TimeStamp>
+                <ProfileImage 
+                  src={childComment.profileImage|| '/default-profile-image.png'} 
+                  alt={childComment.writer} 
+                />
+                {childComment.writer}
+                <TimeStamp>{formatDateTime(childComment.createdLocalDateTime)}</TimeStamp>
               </UserName>
               
-              {editingReplyId === reply.id ? (
+              {editingReplyId === childComment.id ? (
                 <CommentInput
                   comment={editReplyContent}
                   setComment={setEditReplyContent}
-                  handleSubmit={() => handleReplyEdit(reply.id)}
+                  handleSubmit={() => handleReplyEdit(childComment.id)}
                   maxLength={300}
                 />
               ) : (
                 <>
-                  <ReplyText>{reply.content}</ReplyText>
-                  {nickname === reply.writer && (
+                  <ReplyText>{childComment.content}</ReplyText>
+                  {nickname === childComment.writer && (
                     <ActionButtons>
                       <ActionButton onClick={() => {
-                        setEditingReplyId(reply.id);
-                        setEditReplyContent(reply.content);
+                        setEditingReplyId(childComment.id);
+                        setEditReplyContent(childComment.content);
                       }}>수정</ActionButton>
-                      <ActionButton onClick={() => handleReplyDelete(reply.id)}>삭제</ActionButton>
+                      <ActionButton onClick={() => handleReplyDelete(childComment.id)}>삭제</ActionButton>
                     </ActionButtons>
                   )}
                 </>
