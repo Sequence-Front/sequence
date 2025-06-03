@@ -25,7 +25,6 @@ const Title = styled.div`
 
 const Card = styled.div`
   border-radius: 8px;
-  padding: 20px;
   cursor: pointer;
   
   &:hover {
