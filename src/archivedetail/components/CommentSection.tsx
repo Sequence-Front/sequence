@@ -35,7 +35,7 @@ const StyledInput = styled.input`
   background-color: transparent;
   border: none;
   color: white;
-  font-size: clamp(1rem, 1.5vw, 1.5rem);
+  font-size: 1.5rem;
 
   &:focus {
     outline: none;
@@ -48,7 +48,7 @@ const StyledInput = styled.input`
 
 const CharCount = styled.span`
   color: #757575;
-  font-size: 0.9rem;
+  font-size: 1rem;
   align-self: center;
 `;
 

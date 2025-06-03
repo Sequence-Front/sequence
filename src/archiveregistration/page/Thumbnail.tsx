@@ -29,7 +29,7 @@ const ThumbnailIntro = styled.div`
   color: white;
   margin-bottom: clamp(2rem, 2.5vw, 3rem);
   text-align: center;
-  font-size: clamp(16px, 1.5vw, 24px);
+  font-size: 1.5rem;
 `;
 
 const PhotoPreview = styled.label<{ imageFile: File | null }>`
@@ -91,7 +91,7 @@ const DefaultPhotoComponent = styled.div`
   background-color: #151515;
   justify-content: center;
   align-items: center;
-  font-size: 20px;
+  font-size: 1.5rem;
   padding: 0;
   color: #e32929;
   cursor: pointer;

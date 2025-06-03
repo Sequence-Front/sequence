@@ -45,7 +45,7 @@ const Input = styled.input`
   background: none;
   border: none;
   color: white;
-  font-size: clamp(10px, 1vw, 18px);
+  font-size: 1rem;
   outline: none;
 
   &::placeholder {
@@ -90,7 +90,7 @@ const ProfileImage = styled.div<{ src: string }>`
 
 const UserName = styled.div`
   margin-right: 10px;
-  font-size: clamp(12px, 1.5vw,24px);
+  font-size: 1rem;
   color: white;
 `;
 
@@ -98,7 +98,7 @@ const RoleTag = styled.div`
   display: inline-flex;
   align-items: center;
   padding: 4px 8px;
-  font-size: clamp(8px, 1vw, 16px);
+  font-size: 1rem;
   color: white;
   border: 1px solid white;
   border-radius: 15px;
@@ -222,7 +222,7 @@ const ProjectMember = ({  results,  onMemberSelect}: {  results: { name: string;
               setIsResultsVisible(true);
             }}
           />
-          <SearchIcon style={{ fontSize:"clamp(18px, 1.5vw, 26px)" }} />
+          <SearchIcon style={{ fontSize:"3rem" }} />
         </SearchBox>
         <SearchResultsContainer visible={isResultsVisible}>
           {filteredResults.map((user, index) => (
@@ -243,7 +243,7 @@ const ProjectMember = ({  results,  onMemberSelect}: {  results: { name: string;
                 <UserName>{user.name}</UserName>
                 <RoleTag>{user.role}</RoleTag>
               </MemberInfo>
-              <HiXMark style={{marginLeft:"0.3rem", fontSize:"clamp(1.8rem,2vw, 3rem)", color :"#e32929", cursor: "pointer"}}onClick={() => handleDeleteUser(user.id)}/>
+              <HiXMark style={{marginLeft:"0.3rem", fontSize:"3rem", color :"#e32929", cursor: "pointer"}}onClick={() => handleDeleteUser(user.id)}/>
             </MemberRow>
           ))}
         </AddedMembersContainer>

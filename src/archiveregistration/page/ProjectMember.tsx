@@ -46,7 +46,7 @@ const Input = styled.input`
   background: none;
   border: none;
   color: white;
-  font-size: clamp(10px, 1vw, 18px);
+  font-size: 1rem;
   outline: none;
 
   &::placeholder {
@@ -91,7 +91,7 @@ const ProfileImage = styled.div<{ src: string }>`
 
 const UserName = styled.div`
   margin-right: 10px;
-  font-size: clamp(12px, 1.5vw,24px);
+  font-size: 1rem;
   color: white;
 `;
 
@@ -99,7 +99,7 @@ const RoleTag = styled.div`
   display: inline-flex;
   align-items: center;
   padding: 4px 8px;
-  font-size: clamp(8px, 1vw, 16px);
+  font-size: 1rem;
   color: white;
   border: 1px solid white;
   border-radius: 15px;

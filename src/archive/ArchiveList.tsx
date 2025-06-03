@@ -16,7 +16,7 @@ const SearchBar = styled.div`
   margin-bottom: clamp(3rem, 5vw, 5rem);
   margin-top: clamp(3rem, 5vw, 5rem);
   justify-content: space-between;
-  width: 75%;
+  width: 70%;
 `;
 
 const SearchInput = styled.input`
@@ -26,7 +26,7 @@ const SearchInput = styled.input`
   color: white;
   width: clamp(200px, 30vw, 500px);
   padding: 0.5rem;
-  font-size: clamp(0.8rem, 1.2vw, 1.5rem);
+  font-size: 1rem;
   
   &:focus {
     outline: none;
@@ -56,7 +56,6 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0 2rem;
 `;
 
 const ArchiveGrid = styled.div`
@@ -64,7 +63,7 @@ const ArchiveGrid = styled.div`
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
     margin: 2rem auto;
-    width: 75%;
+    width: 70%;
 `;
 
 export const ProjectInfo = styled.div`
@@ -78,7 +77,7 @@ const NoResults = styled.div`
   text-align: center;
   padding: 40px;
   color: white;
-  font-size: 1.1rem;
+  font-size: 1rem;
 `;
 
 const ArchiveList = () => {
@@ -131,7 +130,7 @@ const ArchiveList = () => {
                         아카이브 프로젝트 등록하기 <AiOutlinePlus size={28}/>
                     </AddProjectButton>
                 </SearchBar>
-                <div style={{width: '75%'}}>
+                <div style={{width: '70%'}}>
                     총 {archives.length}건의 게시글
                 </div>
                 

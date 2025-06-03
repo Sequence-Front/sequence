@@ -35,7 +35,7 @@ const StyledInput = styled.input`
   background-color: transparent;
   border: none;
   color: white;
-  font-size: clamp(1rem, 1.5vw, 1.5rem);
+  font-size: 1rem;
 
   &:focus {
     outline: none;

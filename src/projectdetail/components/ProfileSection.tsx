@@ -70,12 +70,12 @@ const ProfileInfo = styled.div`
   
   h3 {
     margin: 0 0 0.5rem 0;
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: #212121;
   }
   
   p {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 600;
     margin: 0;
     padding: 0.5rem 1rem;

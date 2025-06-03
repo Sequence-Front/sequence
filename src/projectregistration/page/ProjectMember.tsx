@@ -124,7 +124,7 @@ const RoleTag = styled.div`
   display: inline-flex;
   align-items: center;
   padding: 5px 10px;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: white;
   border: 1px solid white;
   border-radius: 15px;
@@ -229,7 +229,7 @@ const ProjectMember = ({  onMemberSelect,  defaultMembers = []}: {  onMemberSele
         {userList.length > 0 ? (
           userList.map((user) => (
             <div key={user.id} style={{ marginBottom: "10px" }}>
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div style={{ display: "flex", alignItems: "center" }} title = {user.name}>
                 <ProfileImage src={user.profile} />
                 <UserName>{user.name}</UserName>
                 <RoleTag>{user.role}</RoleTag>

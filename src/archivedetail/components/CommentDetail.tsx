@@ -17,14 +17,14 @@ const CommentContainer = styled.div`
 const UserName = styled.div`
   display: flex;
   align-items: center;
-  font-size: clamp(0.7rem, 1.4vw, 1.4rem);
+  font-size: 1rem;
   color: #bdbdbd;
   margin-bottom: 8px;
 `
 
 const ProfileImage = styled.img`
-  width: clamp(1rem, 2vw, 2rem);
-  height: clamp(1rem, 2vw, 2rem);
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
   margin-right: 10px;
   border: 1px solid #bdbdbd;
@@ -35,7 +35,7 @@ const Role = styled.span`
   border: 1px solid #e32929;
   padding: 5px;
   border-radius: 20px;
-  font-size: clamp(0.6rem, 1vw, 1rem);
+  font-size: 1rem;
   color: #e32929;
   margin-left: 8px;
 `
@@ -43,14 +43,14 @@ const Role = styled.span`
 const TimeStamp = styled.div`
   display: flex;
   font-family: "SUIT";
-  font-size: clamp(0.7rem, 1.4vw, 1.4rem);
+  font-size: 1rem;
   color: #bdbdbd;
   margin-left: 14px;
 `
 
 const CommentText = styled.div`
   font-family: "SUIT", sans-serif;
-  font-size: clamp(0.7rem, 1.4vw, 1.4rem);
+  font-size: 1rem;
   font-weight: 400;
   margin: 1rem 0;
 `
@@ -61,7 +61,7 @@ const ReplyButton = styled.button`
   border: none;
   padding: 8px;
   cursor: pointer;
-  font-size: clamp(0.5rem, 1vw, 1rem);
+  font-size: 1rem;
   border: 1px solid #424242;
   margin-top: 0.5rem;
 `
@@ -93,21 +93,21 @@ const ReplyInputWrapper = styled.div`
 `
 
 const ReplyToText = styled.span`
-font-size: clamp(0.7rem, 1.4vw, 1.4rem);
+font-size: 1rem;
   font-weight: bold;
   color: #bdbdbd;
   margin-left: 8px;
 `
 
 const ReplyText = styled.div`
-font-size: clamp(0.7rem, 1.4vw, 1.4rem);
+font-size: 1rem;
   color: white;
 `
 
 const ReportIcon = styled.div`
   position: absolute;
   right: 8px;
-  font-size: clamp(1.5rem, 2vw, 2.3rem);
+  font-size: 2.3rem;
   color: #e32929;
   cursor: pointer;
 `
@@ -130,7 +130,7 @@ const ActionButton = styled.button`
   border: none;
   padding: 8px;
   cursor: pointer;
-  font-size: clamp(0.5rem, 1vw, 1rem);
+  font-size: 1rem;
   border: 1px solid #424242;
 `
 
