@@ -35,19 +35,19 @@ const ItemInfo = styled.div`
 `;
 
 const Title = styled.h3`
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     margin: 0;
 `;
 
 const Date = styled.span`
     color: #666;
-    font-size: 0.9rem;
+    font-size: 1rem;
 `;
 
 const UserTempImage = styled.div`
     background-color: #919191;
-    width: 20px;
-    height: 20px;
+    width: 2rem;
+    height: 2rem;
     border-radius: 50%;
 `
 
@@ -92,7 +92,7 @@ const StatItem = styled.div`
 `;
 
 const StatText = styled.div`
-    font-size: clamp(0.5rem, 1.25vw, 1.8rem);
+    font-size: 1rem;
 `;
 
 interface ArchiveItemProps {

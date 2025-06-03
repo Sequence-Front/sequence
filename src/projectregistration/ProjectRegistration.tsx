@@ -30,7 +30,7 @@ const HeaderContainer = styled.div`
 `
 const ProjectTitle = styled.input`
   display :flex;
-  font-size:clamp(1.9rem, 3.8vw, 3.8rem);
+  font-size: 3rem;
   color: white;
   margin-bottom: clamp(2rem, 3vw, 3.5rem);
   font-weight: bold;
@@ -67,15 +67,14 @@ const ProfileImage = styled.div<{ src: string }>`
 const UserName = styled.div`
   display: flex;
   margin-right: clamp(10px, 1vw, 1rem);
-  font-size: clamp(10px, 1.5vw, 1.5rem);
+  font-size: 1rem;
   font-family: 'SUIT', sans-serif;
   color: #BDBDBD;
 `
 
-
 const Date = styled.div`
   display: flex;
-  font-size: clamp(10px, 1.5vw, 1.5rem);
+  font-size: 1rem;
   font-family: 'SUIT', sans-serif;
   color: #BDBDBD;
 `
@@ -92,17 +91,17 @@ const Tag = styled.div`
   display: flex;
   color : #E32929;
   margin-bottom: clamp(1rem, 1.5vw, 1.5rem);
-  font-size:clamp(0.8rem, 1.5vw, 1.5rem);
+  font-size: 1.5rem;
   font-family: 'SUIT', sans-serif;
   font-weight: 700;
 `
 
 const Info = styled.div`
   display: flex;
-  font-size: clamp(0.8rem, 1.5vw, 1.5rem);
+  font-size: 1.2rem;
   color: white;
-    font-family: 'SUIT', sans-serif;
-    font-weight: 600;
+  font-family: 'SUIT', sans-serif;
+  font-weight: 600;
 `
 
 const ContentContainer = styled.div`
@@ -130,7 +129,7 @@ const Input = styled.input`
   display: flex;
   flex: 1;
   padding: clamp(0.5rem, 1vw, 15px);
-  font-size: clamp(10px, 1vw, 1.3rem);
+  font-size: 1rem;
   padding-left: 0;
   background: #151515;
   color: white;
@@ -152,10 +151,9 @@ const InputLink = styled.input`
   width: 100%;
   background-color: #212121;
   color: #9e9e9e;
-  font-size: clamp(10px, 1.2vw, 1.3rem);
+  font-size: 1rem;
   padding: clamp(0.5rem, 1vw, 15px);
   border: none;
-  font-size: clamp(10px, 1.2vw, 1.3rem);
   box-sizing: border-box;
 
   &::placeholder {
@@ -186,7 +184,7 @@ const Title = styled.div`
   font-family: "SUIT";
   font-weight: 500;
   margin-bottom: clamp(5px, 0.5vw, 10px);
-  font-size: clamp(1rem, 1.5vw, 1.5rem);
+  font-size: 1.5rem;
 `
 
 const Option = styled.button<{ selected: boolean }>`
@@ -195,7 +193,7 @@ const Option = styled.button<{ selected: boolean }>`
   padding: clamp(5px, 1vw, 8px) clamp(6px, 1vw, 10px);
   margin: clamp(5px, 1vw, 7px);
   margin-left: 0;
-  font-size: clamp(0.7rem, 1.2vw, 1.1rem);
+  font-size: 1rem;
   background-color: ${(props) => (props.selected ? "red" : "#151515")};
   border: 1px solid ${(props) => (props.selected ? "red" : "white")};
   color: ${(props) => (props.selected ? "#151515" : "white")};
@@ -219,7 +217,7 @@ const TextArea = styled.textarea`
   color: white;
   border: none;
   padding: clamp(0.5rem, 1vw, 15px);
-  font-size: clamp(10px, 1.2vw, 1.3rem);
+  font-size: 1rem;
   resize: none;
   box-sizing: border-box;
 
@@ -239,7 +237,7 @@ const CharacterCount = styled.div`
   bottom: clamp(5px, 1vw, 10px);
   right: 5px;
   color: #616161;
-  font-size: 12px;
+  font-size: 0.8rem;
 `
 
 const ButtonContainer = styled.button`
@@ -253,7 +251,7 @@ const ButtonContainer = styled.button`
   margin-bottom: 3rem;
   color: #e32929;
   font-family: 'SUIT', sans-serif;
-  font-size: clamp(0.8rem, 1.5vw, 1.5rem);
+  font-size: 1.5rem;
   font-weight: 500;
   cursor: pointer;
   outline: none;

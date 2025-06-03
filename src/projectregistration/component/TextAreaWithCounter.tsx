@@ -13,7 +13,7 @@ const TextArea = styled.textarea`
   color: white;
   border: none;
   padding: clamp(0.5rem, 1vw, 15px);
-  font-size: clamp(10px, 1.2vw, 1.3rem);
+  font-size: 1rem;
   resize: none;
   box-sizing: border-box;
 
@@ -33,7 +33,7 @@ const CharacterCount = styled.div`
   bottom: clamp(5px, 1vw, 10px);
   right: 5px;
   color: #616161;
-  font-size: 12px;
+  font-size: 0.8rem;
 `
 
 interface TextAreaWithCounterProps {

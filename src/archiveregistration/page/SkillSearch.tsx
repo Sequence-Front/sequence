@@ -45,7 +45,7 @@ const Input = styled.input`
   background: none;
   border: none;
   color: white;
-  font-size: clamp(10px, 1vw, 18px);
+  font-size: 1rem;
   outline: none;
 
   &::placeholder {
@@ -79,7 +79,7 @@ const SearchResultsContainer = styled.div<{ visible: boolean }>`
 const Skill = styled.div`
   display: flex;
   margin-left: 12px;
-  font-size: clamp(12px, 1vw, 18px);
+  font-size: 1rem;
   &:hover {
     color: #ff5555;
   }
@@ -110,14 +110,14 @@ const SkillTag = styled.div`
   padding: 8px 12px;
   background-color: #e32929;
   color: #151515;
-  font-size: clamp(8px, 1vw, 16px);
+  font-size: 1rem;
   border-radius: 20px;
   font-weight: 600;
 `;
 
 const RemoveButton = styled(HiXMark)`
   margin-left: 8px;
-  font-size: clamp(12px, 1.2vw, 20px);
+  font-size: 1.2rem;
   color: #151515;
   cursor: pointer;
 

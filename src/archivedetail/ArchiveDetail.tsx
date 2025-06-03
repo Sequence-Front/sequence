@@ -16,7 +16,7 @@ const Wrapper = styled.div`
 const Container = styled.div`
   background-color: #151515;
   color: white;
-  width: 75%;
+  width: 70%;
   margin: 0 auto;
   font-family: 'SUIT', sans-serif;
 `;
@@ -36,7 +36,7 @@ const Image = styled.img`
 
 const TitleSection = styled.div`
   margin: 4rem auto;
-  width: 75%;
+  width: 70%;
   display: flex;
   flex-direction: column;
 `
@@ -48,15 +48,15 @@ const ComponentContainer = styled.div`
 `
 
 const Title = styled.div`
-  font-size: clamp(2.5rem, 5vw, 5rem);
+  font-size: 3rem;
 `
 
 const MetaTitle = styled.div`
   display: flex;
   font-family: "SUIT";
   font-weight: 500;
-  margin-bottom: clamp(15px, 1.5vw, 26px);
-  font-size: clamp(1rem, 1vw, 20px);
+  margin-bottom: clamp(0.75rem, 1.5vw, 1.5rem);
+  font-size: 1.5rem;
 `
 
 const MetadataContainer = styled.div`
@@ -84,7 +84,7 @@ const ProjectContainer = styled.div`
 const Text = styled.div`
   display: flex;
   width: 100%;
-  font-size: clamp(12px, 1.1vw, 20px);
+  font-size: 1rem;
   color: white;
   background: #151515;
   color: white;
@@ -93,7 +93,7 @@ const Text = styled.div`
 const Detail = styled.div`
   display: flex;
   justify-content: space-between;
-  font-size: clamp(1.2rem, 1.5vw, 1.5rem);
+  font-size: 1.5rem;
   color: #BDBDBD;
   margin-top: 2rem;
 `
@@ -101,7 +101,8 @@ const Detail = styled.div`
 const DetailBox =styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.8rem;
+  font-size: 1rem;
 `
 
 const TempImage = styled.div`
@@ -130,7 +131,7 @@ const SkillTag = styled.div`
   background-color: none;
   color: white;
   border: 1px solid white;
-  font-size: clamp(8px, 1vw, 16px);
+  font-size: 1rem;
   border-radius: 20px;
   font-weight: 600;
 `
@@ -166,7 +167,7 @@ const ProfileImage = styled.div<{ src: string }>`
 
 const UserName = styled.div`
   margin-right: 10px;
-  font-size: clamp(12px, 1.5vw,24px);
+  font-size: 1rem;
   color: white;
 `;
 
@@ -174,7 +175,7 @@ const RoleTag = styled.div`
   display: inline-flex;
   align-items: center;
   padding: 4px 8px;
-  font-size: clamp(8px, 1vw, 16px);
+  font-size: clamp(0.5rem, 1vw, 1rem);
   color: white;
   border: 1px solid white;
   border-radius: 15px;

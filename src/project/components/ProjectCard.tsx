@@ -9,13 +9,13 @@ const TypeTag = styled.span`
   color: white;
   padding: 4px 12px;
   border-radius: 20px;
-  font-size: 14px;
+  font-size: 1rem;
   transition: all 0.2s ease-in-out;
 `;
 
 const Title = styled.div`
   margin: 0;
-  font-size: clamp(1rem, 1.2vw, 1.5rem);
+  font-size: 1.2rem;
   color: white;
   margin-bottom: 16px;
   line-height: 1.4;
@@ -54,7 +54,7 @@ const MetaInfo = styled.div`
   align-items: center;
   width: 100%;
   color: #888;
-  font-size: clamp(1rem, 1.3vw, 1.5rem);
+  font-size: 1rem;
 `;
 
 const AuthorInfo = styled.div`

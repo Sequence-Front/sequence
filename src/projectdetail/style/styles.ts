@@ -6,8 +6,8 @@ export const Section = styled.div`
 
 export const SectionTitle = styled.div`
   color: #e32929;
-  font-size: clamp(1.2rem, 1.5vw, 1.5rem);
-  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  margin-bottom: 0.8rem;
 `;
 
 export const Content = styled.div`
@@ -46,7 +46,7 @@ export const ThirdColumn = styled.div`
 `;
 
 export const LabelTitle = styled.div`
-  font-size: clamp(1rem, 1.2vw, 1.2rem);
+  font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 1rem;
   color: white;
@@ -55,7 +55,7 @@ export const LabelTitle = styled.div`
 export const ContentText = styled.div`
   margin-bottom: 2rem;
   color: #BDBDBD;
-  font-size: clamp(0.9rem, 1vw, 1rem);
+  font-size: 1rem;
   width: 100%;
 `;
 
@@ -69,7 +69,7 @@ export const ChipsWrapper = styled.div`
 export const Description = styled.p`
   line-height: 1.6;
   color: #BDBDBD;
-  font-size: clamp(0.9rem, 1vw, 1rem);
+  font-size: 1rem;
 `;
 
 export const Tag = styled.div`
@@ -81,9 +81,9 @@ export const Tag = styled.div`
   border-radius: 20px;
   margin-right: 0.5rem;
   white-space: nowrap;
-  font-size: clamp(0.8rem, 0.9vw, 1rem);
+  font-size: 1rem;
 `;
 
 export const DescriptionWrapper = styled.div`
-  font-size: clamp(1.2rem, 1.4vw, 1.4rem);
+  font-size: 1.2rem;
 `;

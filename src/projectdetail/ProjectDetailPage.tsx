@@ -20,25 +20,25 @@ const Wrapper = styled.div`
 const Container = styled.div`
   background-color: #151515;
   color: white;
-  width: 75%;
+  width: 70%;
   margin: 0 auto;
 `;
 
 const TitleSection = styled.div`
   margin: 4rem auto;
-  width: 75%;
+  width: 100%;
   display: flex;
   flex-direction: column;
 `
 
 const Title = styled.div`
-  font-size: clamp(2.5rem, 5vw, 5rem);
+  font-size: 3rem;
 `
 
 const Detail = styled.div`
   display: flex;
   justify-content: space-between;
-  font-size: clamp(1.2rem, 1.5vw, 1.5rem);
+  font-size: 1rem;
   color: #BDBDBD;
   margin-top: 2rem;
 `
@@ -46,7 +46,7 @@ const Detail = styled.div`
 const DetailBox =styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.8rem;
 `
 const ProfileImage = styled.img`
   background-color: grey;
@@ -158,6 +158,7 @@ const ProjectDetailPage = () => {
 
   return (
     <Wrapper>
+    <Container>
       <TitleSection>
         <IconContainer>
           { projectData?.isBookmark === false &&
@@ -215,7 +216,6 @@ const ProjectDetailPage = () => {
           </DetailBox>
         </Detail>
       </TitleSection>
-      <Container>
         <ProjectSection 
           projectData={{
             projectName: projectData.projectName,

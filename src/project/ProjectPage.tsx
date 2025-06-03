@@ -13,12 +13,18 @@ import { getProjects, searchProjects, filterProjects } from '../api/project';
 import { Project } from './models/Project';
 
 const Container = styled.div`
-  padding: clamp(1rem, 3vw, 2rem);
   color: white;
-  width: 80%;
-  margin: 0 auto;
+  width: 100%;
+
 `;
 
+const ListContainer = styled.div`
+  display: flex;
+  width: 70%;
+  flex-direction: column;
+  margin: 0 auto;
+  margin-top : 4rem;
+`
 const SearchBar = styled.div`
   display: flex;
   align-items: center;
@@ -32,7 +38,7 @@ const SearchInput = styled.input`
   color: white;
   width: clamp(200px, 30vw, 500px);
   padding: 0.5rem;
-  font-size: clamp(0.8rem, 1.2vw, 1.5rem);
+  font-size: 1rem;
   
   &:focus {
     outline: none;
@@ -55,7 +61,7 @@ const AddProjectButton = styled.button`
   margin-left: auto;
   cursor: pointer;
   border: 1px solid #E32929;
-  font-size: clamp(0.8rem, 1.2vw, 1.5rem);
+  font-size: 1.2rem;
 `;
 
 const Navigation = styled.nav`
@@ -130,14 +136,14 @@ const NoResults = styled.div`
   text-align: center;
   padding: 40px;
   color: white;
-  font-size: 1.1rem;
+  font-size: 1rem;
 `;
 
 const TotalProjects = styled.div`
   position: absolute;
   right: 0;
   top: 1rem;
-  font-size: clamp(1rem, 1.2vw, 1.5rem);
+  font-size: 1rem;
 `;
 
 type TagCategory = '분야' | '기간' | '역할' | '필요스킬' | '회의' | '프로젝트단계';
@@ -319,6 +325,7 @@ const ProjectPage: React.FC = () => {
   return (
     <>
     <Container>
+      <ListContainer>
       <SearchBar>
         <SearchInput 
           placeholder="프로젝트 제목을 검색해보세요!" 
@@ -401,6 +408,7 @@ const ProjectPage: React.FC = () => {
           onPageChange={handlePageChange}
         />
       )}
+      </ListContainer>
     </Container>
     <ScrollToTopButton />
     </>
