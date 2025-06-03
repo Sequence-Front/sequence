@@ -23,7 +23,7 @@ const Container = styled.div`
 
 const HeaderContainer = styled.div`
   display: flex;
-  width: 80%;
+  width: 70%;
   flex-direction: column;
 
   margin: clamp(4rem, 8vw, 8rem) 0;
@@ -106,7 +106,7 @@ const Info = styled.div`
 
 const ContentContainer = styled.div`
   display: flex;
-  width: 80%;
+  width: 70%;
   margin-bottom: clamp(5rem,5vw,10rem);
   
 `
