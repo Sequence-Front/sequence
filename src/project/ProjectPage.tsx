@@ -81,7 +81,7 @@ const NavItem = styled.a<{ active?: boolean }>`
 const TagContainer = styled.div`
   padding: 1rem 0;
   position: relative;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 `;
 
 const TagWrapper = styled.div`
