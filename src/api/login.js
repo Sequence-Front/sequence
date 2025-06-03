@@ -17,10 +17,10 @@ const login = async (data) => {
     if (accessToken) {
       const expiresIn = 1000 * 60 * 60;
       const now = Date.now();
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('nickname', nickname);
-      localStorage.setItem('profile', profile);
-      localStorage.setItem('tokenExpiresAt', String(now + expiresIn));
+      sessionStorage.setItem('accessToken', accessToken);
+      sessionStorage.setItem('nickname', nickname);
+      sessionStorage.setItem('profile', profile);
+      sessionStorage.setItem('tokenExpiresAt', String(now + expiresIn));
       
       return true;
     }

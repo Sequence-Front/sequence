@@ -2,7 +2,7 @@ import axiosInstance from "./axiosInstance";
 
 export const memberSearch = async (nickname) => {
     try {
-        const accessToken = localStorage.getItem('accessToken');
+        const accessToken = sessionStorage.getItem('accessToken');
 
         if (!accessToken) {
             throw new Error("로그인 다시");

@@ -2,7 +2,7 @@ import axiosInstance from "./axiosInstance";
 
 export const getEvaluation = async (archiveId) => {
   try {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = sessionStorage.getItem("accessToken");
     const response = await axiosInstance.get(`/api/archive/${archiveId}/evaluations`, {
       headers: {
         access: accessToken ? accessToken : "",
@@ -19,7 +19,7 @@ export const getEvaluation = async (archiveId) => {
 
 export const postEvaluation = async (archiveId, evaluationsData) => {
   try {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = sessionStorage.getItem("accessToken");
     const response = await axiosInstance.post(`/api/archive/${archiveId}/evaluations`, evaluationsData, {
       headers: {
         access: accessToken ? accessToken : "",
@@ -35,7 +35,7 @@ export const postEvaluation = async (archiveId, evaluationsData) => {
 
 export const postStatusEvaluation= async (archiveId) => {
   try {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = sessionStorage.getItem("accessToken");
     const response = await axiosInstance.get(`/api/archive/${archiveId}/evaluations/status`,  {
       headers: {
         access: accessToken ? accessToken : "",
@@ -52,7 +52,7 @@ export const postStatusEvaluation= async (archiveId) => {
 
 export const getEvaluationStatus = async (archiveId) => {
   try {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = sessionStorage.getItem("accessToken");
     const response = await axiosInstance.get(`/api/archive/${archiveId}/evaluations/status`, {
       headers: {
         access: accessToken ? accessToken : "",

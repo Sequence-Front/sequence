@@ -211,7 +211,7 @@ interface ArchiveDetail {
 const ArchiveDetailPage = () => {
     const { id } = useParams();
     const [archiveData, setArchiveData] = useState<ArchiveDetail | null>(null);
-    const myNickname = localStorage.getItem("nickname");
+    const myNickname = sessionStorage.getItem("nickname");
     const navigate = useNavigate();
     const [images, setImages] = useState<string[]>([]);
     

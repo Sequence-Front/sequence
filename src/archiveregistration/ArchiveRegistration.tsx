@@ -297,7 +297,7 @@ const ArchiveRegistration = () => {
   const navigate = useNavigate();
   const { archiveId } = useParams();
   const isEdit = !!archiveId;
-  const [loginUser, ] = useState(localStorage.getItem('nickname'));
+  const [loginUser, ] = useState(sessionStorage.getItem('nickname'));
   const [date, setDate] = useState("");
     useEffect(() => {
       const today = new window.Date();

@@ -231,7 +231,7 @@ const Profile: React.FC<ProfileProps> = ({
   image
 }) => {
   const navigate = useNavigate();
-  const localNickname = localStorage.getItem("nickname");
+  const localNickname = sessionStorage.getItem("nickname");
   const formatBirth = (birth?: string) => {
     if (!birth) return "";
     const date = new Date(birth);
@@ -246,12 +246,12 @@ const Profile: React.FC<ProfileProps> = ({
       try {
         const response = await postLogout();
         console.log("로그아웃 response", response);
-        localStorage.clear();
+        sessionStorage.clear();
         alert("로그아웃 되었습니다.");
         navigate("/login");
       } catch (error) {
         console.log("error: ", error);
-        console.log("로그아웃 엑세스토큰 ", localStorage.getItem("accessToken"));
+        console.log("로그아웃 엑세스토큰 ", sessionStorage.getItem("accessToken"));
       }
     }
   };

@@ -3,10 +3,10 @@ import tokenAxios from "./tokenAxios";
 export const getMyInfo = async () => {
     const params = new URLSearchParams(window.location.search);
     const nickname = params.get('nickname');
-    const storedNickname = localStorage.getItem('nickname');
+    const storedNickname = sessionStorage.getItem('nickname');
     
     try {
-        const accessToken = localStorage.getItem('accessToken');
+        const accessToken = sessionStorage.getItem('accessToken');
 
         if (!accessToken) {
             throw new Error("로그인 다시");

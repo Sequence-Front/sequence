@@ -2,7 +2,7 @@ import tokenAxios from "./tokenAxios";
 
 const CommentPost = async (id: string | undefined, comment: string, parentCommentId?: number | null) => {
   try {
-    const nickname = localStorage.getItem('nickname');
+    const nickname = sessionStorage.getItem('nickname');
     
     const requestBody = {
       content: comment,
@@ -23,7 +23,7 @@ const CommentPost = async (id: string | undefined, comment: string, parentCommen
 
 const CommentPut = async (id: string | undefined, content: string, commentId: number) => {
   try {
-    const nickname = localStorage.getItem('nickname');
+    const nickname = sessionStorage.getItem('nickname');
 
     const requestBody = {
         writer: nickname,

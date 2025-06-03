@@ -56,7 +56,7 @@ const filterProjects = async (filters) => {
 
 const postProject = async(project) => {
   try{
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = sessionStorage.getItem('accessToken');
     const response = await tokenAxios.post('/api/projects', project, {
       headers: {
         access: accessToken ? accessToken : "",
@@ -82,7 +82,7 @@ const postProject = async(project) => {
 
 const editProject = async(project, projectId) => {
   try{
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = sessionStorage.getItem('accessToken');
     const response = await tokenAxios.put(`/api/projects/${projectId}`, project, {
       headers: {
         access: accessToken ? accessToken : "",

@@ -87,7 +87,7 @@ const WithdrawPage: React.FC = () => {
     if(!validateForm()) return;
 
     const password = {
-      username : localStorage.getItem("nickname"),
+      username : sessionStorage.getItem("nickname"),
       password : formData.password,
       confirm_password : formData.passwordConfirm
     };
@@ -96,7 +96,7 @@ const WithdrawPage: React.FC = () => {
       const response = await delWithdraw(password);
       setUserEmail(response.data);
       setShowResult(true);
-      localStorage.clear();
+      sessionStorage.clear();
       return response;
     } catch (error){
       setErrorMessage('회원 탈퇴 실패');

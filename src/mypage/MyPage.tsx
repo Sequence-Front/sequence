@@ -132,7 +132,7 @@ const MyPage = () => {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState<Tab>("PersonalHistory");
   const [profileData, setProfileData] = useState<MyPageData | null>(null);
-  const nickname = localStorage.getItem("nickname");
+  const nickname = sessionStorage.getItem("nickname");
 
   const params = new URLSearchParams(location.search);
   const queryNickname = params.get("nickname");
