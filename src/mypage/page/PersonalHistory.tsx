@@ -50,7 +50,7 @@ interface PersonalHistoryProps {
 
 const PersonalHistory = ({ careerHistory }: PersonalHistoryProps) => {
   const navigate = useNavigate();
-  const nickname = localStorage.getItem('nickname');
+  const nickname = sessionStorage.getItem('nickname');
   const currentProfileNickname = new URLSearchParams(window.location.search).get('nickname');
   
   const isOwnProfile = !currentProfileNickname || currentProfileNickname === nickname;

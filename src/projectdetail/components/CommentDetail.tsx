@@ -168,7 +168,7 @@ const CommentDetail = ({
   const [editingReplyId, setEditingReplyId] = useState<number | null>(null);
   const [editReplyContent, setEditReplyContent] = useState("");
   const { id, commentId } = useParams();
-  const nickname = localStorage.getItem('nickname');
+  const nickname = sessionStorage.getItem('nickname');
 
   const formatDateTime = (dateTimeString: string) => {
     const date = new Date(dateTimeString);

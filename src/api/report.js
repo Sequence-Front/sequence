@@ -1,7 +1,7 @@
 import tokenAxios from "./axiosInstance";
 
 export const getReport = async (targetType, targetId) => {
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = sessionStorage.getItem('accessToken');
     if (!accessToken) {
       throw new Error("로그인이 필요합니다.");
     }
@@ -29,7 +29,7 @@ export const getReport = async (targetType, targetId) => {
 
 export const postReport = async (data) => {
     try {
-      const accessToken = localStorage.getItem('accessToken');
+      const accessToken = sessionStorage.getItem('accessToken');
       const response = await tokenAxios.post(`/api/report/submit`, data, {
         headers: {
           access: accessToken,

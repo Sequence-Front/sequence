@@ -294,8 +294,8 @@ const ProjectRegistration = () => {
     link:""
   });
 
-  const [profile, ] = useState(localStorage.getItem('profile')|| "/default-profile.png");
-  const [nickname, ] = useState(localStorage.getItem('nickname'));
+  const [profile, ] = useState(sessionStorage.getItem('profile')|| "/default-profile.png");
+  const [nickname, ] = useState(sessionStorage.getItem('nickname'));
 
   const [fields] = useState<string[]>([
     "대회",
@@ -550,7 +550,7 @@ const ProjectRegistration = () => {
         const res = await getProjectDetail(projectId);
         const data = res.data;
         
-        const myNickname = localStorage.getItem('nickname');
+        const myNickname = sessionStorage.getItem('nickname');
         if (data.writer !== myNickname) {
           alert("수정 권한이 없습니다.");
           navigate("/project");

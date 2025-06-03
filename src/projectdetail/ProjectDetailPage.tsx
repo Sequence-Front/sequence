@@ -108,7 +108,7 @@ const ProjectDetailPage = () => {
   const { id } = useParams();
   const [projectData, setProjectData] = useState<ProjectDetail | null>(null);
   const navigate = useNavigate();
-  const myNickname = localStorage.getItem("nickname");
+  const myNickname = sessionStorage.getItem("nickname");
 
   const fetchProjectDetail = async () => {
     try {

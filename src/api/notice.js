@@ -4,7 +4,7 @@ export const getNotice = async () => {
     try{
         const response = await tokenAxios.get('/api/alarm/project-archive');
         console.log("알림창 / 서버로온 데이터", response.data);
-        console.log("로그인한 아이디: ", localStorage.getItem('nickname'));
+        console.log("로그인한 아이디: ", sessionStorage.getItem('nickname'));
         return response.data;
     }  catch (error){
         console.error('에러');

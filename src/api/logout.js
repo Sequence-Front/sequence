@@ -6,7 +6,7 @@ export const postLogout = async () => {
       withCredentials: true
     }
   );
-    localStorage.clear();
+    sessionStorage.clear();
     return response;
   } catch (error) {
     console.error('로그아웃 에러', error);

@@ -5,7 +5,7 @@ const getArchives = async (page = 0) => {
     const response = await axiosInstance.get('/api/archive/projects', {
       params: { page: 0 },
       headers: {
-        'access': localStorage.getItem("accessToken"),
+        'access': sessionStorage.getItem("accessToken"),
       }
     });
     // console.log(response.data);
@@ -21,7 +21,7 @@ const searchArchives = async (keyword, page = 0) => {
     const response = await axiosInstance.get('/api/archive/projects/search', {
       params: { keyword, page },
       headers: {
-        'access': localStorage.getItem("accessToken"),
+        'access': sessionStorage.getItem("accessToken"),
       }
     });
     return response.data;
@@ -33,7 +33,7 @@ const searchArchives = async (keyword, page = 0) => {
 
 const postArchive = async(archiveData, images, thumbnail) => {
   try{
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = sessionStorage.getItem('accessToken');
 
     const formData = new FormData();
     
@@ -91,7 +91,7 @@ const postArchive = async(archiveData, images, thumbnail) => {
 
 const editArchive = async(archiveData, images, thumbnail, archiveId) => {
   try{
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = sessionStorage.getItem('accessToken');
     
     const formData = new FormData();
     formData.append("archiveData", new Blob([JSON.stringify(archiveData)], {type: "application/json"}));

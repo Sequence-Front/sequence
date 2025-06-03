@@ -207,7 +207,7 @@ const Report = () => {
     { value: 4, label: '개인정보가 노출되어 있습니다.' },
     { value: 5, label: '기타' },
   ];
-  const loginUser = localStorage.getItem('nickname');
+  const loginUser = sessionStorage.getItem('nickname');
 
   const [userData, setUserData] = useState<any>(null);
 

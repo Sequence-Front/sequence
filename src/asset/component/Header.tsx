@@ -135,10 +135,10 @@ interface NoticeData {
 function Header({  isMain = false }: { isMain?: boolean } ) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [profile, ] = useState(localStorage.getItem('profile') || '/default-profile.png');
-  const [isLogin, setIsLoggedIn] = useState(!!localStorage.getItem('accessToken'));
+  const [profile, ] = useState(sessionStorage.getItem('profile') || '/default-profile.png');
+  const [isLogin, setIsLoggedIn] = useState(!!sessionStorage.getItem('accessToken'));
   const [isNoticeOpen, setIsNoticeOpen] = useState(false);
-  const [loginUser, ] = useState(localStorage.getItem("nickname"));
+  const [loginUser, ] = useState(sessionStorage.getItem("nickname"));
 
   const getCurrentHeader = () => {
     const path = location.pathname;
@@ -154,7 +154,7 @@ function Header({  isMain = false }: { isMain?: boolean } ) {
 >([]);
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
+    const token = sessionStorage.getItem('accessToken');
     setIsLoggedIn(!!token);
   }, [location]);
 
@@ -215,7 +215,7 @@ function Header({  isMain = false }: { isMain?: boolean } ) {
 
   useEffect(() => {
     const updateAuthState = () => {
-      setIsLoggedIn(!!localStorage.getItem('accessToken'));
+      setIsLoggedIn(!!sessionStorage.getItem('accessToken'));
     };
     window.addEventListener('storage', updateAuthState);
 

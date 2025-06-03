@@ -149,7 +149,7 @@ const TeamEvaluationPage = () => {
   
         const response = await getEvaluationStatus(archiveId);
         const memberStatusObj = response.data?.data?.memberStatus;
-        const myNickname = localStorage.getItem("nickname");
+        const myNickname = sessionStorage.getItem("nickname");
   
         const allNicknames = Object.values(memberStatusObj || {}).map(
           (member: any) => member.nickname
