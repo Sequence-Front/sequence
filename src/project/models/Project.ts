@@ -5,7 +5,7 @@ export class Project {
     private _author: string,
     private _date: string,
     private _tags: string[],
-    private _type: string[]
+    private _roles: string[]
   ) {}
 
   // Getters
@@ -14,7 +14,7 @@ export class Project {
   get author(): string { return this._author; }
   get date(): string { return this._date; }
   get tags(): string[] { return [...this._tags]; }
-  get type(): string[] { return [...this._type]; }
+  get roles(): string[] { return [...this._roles]; }
 
   // Methods
   matchesSearchTerm(term: string): boolean {
@@ -34,7 +34,7 @@ export class Project {
       author: this._author,
       date: this._date,
       tags: [...this._tags],
-      type: [...this._type]
+      roles: [...this._roles]
     };
   }
 } 

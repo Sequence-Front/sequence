@@ -9,21 +9,32 @@ import ProjectCard from './components/ProjectCard';
 import Pagination from '../asset/component/Pagination';
 import { useNavigate } from 'react-router-dom';
 import ScrollToTopButton from '../asset/component/ScrollToTopButton';
-import { getProjects, searchProjects, filterProjects } from '../api/project';
+import { getProjects, searchProjects } from '../api/project';
 import { Project } from './models/Project';
 
 const Container = styled.div`
   color: white;
   width: 100%;
-
 `;
 
 const ListContainer = styled.div`
   display: flex;
-  width: 70%;
+  width: 1460px;
   flex-direction: column;
   margin: 0 auto;
   margin-top : 4rem;
+
+  @media (max-width: 1280px) {
+    width: 100%;
+  }
+
+  @media (max-width: 1000px) {
+    width: 100%;
+  } 
+
+  @media (max-width: 700px) {
+    width: 100%;
+  }
 `
 const SearchBar = styled.div`
   display: flex;
@@ -90,14 +101,14 @@ const TagWrapper = styled.div`
   flex-wrap: wrap;
   border-bottom: 1px solid #616161;
   padding-bottom: 1rem;
-  width: calc(100% - 200px);
+  width: 100%;
 `;
 
 const Tag = styled.span<{ active?: boolean }>`
   background: ${props => props.active ? 'none' : 'transparent'};
   border: 2px solid ${props => props.active ? '#757575' : 'white'};
   color: ${props => props.active ? '#757575' : 'white'};
-  padding: 0.3rem 0.8rem;
+  padding: 0.1rem 0.3rem;
   border-radius: 20px;
   font-size: 1rem;
   cursor: pointer;
@@ -113,7 +124,7 @@ const SelectedTags = styled.div`
 const SelectedTag = styled.span`
   background: #E51D1D;
   color: #212121;
-  padding: 0.4rem 0.7rem;
+  padding: 0.2rem 0.4rem;
   border-radius: 20px;
   font-size: 1rem;
   display: flex;
@@ -149,10 +160,10 @@ const TotalProjects = styled.div`
 type TagCategory = '분야' | '기간' | '역할' | '필요스킬' | '회의' | '프로젝트단계';
 
 const tagOptions: Record<TagCategory, string[]> = {
-  분야: ['대회', '창업', '대외활동'],
+  분야: ['대회', '창업', '대외활동', '프로젝트', '스터디'],
   기간: ['ONE_MONTH_LESS', 'ONE_TO_THREE_MONTH', 'THREE_TO_SIX_MONTH', 'SIX_TO_ONE_YEAR', 'OVER_ONE_YEAR'],
   역할: ['백엔드', '프론트', '디자이너', 'PM'],
-  필요스킬: ['figma', 'spring', 'docker', 'adobe'],
+  필요스킬: ['figma', 'spring', 'docker', 'Adobe Photoshop', 'Adobe Illustrator', 'MidJourney', 'Tool'],
   회의: ['오프라인', '온라인', '병행'],
   프로젝트단계: ['BEFORE_START', 'PLANNING', 'DESIGNING', 'DEVELOPING', 'IN_BUSINESS']
 };
@@ -204,8 +215,8 @@ const ProjectPage: React.FC = () => {
           item.title,
           item.writer,
           item.createdDate,
+          [],
           item.roles,
-          [] 
         ));
         setProjects(projectList);
         setTotalPages(response.data.totalPages);
@@ -234,8 +245,8 @@ const ProjectPage: React.FC = () => {
               item.title,
               item.writer,
               item.createdDate,
+              [],
               item.roles,
-              []
             ));
             setProjects(projectList);
             setTotalPages(response.data.totalPages || 1);
@@ -263,8 +274,8 @@ const ProjectPage: React.FC = () => {
               item.title,
               item.writer,
               item.createdDate,
+              [],
               item.roles,
-              []
             ));
             setProjects(projectList);
             setTotalPages(response.data.totalPages || 1);

@@ -5,17 +5,32 @@ import { useNavigate } from 'react-router-dom';
 
 const TypeTag = styled.span`
   background: transparent;
-  border: 1px solid #FFFFFF;
+  border: 2px solid #FFFFFF;
   color: white;
-  padding: 4px 12px;
+  padding: 0.1rem 0.3rem;
   border-radius: 20px;
   font-size: 1rem;
+  line-height: 1.6;
+  white-space: nowrap;
   transition: all 0.2s ease-in-out;
+
+  @media (max-width: 1200px) {
+    font-size: 0.95rem;
+    padding: 0.09rem 0.25rem;
+  }
+  @media (max-width: 900px) {
+    font-size: 0.9rem;
+    padding: 0.08rem 0.2rem;
+  }
+  @media (max-width: 600px) {
+    font-size: 0.85rem;
+    padding: 0.07rem 0.15rem;
+  }
 `;
 
 const Title = styled.div`
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 2rem;
   color: white;
   margin-bottom: 16px;
   line-height: 1.4;
@@ -26,6 +41,20 @@ const Title = styled.div`
 const Card = styled.div`
   border-radius: 8px;
   cursor: pointer;
+  width: 100%;
+  max-width: 350px;
+  box-sizing: border-box;
+
+  @media (max-width: 1200px) {
+    max-width: 320px;
+  }
+  @media (max-width: 900px) {
+    max-width: 100%;
+  }
+  @media (max-width: 600px) {
+    max-width: 100%;
+    min-width: 0;
+  }
   
   &:hover {
     ${Title} {
@@ -43,9 +72,20 @@ const TypeTagsContainer = styled.div`
   display: flex;
   gap: 8px;
   margin-bottom: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+  max-width: 100%;
+
+  @media (max-width: 1200px) {
+    gap: 6px;
+  }
+  @media (max-width: 900px) {
+    gap: 4px;
+  }
+  @media (max-width: 600px) {
+    gap: 2px;
+  }
 `;
-
-
 
 const MetaInfo = styled.div`
   display: flex;
@@ -97,11 +137,16 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, searchTerm }) => {
     );
   };
 
+  function formatDate(dateString: string) {
+    const [year, month, day] = dateString.split("-");
+    return `${year.slice(2)}.${month}.${day}`;
+  }
+
   return (
     <Card onClick={() => {navigate(`/projectdetail/${project.id}`)}}>
       <TypeTagsContainer>
-        {project.type.map((t, index) => (
-          <TypeTag key={index}>{t}</TypeTag>
+        {(project.roles || []).map((role, index) => (
+          <TypeTag key={index}>{role}</TypeTag>
         ))}
       </TypeTagsContainer>
       <Title>{highlightText(project.title)}</Title>
@@ -112,7 +157,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, searchTerm }) => {
           </AuthorAvatar>
           <span>{highlightText(project.author)}</span>
         </AuthorInfo>
-        <span>{project.date}</span>
+        <span>{formatDate(project.date)}</span>
       </MetaInfo>
     </Card>
   );
