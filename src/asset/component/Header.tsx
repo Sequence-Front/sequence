@@ -135,10 +135,10 @@ interface NoticeData {
 function Header({  isMain = false }: { isMain?: boolean } ) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [profile, ] = useState(sessionStorage.getItem('profile') || '/default-profile.png');
+  const [profile, setProfile] = useState(sessionStorage.getItem('profile') || '/default-profile.png');
   const [isLogin, setIsLoggedIn] = useState(!!sessionStorage.getItem('accessToken'));
   const [isNoticeOpen, setIsNoticeOpen] = useState(false);
-  const [loginUser, ] = useState(sessionStorage.getItem("nickname"));
+  const [nickname, setNickname] = useState(sessionStorage.getItem('nickname'));
 
   const getCurrentHeader = () => {
     const path = location.pathname;
@@ -156,6 +156,8 @@ function Header({  isMain = false }: { isMain?: boolean } ) {
   useEffect(() => {
     const token = sessionStorage.getItem('accessToken');
     setIsLoggedIn(!!token);
+    setProfile(sessionStorage.getItem('profile') || '/default-profile.png');
+    setNickname(sessionStorage.getItem('nickname'));
   }, [location]);
 
   useEffect(() => {
@@ -216,6 +218,8 @@ function Header({  isMain = false }: { isMain?: boolean } ) {
   useEffect(() => {
     const updateAuthState = () => {
       setIsLoggedIn(!!sessionStorage.getItem('accessToken'));
+      setProfile(sessionStorage.getItem('profile') || '/default-profile.png');
+      setNickname(sessionStorage.getItem('nickname'));
     };
     window.addEventListener('storage', updateAuthState);
 
@@ -283,7 +287,7 @@ function Header({  isMain = false }: { isMain?: boolean } ) {
             <AlertImg src="/image/alert.png" onClick={NoticeClick} />
             <div style={{ position:'relative' }}>
               <UserProfile 
-                onClick={() => navigate(`/mypage?nickname=${loginUser}`)} 
+                onClick={() => navigate(`/mypage?nickname=${nickname}`)} 
                 src={profile} 
               />
               <NoticeContainer isOpen={isNoticeOpen}>
