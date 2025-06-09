@@ -91,7 +91,7 @@ const PersonalHistory = ({ careerHistory }: PersonalHistoryProps) => {
     <HistoryContainer>
       <HistorySection title="자기소개" items={[]}>
         <Introduction>
-          {careerHistory.introduction || "자기소개가 없습니다."}
+          {careerHistory.introduction !== null ? careerHistory.introduction : "자기소개가 없습니다."}
         </Introduction>
       </HistorySection>
 

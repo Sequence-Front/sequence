@@ -154,7 +154,7 @@ const MyPage = () => {
     fetchData();
   }, [queryNickname]);
 
-  const isOwnProfile = nickname === profileData?.basicInfo.nickname;
+  const isOwnProfile = nickname === profileData?.basicInfo?.nickname;
 
   const renderContent = () => {
     if (!profileData) return null;
@@ -184,12 +184,12 @@ const MyPage = () => {
       ) : (
         <Container>
           <Profile
-            name={profileData?.basicInfo.nickname}
-            birth={profileData?.basicInfo.birth}
-            skills={profileData?.basicInfo.skillCategory || []}
-            desiredJobs={profileData?.basicInfo.desiredJob || []}
-            image={profileData?.basicInfo.profileImg}
-            // introduction={profileData?.careerHistory.introduction || ""}
+            name={profileData?.basicInfo?.nickname}
+            birth={profileData?.basicInfo?.birth}
+            skills={profileData?.basicInfo?.skillCategory || []}
+            desiredJobs={profileData?.basicInfo?.desiredJob || []}
+            image={profileData?.basicInfo?.profileImg}
+            // introduction={profileData?.careerHistory?.introduction || ""}
           />
           <TabContainer>
             <TabButton

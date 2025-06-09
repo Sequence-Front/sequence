@@ -64,6 +64,13 @@ const ArchiveGrid = styled.div`
     gap: 2rem;
     margin: 2rem auto;
     width: 70%;
+
+    @media (max-width: 1480px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    @media (max-width: 1024px) {
+        grid-template-columns: 1fr;
+    }
 `;
 
 export const ProjectInfo = styled.div`

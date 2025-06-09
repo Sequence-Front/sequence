@@ -34,12 +34,12 @@ const ItemInfo = styled.div`
     justify-content: space-between;
 `;
 
-const Title = styled.h3`
+const Title = styled.span`
     font-size: 1.2rem;
     margin: 0;
 `;
 
-const Date = styled.span`
+const DateText = styled.span`
     color: #666;
     font-size: 1rem;
 `;
@@ -104,9 +104,10 @@ const ArchiveItem = ({ id, item }: ArchiveItemProps) => {
     const navigate = useNavigate();
 
     // 날짜 포맷팅 함수
-    const formatDate = (dateString: string) => {
-        // const date = new Date(dateString) as unknown as Date;
-        // return date.toLocaleDateString('ko-KR');
+    const formatDate = (dateString?: string) => {
+        if (!dateString) return '';
+        const date = new window.Date(dateString);
+        return date.toLocaleDateString('ko-KR');
     };
 
     const handleItemClick = (itemId: number) => {
@@ -121,7 +122,7 @@ const ArchiveItem = ({ id, item }: ArchiveItemProps) => {
                     <OverlayTitle>{item.title}</OverlayTitle>
                     <StatusContainer>
                         <StatItem>
-                            <StatText>댓글</StatText>
+                            <StatText>Comment</StatText>
                             <StatText>{item.commentCount}</StatText>
                         </StatItem>
                         <StatItem>
@@ -138,9 +139,9 @@ const ArchiveItem = ({ id, item }: ArchiveItemProps) => {
             <ItemInfo>
                 <UserInfo>
                     <UserTempImage />
-                    <Title>{item.title}</Title>
+                    <Title>{item.writerNickname} {item.otherMemberCount > 0 && `+${item.otherMemberCount}`}</Title>
                 </UserInfo>
-                {/* <Date>{formatDate(item.createdDateTime)}</Date> */}
+                <DateText>{formatDate(item.createdDateTime)}</DateText>
             </ItemInfo>
         </ItemWrapper>
     );

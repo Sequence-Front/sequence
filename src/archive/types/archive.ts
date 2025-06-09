@@ -14,4 +14,7 @@ export interface Archive {
     bookmarkCount: number;
     createdDateTime: string;
     modifiedDateTime: string;
+    writerNickname: string;
+    writerProfile: string;
+    otherMemberCount: number;
 }
