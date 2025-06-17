@@ -16,6 +16,7 @@ const getProjects = async (filters = {}, page = 0, size = 12) => {
     queryParams.append('size', size);
     
     const response = await tokenAxios.get(`/api/projects/filter/keyword?${queryParams.toString()}`);
+    console.log("프로젝트 조회 응답: ", response.data);
     return response.data;
   } catch (error) {
     console.error('프로젝트 조회 에러:', error);

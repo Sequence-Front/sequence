@@ -49,11 +49,21 @@ interface PersonalHistoryProps {
 }
 
 const PersonalHistory = ({ careerHistory }: PersonalHistoryProps) => {
+  
+
   const navigate = useNavigate();
+
+  if (!careerHistory) {
+    return <div>로딩 중...</div>;
+  }
+  
   const nickname = sessionStorage.getItem('nickname');
   const currentProfileNickname = new URLSearchParams(window.location.search).get('nickname');
   
+
+  
   const isOwnProfile = !currentProfileNickname || currentProfileNickname === nickname;
+
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
