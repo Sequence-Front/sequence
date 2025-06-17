@@ -19,21 +19,21 @@ const Container = styled.div`
 
 const ListContainer = styled.div`
   display: flex;
-  width: 1460px;
+  width: 1280px;
   flex-direction: column;
   margin: 0 auto;
   margin-top : 4rem;
 
   @media (max-width: 1280px) {
-    width: 100%;
+    width: 80%;
   }
 
   @media (max-width: 1000px) {
-    width: 100%;
+    width: 80%;
   } 
 
   @media (max-width: 700px) {
-    width: 100%;
+    width: 80%;
   }
 `
 const SearchBar = styled.div`
@@ -80,13 +80,14 @@ const Navigation = styled.nav`
   gap: 2rem;
   border-bottom: 1px solid #616161;
   border-top: 1px solid #616161;
-  padding: 1rem 0;
+  padding: 2rem 0;
 `;
 
-const NavItem = styled.a<{ active?: boolean }>`
+const NavItem = styled.div<{ active?: boolean }>`
   color: ${props => props.active ? '#white' : '#757575'};
   text-decoration: none;
   cursor: pointer;
+  margin: 0px 50px;
 `;
 
 const TagContainer = styled.div`
@@ -106,11 +107,11 @@ const TagWrapper = styled.div`
 
 const Tag = styled.span<{ active?: boolean }>`
   background: ${props => props.active ? 'none' : 'transparent'};
-  border: 2px solid ${props => props.active ? '#757575' : 'white'};
+  border: 1px solid ${props => props.active ? '#757575' : 'white'};
   color: ${props => props.active ? '#757575' : 'white'};
   padding: 0.1rem 0.3rem;
   border-radius: 20px;
-  font-size: 1rem;
+  font-size: 0.8rem;
   cursor: pointer;
 `;
 
@@ -124,9 +125,9 @@ const SelectedTags = styled.div`
 const SelectedTag = styled.span`
   background: #E51D1D;
   color: #212121;
-  padding: 0.2rem 0.4rem;
+  padding: 0.1rem 0.3rem;
   border-radius: 20px;
-  font-size: 1rem;
+  font-size: 0.8rem;
   display: flex;
   align-items: center;
   gap: 0.2rem;
@@ -134,7 +135,7 @@ const SelectedTag = styled.span`
   
   &::after {
     content: 'X';
-    font-size: 1rem;
+    font-size: 0.8rem;
   }
 `;
 

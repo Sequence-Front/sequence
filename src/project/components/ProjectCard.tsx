@@ -5,32 +5,19 @@ import { useNavigate } from 'react-router-dom';
 
 const TypeTag = styled.span`
   background: transparent;
-  border: 2px solid #FFFFFF;
+  border: 1px solid #FFFFFF;
   color: white;
   padding: 0.1rem 0.3rem;
   border-radius: 20px;
-  font-size: 1rem;
+  font-size: 0.8rem;
   line-height: 1.6;
   white-space: nowrap;
   transition: all 0.2s ease-in-out;
-
-  @media (max-width: 1200px) {
-    font-size: 0.95rem;
-    padding: 0.09rem 0.25rem;
-  }
-  @media (max-width: 900px) {
-    font-size: 0.9rem;
-    padding: 0.08rem 0.2rem;
-  }
-  @media (max-width: 600px) {
-    font-size: 0.85rem;
-    padding: 0.07rem 0.15rem;
-  }
 `;
 
 const Title = styled.div`
   margin: 0;
-  font-size: 2rem;
+  font-size: 1.6rem;
   color: white;
   margin-bottom: 16px;
   line-height: 1.4;
