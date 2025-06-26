@@ -24,18 +24,11 @@ const ListContainer = styled.div`
   margin: 0 auto;
   margin-top : 4rem;
 
-  @media (max-width: 1280px) {
+  @media (max-width: 512px) {
     width: 80%;
   }
+`;
 
-  @media (max-width: 1000px) {
-    width: 80%;
-  } 
-
-  @media (max-width: 700px) {
-    width: 80%;
-  }
-`
 const SearchBar = styled.div`
   display: flex;
   align-items: center;
@@ -47,7 +40,7 @@ const SearchInput = styled.input`
   border: none;
   border-bottom: 2px solid #616161;
   color: white;
-  width: clamp(200px, 30vw, 500px);
+  width: 500px;
   padding: 0.5rem;
   font-size: 1rem;
   
@@ -68,7 +61,7 @@ const AddProjectButton = styled.button`
   gap: 0.5rem;
   background: transparent;
   color: #E32929;
-  padding: clamp(0.5rem, 1vw, 1rem) clamp(0.8rem, 1.5vw, 1rem);
+  padding: 0.5rem 1rem;
   margin-left: auto;
   cursor: pointer;
   border: 1px solid #E32929;

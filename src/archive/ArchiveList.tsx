@@ -14,9 +14,9 @@ const SearchBar = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: clamp(3rem, 5vw, 5rem);
-  margin-top: clamp(3rem, 5vw, 5rem);
+  margin-top : 4rem;
   justify-content: space-between;
-  width: 70%;
+  width: 100%;
 `;
 
 const SearchInput = styled.input`
@@ -24,7 +24,7 @@ const SearchInput = styled.input`
   border: none;
   border-bottom: 2px solid #616161;
   color: white;
-  width: clamp(200px, 30vw, 500px);
+  width: 500px;
   padding: 0.5rem;
   font-size: 1rem;
   
@@ -45,17 +45,27 @@ const AddProjectButton = styled.button`
   gap: 0.5rem;
   background: transparent;
   color: #E32929;
-  padding: clamp(0.5rem, 1vw, 1rem) clamp(0.8rem, 1.5vw, 1rem);
+  padding: 0.5rem 1rem;
   margin-left: auto;
   cursor: pointer;
   border: 1px solid #E32929;
-  font-size: clamp(0.8rem, 1.2vw, 1.5rem);
+  font-size: 1.2rem;
 `;
 
 const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  color: white;
+  width: 100%;
+`;
+
+const ListContainer = styled.div`
+  display: flex;
+  width: 1280px;
+  flex-direction: column;
+  margin: 0 auto;
+
+  @media (max-width: 512px) {
+    width: 80%;
+  }
 `;
 
 const ArchiveGrid = styled.div`
@@ -63,13 +73,13 @@ const ArchiveGrid = styled.div`
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
     margin: 2rem auto;
-    width: 70%;
+    width: 1280px;
 
-    @media (max-width: 1480px) {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    @media (max-width: 1024px) {
+    @media (max-width: 512px) {
         grid-template-columns: 1fr;
+        width: 80%;
+        padding: 0 1rem;
+        box-sizing: border-box;
     }
 `;
 
@@ -126,6 +136,7 @@ const ArchiveList = () => {
     return (
         <>            
             <Container>
+                <ListContainer>
                 <SearchBar>
                     <SearchInput 
                         placeholder="프로젝트 제목을 검색해보세요!" 
@@ -137,7 +148,7 @@ const ArchiveList = () => {
                         아카이브 프로젝트 등록하기 <AiOutlinePlus size={28}/>
                     </AddProjectButton>
                 </SearchBar>
-                <div style={{width: '70%'}}>
+                <div style={{width: '1280px'}}>
                     총 {archives.length}건의 게시글
                 </div>
                 
@@ -166,6 +177,7 @@ const ArchiveList = () => {
                     totalPages={totalPages}
                     onPageChange={setCurrentPage}
                 />
+                </ListContainer>
             </Container>
             
             <ScrollToTopButton />
