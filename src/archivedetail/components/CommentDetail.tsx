@@ -137,15 +137,17 @@ const ActionButton = styled.button`
 interface CommentDetailProps {
   comment: {
     id: number;
-    writer: string;
+    commentWriter: string;
     content: string;
     createdDateTime: string;
+    commentWriterProfileImg: string;
   };
   childComments: Array<{
     id: number;
-    writer: string;
+    commentWriter: string;
     content: string;
     createdDateTime: string;
+    commentWriterProfileImg: string;
   }>;
   onCommentAdd: () => void;
 }
@@ -248,8 +250,8 @@ const CommentDetail = ({
          />
       </ReportIcon>
       <UserName>
-        <ProfileImage src="https://buly.kr/GZwmWfY" alt={`${comment.writer}'s profile`} />
-        {comment.writer}
+        <ProfileImage src={comment.commentWriterProfileImg} alt={`${comment.commentWriter}'s profile`} />
+        {comment.commentWriter}
         <TimeStamp>{formatDateTime(comment.createdDateTime)}</TimeStamp>
       </UserName>
       
@@ -269,7 +271,7 @@ const CommentDetail = ({
           {showReplyInput ? "취소" : "답글"}
         </ReplyButton>
         
-        {nickname === comment.writer && (
+        {nickname === comment.commentWriter && (
           <ActionButtons>
             {!isEditing && (
               <>
@@ -303,8 +305,8 @@ const CommentDetail = ({
                 />
               </ReportIcon>
               <UserName>
-                <ProfileImage src="https://buly.kr/GZwmWfY" alt={`${reply.writer}'s profile`} />
-                {reply.writer}
+                <ProfileImage src={reply.commentWriterProfileImg} alt={`${reply.commentWriter}'s profile`} />
+                {reply.commentWriter}
                 <TimeStamp>{formatDateTime(reply.createdDateTime)}</TimeStamp>
               </UserName>
               
@@ -318,7 +320,7 @@ const CommentDetail = ({
               ) : (
                 <>
                   <ReplyText>{reply.content}</ReplyText>
-                  {nickname === reply.writer && (
+                  {nickname === reply.commentWriter && (
                     <ActionButtons>
                       <ActionButton onClick={() => {
                         setEditingReplyId(reply.id);
@@ -336,7 +338,7 @@ const CommentDetail = ({
           <ReplyInputWrapper>
             <img src="/image/ReplyImg.svg" alt="답글 아이콘" style={{ width: '3.5rem' }} />
             <ReplyToContainer>
-              <ReplyToText>'{comment.writer}'님에게 답글</ReplyToText>
+              <ReplyToText>'{comment.commentWriter}'님에게 답글</ReplyToText>
               <CommentInput
                 comment={reply}
                 setComment={setReply}

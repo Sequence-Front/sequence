@@ -70,15 +70,17 @@ interface Comment {
   comments: Array<{
     parentComment: {
       id: number;
-      writer: string;
+      commentWriter: string;
       content: string;
       createdDateTime: string;
+      commentWriterProfileImg: string;
     };
     childComments: Array<{
       id: number;
-      writer: string;
+      commentWriter: string;
       content: string;
       createdDateTime: string;
+      commentWriterProfileImg: string;
     }>;
   }>;
   onCommentAdd: () => void;

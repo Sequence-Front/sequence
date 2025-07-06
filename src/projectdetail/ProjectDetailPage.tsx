@@ -169,7 +169,15 @@ const ProjectDetailPage = () => {
           }
 
           
-          { myNickname === projectData?.writer && 
+          { myNickname === projectData?.writer ?
+            (
+              <>
+                
+                <LuPen onClick={writeClick} size={30} style={{color: "#E32929", cursor:"pointer"} } title="수정하기"/>
+                <MdDelete onClick={deleteClick} size={30} style={{color: "#E32929", cursor:"pointer"}}/>
+              </>
+            )
+            :
             (
               <>
                 <PiSirenLight
@@ -183,8 +191,6 @@ const ProjectDetailPage = () => {
                   targetId: id
                   }})}
                 />
-                <LuPen onClick={writeClick} size={30} style={{color: "#E32929", cursor:"pointer"} } title="수정하기"/>
-                <MdDelete onClick={deleteClick} size={30} style={{color: "#E32929", cursor:"pointer"}}/>
               </>
             )
           }

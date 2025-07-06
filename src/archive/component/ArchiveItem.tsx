@@ -44,8 +44,7 @@ const DateText = styled.span`
     font-size: 1rem;
 `;
 
-const UserTempImage = styled.div`
-    background-color: #919191;
+const UserImage = styled.img`
     width: 2rem;
     height: 2rem;
     border-radius: 50%;
@@ -138,7 +137,9 @@ const ArchiveItem = ({ id, item }: ArchiveItemProps) => {
             </ImageContainer>
             <ItemInfo>
                 <UserInfo>
-                    <UserTempImage />
+                    <UserImage src={item.writerProfileImg || '/default-profile-image.png'} 
+                        alt={item.writerNickname} 
+                    />
                     <Title>{item.writerNickname} {item.otherMemberCount > 0 && `+${item.otherMemberCount}`}</Title>
                 </UserInfo>
                 <DateText>{formatDate(item.createdDateTime)}</DateText>

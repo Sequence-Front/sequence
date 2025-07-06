@@ -105,8 +105,7 @@ const DetailBox =styled.div`
   font-size: 1rem;
 `
 
-const TempImage = styled.div`
-  background-color: grey;
+const WriterImage = styled.img`
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -185,6 +184,7 @@ const RoleTag = styled.div`
 interface ArchiveDetail {
   id: number;
   writerNickname: string;
+  writerProfileImg: string;
   title: string;
   description: string;
   startDate: string;
@@ -265,7 +265,14 @@ const ArchiveDetailPage = () => {
                   }
 
                     
-                  { myNickname === archiveData?.writerNickname && 
+                  { myNickname === archiveData?.writerNickname ?
+                    (
+                      <>
+                        <LuPen onClick={writeClick} size={30} style={{color: "#E32929", cursor:"pointer"} } title="수정하기"/>
+                        <MdDelete onClick={deleteClick} size={30} style={{color: "#E32929", cursor:"pointer"}}/>
+                      </>
+                    )
+                    :
                     (
                       <>
                         <PiSirenLight
@@ -279,8 +286,6 @@ const ArchiveDetailPage = () => {
                               targetId: id
                           }})}
                         />
-                        <LuPen onClick={writeClick} size={30} style={{color: "#E32929", cursor:"pointer"} } title="수정하기"/>
-                        <MdDelete onClick={deleteClick} size={30} style={{color: "#E32929", cursor:"pointer"}}/>
                       </>
                     )
                   }
@@ -290,7 +295,7 @@ const ArchiveDetailPage = () => {
                 </Title>
                 <Detail>
                     <DetailBox>
-                        <TempImage/>
+                        <WriterImage src={archiveData.writerProfileImg} alt={archiveData.writerNickname}/>
                         <div>{archiveData.writerNickname}</div>
                         <div>{new Date(archiveData.createdDateTime).toLocaleDateString()}</div>
                     </DetailBox>

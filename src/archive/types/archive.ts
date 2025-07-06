@@ -15,6 +15,6 @@ export interface Archive {
     createdDateTime: string;
     modifiedDateTime: string;
     writerNickname: string;
-    writerProfile: string;
     otherMemberCount: number;
+    writerProfileImg: string;
 }

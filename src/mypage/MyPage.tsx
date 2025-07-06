@@ -109,7 +109,7 @@ interface MyPageData {
     };
   };
   portfolio: {
-    archivePage: {
+    archiveList: {
       content: Array<{
         id: number;
         title: string;

@@ -22,7 +22,7 @@ const Tab = styled.div<{ isSelected: boolean }>`
 
 interface PortfolioProps {
   portfolioData: {
-    archivePage: {
+    archiveList: {
       content: Array<{
         id: number;
         title: string;
@@ -57,11 +57,11 @@ const Portfolio: React.FC<PortfolioProps> = ({ portfolioData }) => {
   const getCurrentPageItems = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return portfolioData.archivePage.content.slice(startIndex, endIndex);
+    return portfolioData.archiveList.content.slice(startIndex, endIndex);
   };
 
   // 전체 페이지 수 계산
-  const totalPages = Math.ceil(portfolioData.archivePage.content.length / itemsPerPage);
+  const totalPages = Math.ceil(portfolioData.archiveList.content.length / itemsPerPage);
 
   return (
     <>
@@ -90,7 +90,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ portfolioData }) => {
               />
             ))}
           </PortfolioContainer>
-          {portfolioData.archivePage.content.length > 0 && (
+          {portfolioData.archiveList.content.length > 0 && (
             <Pagination 
               currentPage={currentPage}
               totalPages={totalPages}
